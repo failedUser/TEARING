@@ -94,7 +94,6 @@ return NameArray;
 -(void)insertMainData:(BmobObject*)dict
 {
     [super insertMainData:dict];
-    [_DICT setObject:dict forKey:[dict objectForKey:@"numberOfSaidWords"]];
 }
 -(void)fetchData
 {

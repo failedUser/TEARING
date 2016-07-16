@@ -55,7 +55,7 @@
     [super viewWillAppear: animated];
     // 马上进入刷新状态
     
-    [_yy_table.mj_header beginRefreshing];
+    [_yy_table.mj_footer beginRefreshing];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -68,21 +68,31 @@
     //添加手势
     UITapGestureRecognizer * Gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchesBegan)];
     [_yy_table addGestureRecognizer:Gesture];
+//监听键盘状态进行刷新
+      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
+   [self MJrefresh];
+   
+    if (_yy_table.frame.size.height <300) {
+         [self MJrefresh];
+    }
     
-    //下拉刷新
-    MJRefreshHeader * header = [MJRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
-    _yy_table.mj_header = header;
-    header.automaticallyChangeAlpha =YES;
-    
-    
+}
+-(void)keyboardWillDown
+{
+        [_yy_table.mj_footer beginRefreshing];
+}
+-(void)MJrefresh
+{
+    self.yy_table.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
+    self.yy_table.mj_footer.automaticallyChangeAlpha =YES;
 }
 -(void)refresh1
 {
-    [_yy_table.data MainreloadData];
+   
     NSLog(@"这下有多少个元素%ld",_yy_table.data.dataDict.count);
     [_yy_table reloadData];
     sleep(0.5);
-    [_yy_table.mj_header endRefreshing];
+    [_yy_table.mj_footer endRefreshing];
   
 
 }
@@ -191,6 +201,7 @@
     {
     [self MessageManager:message];
     [_baseVIew.yy_text resignFirstResponder];
+     
     [self.yy_table reloadData];
     //滑到更新的那一行
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_yy_table.dict.count-1 inSection:0];
@@ -210,7 +221,9 @@
     
         BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
         NSLog(@"对象中的元素%@",[obj objectForKey:@"saidWord"]);
+
         [_yy_table.data baocunshuju:obj];
+         [_yy_table.data MainreloadData];
     }
     
 }

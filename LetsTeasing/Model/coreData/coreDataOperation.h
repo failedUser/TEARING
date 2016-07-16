@@ -25,4 +25,5 @@
 -(void)insertMainData:(BmobObject*)dict;
 -(void)fetchdata;
 -(void)baocunshuju:(BmobObject*)dict;
+-(void)addSubObject:(BmobObject *)obj number:(NSInteger)numb;
 @end

@@ -151,5 +151,10 @@
     }];
     
 }
+-(void)addSubObject:(BmobObject *)obj number:(NSInteger)numb
+{
+    NSString * str = [NSString stringWithFormat:@"%ld",numb];
+    [mainData setValue:obj forKey:str];
+}
 
 @end

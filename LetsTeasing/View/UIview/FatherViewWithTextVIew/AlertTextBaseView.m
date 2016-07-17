@@ -72,6 +72,7 @@
         make.topMargin.equalTo(self.mas_top).offset(0);
     }];
 }
+
 -(UIImage*) OriginImage:(UIImage *)image scaleToSize:(CGSize)size
 {
     UIGraphicsBeginImageContext(size); //size 为CGSize类型，即你所需要的图片尺寸
@@ -84,6 +85,5 @@
     
     return scaledImage; //返回的就是已经改变的图片
 }
-
 
 @end

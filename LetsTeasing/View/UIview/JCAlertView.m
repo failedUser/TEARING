@@ -140,6 +140,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 
 - (void)addAlertView{
     self.alertView.multiple =1;
+    //这个里面开始配置Alertveiw
     [self.alertView setup];
     [self.view addSubview:self.alertView];
 }
@@ -380,6 +381,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     _basetextView.yy_text.placehoderLbl.text = (_basetextView.yy_text.placeHoder.length>0?_basetextView.yy_text.placeHoder:@"@评论");
           [_basetextView.send_btn addTarget:self action:@selector(SendToAlertTable) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_basetextView];
+    
     [self addTable];
     
         UIButton * view =  [[UIButton alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(290.0f)- YY_ININPONE5_WITH(30.0), 0 , YY_ININPONE5_HEIGHT(20.0), YY_ININPONE5_HEIGHT(20.0))];
@@ -394,14 +396,10 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 }
 -(void)addTable
 {
-//    _UItable = [[UITableView alloc]initWithFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight)];
-//    self.table = [[YY_content_table alloc]initWithFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight)];
     self.table = [[YY_content_table alloc]init];
     //给table的array赋值
     _UItable = self.table;
-
     [_UItable setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight)];
-//    self.table.cellContent = _ScellContent;
     [self addSubview:_UItable];
 }
 -(void)SendToAlertTable

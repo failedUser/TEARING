@@ -135,8 +135,6 @@
     [gameScore setObject:[dict objectForKey:@"playerName"] forKey:@"playerName"];
     [gameScore setObject:[dict objectForKey:@"saidWord"] forKey:@"saidWord"];
     [gameScore setObject:[dict objectForKey:@"numberOfSaidWords"] forKey:@"numberOfSaidWords"];
-    NSLog(@"保存数据的时候说的话%@",[dict objectForKey:@"saiWord"]);
-       NSLog(@"保存数据的时候的名字%@",[dict objectForKey:@"playerName"]);
 
     [gameScore setObject:[NSNumber numberWithBool:YES] forKey:@"cheatMode"];
     [gameScore setObject:[dict objectForKey:@"states"] forKey:@"states"];

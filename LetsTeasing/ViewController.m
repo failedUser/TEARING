@@ -52,10 +52,13 @@
 @implementation ViewController
 -(void)viewWillAppear:(BOOL)animated
 {
+    //现在的问题是自动刷新不能刷新出来数据，而得手动刷新一次才行//13:26分
     [super viewWillAppear: animated];
     // 马上进入刷新状态
     
     [_yy_table.mj_footer beginRefreshing];
+       NSLog(@"进入刷新的时候元素%ld",_yy_table.data.dataDict.count);
+  
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -71,10 +74,6 @@
 //监听键盘状态进行刷新
       [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
    [self MJrefresh];
-   
-    if (_yy_table.frame.size.height <300) {
-         [self MJrefresh];
-    }
     
 }
 -(void)keyboardWillDown
@@ -88,10 +87,11 @@
 }
 -(void)refresh1
 {
-   
+   //编号有了数据也存进去，只是没有下载到数组中
+    sleep(0.5);
     NSLog(@"这下有多少个元素%ld",_yy_table.data.dataDict.count);
     [_yy_table reloadData];
-    sleep(0.5);
+    [_yy_table.data MainreloadData];
     [_yy_table.mj_footer endRefreshing];
   
 
@@ -217,13 +217,14 @@
 {
     if (message!= 0) {
         NSNumber * num = [NSNumber numberWithInteger:_yy_table.data.dataDict.count];
+        NSLog(@"编号应该是%@",num);
         NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我自己的号",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",nil];
     
         BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
-        NSLog(@"对象中的元素%@",[obj objectForKey:@"saidWord"]);
+//        NSLog(@"对象中的元素%@",[obj objectForKey:@"saidWord"]);
 
         [_yy_table.data baocunshuju:obj];
-         [_yy_table.data MainreloadData];
+   
     }
     
 }
@@ -252,12 +253,6 @@
                                 return scaledImage;
                                 
                                 }
-
-
-
-
-
-
 //给Cell添加长按手势
 -(void)longGesture:(BOOL)bools
 {
@@ -279,7 +274,7 @@
         CGPoint point = [gesture locationInView:_yy_table];
         
         NSIndexPath * indexPath = [_yy_table indexPathForRowAtPoint:point];
-        
+        NSLog(@"点击了这是第几行%ld",(long)indexPath.row);
         if(indexPath == nil) ;
         else{
             [_baseVIew.yy_text resignFirstResponder];

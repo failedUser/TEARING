@@ -25,7 +25,6 @@
 		184D899F1D39D9B400D5C1EF /* weibo.png in Resources */ = {isa = PBXBuildFile; fileRef = 184D893B1D39D9B400D5C1EF /* weibo.png */; };
 		184D89A01D39D9B400D5C1EF /* weixin.png in Resources */ = {isa = PBXBuildFile; fileRef = 184D893C1D39D9B400D5C1EF /* weixin.png */; };
 		184D89A11D39D9B400D5C1EF /* write.png in Resources */ = {isa = PBXBuildFile; fileRef = 184D893D1D39D9B400D5C1EF /* write.png */; };
-		184D89A21D39D9B400D5C1EF /* baseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D89401D39D9B400D5C1EF /* baseOperation.m */; };
 		184D89A31D39D9B400D5C1EF /* commentInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D89421D39D9B400D5C1EF /* commentInfo.m */; };
 		184D89A41D39D9B400D5C1EF /* coreDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D89451D39D9B400D5C1EF /* coreDataModel.m */; };
 		184D89A51D39D9B400D5C1EF /* coreDataOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D89471D39D9B400D5C1EF /* coreDataOperation.m */; };
@@ -124,8 +123,6 @@
 		184D893B1D39D9B400D5C1EF /* weibo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weibo.png; sourceTree = "<group>"; };
 		184D893C1D39D9B400D5C1EF /* weixin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weixin.png; sourceTree = "<group>"; };
 		184D893D1D39D9B400D5C1EF /* write.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = write.png; sourceTree = "<group>"; };
-		184D893F1D39D9B400D5C1EF /* baseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = baseOperation.h; sourceTree = "<group>"; };
-		184D89401D39D9B400D5C1EF /* baseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = baseOperation.m; sourceTree = "<group>"; };
 		184D89411D39D9B400D5C1EF /* commentInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = commentInfo.h; sourceTree = "<group>"; };
 		184D89421D39D9B400D5C1EF /* commentInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = commentInfo.m; sourceTree = "<group>"; };
 		184D89441D39D9B400D5C1EF /* coreDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coreDataModel.h; sourceTree = "<group>"; };
@@ -337,8 +334,6 @@
 		184D893E1D39D9B400D5C1EF /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				184D893F1D39D9B400D5C1EF /* baseOperation.h */,
-				184D89401D39D9B400D5C1EF /* baseOperation.m */,
 				184D89411D39D9B400D5C1EF /* commentInfo.h */,
 				184D89421D39D9B400D5C1EF /* commentInfo.m */,
 				184D89431D39D9B400D5C1EF /* coreData */,
@@ -455,11 +450,10 @@
 		184D897E1D39D9B400D5C1EF /* UIview */ = {
 			isa = PBXGroup;
 			children = (
+				184D89C41D3A282900D5C1EF /* AlertView */,
 				184D897F1D39D9B400D5C1EF /* changeName.h */,
 				184D89801D39D9B400D5C1EF /* changeName.m */,
 				184D89811D39D9B400D5C1EF /* FatherViewWithTextVIew */,
-				184D89891D39D9B400D5C1EF /* JCAlertView.h */,
-				184D898A1D39D9B400D5C1EF /* JCAlertView.m */,
 				184D898B1D39D9B400D5C1EF /* navigation.h */,
 				184D898C1D39D9B400D5C1EF /* navigation.m */,
 				184D898D1D39D9B400D5C1EF /* newMessage.h */,
@@ -489,6 +483,15 @@
 				184D89861D39D9B400D5C1EF /* YY_TextView.m */,
 			);
 			path = TextView;
+			sourceTree = "<group>";
+		};
+		184D89C41D3A282900D5C1EF /* AlertView */ = {
+			isa = PBXGroup;
+			children = (
+				184D89891D39D9B400D5C1EF /* JCAlertView.h */,
+				184D898A1D39D9B400D5C1EF /* JCAlertView.m */,
+			);
+			name = AlertView;
 			sourceTree = "<group>";
 		};
 		188D97FD1D2344F300A90DD7 = {
@@ -909,7 +912,6 @@
 				184D89911D39D9B400D5C1EF /* Personal_centerViewController.m in Sources */,
 				184D89A41D39D9B400D5C1EF /* coreDataModel.m in Sources */,
 				184D89C21D39D9B400D5C1EF /* newMessage.m in Sources */,
-				184D89A21D39D9B400D5C1EF /* baseOperation.m in Sources */,
 				184D89B51D39D9B400D5C1EF /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				184D89BB1D39D9B400D5C1EF /* YY_content_table.m in Sources */,
 				184D89BD1D39D9B400D5C1EF /* AlertTextBaseView.m in Sources */,

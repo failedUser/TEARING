@@ -25,10 +25,7 @@
         //4.监听键盘的弹起和收缩
         [self autolayoutWithMasonry];
           }
-    
-  
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
-
     return self;
 }
 

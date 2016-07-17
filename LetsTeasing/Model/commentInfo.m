@@ -8,12 +8,14 @@
 
 #import "commentInfo.h"
 
+
+
 @implementation commentInfo
 -(instancetype)init
 {
     self = [super init];
     if (self) {
-        
+
     }
     return  self;
 }
@@ -48,6 +50,29 @@
 -(void)DICTaddDIct:(NSMutableDictionary*)Com_dict key:(NSString*)com_num;
 {
     [_Comment_DICT setObject:Com_dict forKey:com_num];
+}
+-(void)baocunshuju
+{
+    BmobObject *gameScore = [BmobObject objectWithClassName:@"yueyin1111111"];
+//    [gameScore setObject:Name forKey:@"playerName"];
+//    [gameScore setObject:age forKey:@"score"];
+//    [gameScore setObject:[NSNumber numberWithBool:YES] forKey:@"cheatMode"];
+    [gameScore saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        if(error)
+        {
+            NSLog(@"数据保存失败");
+        }else
+        {
+            NSLog(@"数据保存成功");
+        }
+    }];
+    
+}
+-(void)creatObjectTable:(NSInteger)integer
+{
+//    NSNumber * num = [NSNumber numberWithInteger:integer];
+
+    
 }
 
 @end

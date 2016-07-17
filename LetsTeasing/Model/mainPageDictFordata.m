@@ -10,6 +10,8 @@
 #import "MainPageData.h"
 
 @implementation mainPageDictFordata
+
+
 -(instancetype)init
 {
     self = [super init];
@@ -107,6 +109,7 @@ return NameArray;
 {
     
     [self getObjectFromBomob];
+    NSLog(@"刷新之后有%lu个元素",(unsigned long)self.dataDict.count);
 }
 
 @end

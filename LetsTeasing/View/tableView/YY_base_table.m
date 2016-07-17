@@ -90,7 +90,7 @@
 //    NSString * str = [NSString stringWithFormat:@"%ld",(long)indexPath.row];
     NSNumber * num = [NSNumber numberWithInteger:indexPath.row];
     BmobObject * dict1 = [_dict objectForKey:num];
-//    NSMutableDictionary * dict1 = [_dict objectForKey:str];
+
     label.text = [dict1 objectForKey:@"saidWord"];
 //    label.text =_cellContent[indexPath.row];
     label.numberOfLines = 0;
@@ -108,11 +108,6 @@
 {
     return 0.01;
 }
-//- (void)showAlertWithOneButton{
-//
-//      [JCAlertView showOneButtonWithTitle:@"XXX评论"];
-//
-//}
 -(BOOL)initDict
 {
     _data = [[mainPageDictFordata alloc]init];
@@ -126,35 +121,8 @@
     CGSize sizeToFit = [textView sizeThatFits:CGSizeMake(width, MAXFLOAT)];
     NSInteger height = sizeToFit.height;
     return height;
-    
 }
-//-(void)getObjectFromBomob
-//{
-//    BmobQuery   *bquery = [BmobQuery queryWithClassName:@"GameScore"];
-//    //查找GameScore表的数据
-//    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-//        for (BmobObject *obj in array) {
-//            //            NSNumber * num =  [obj objectForKey:@"numberOfSaidWords"];
-//            //            NSString * str = [obj objectForKey:@"saidWord"];
-//            NSString * name =[obj objectForKey:@"playerName"];
-//            //            NSString * Id  = [obj objectForKey:@"objectId"];
-//            //            [self addObjectForDic:num PlayerName:name Words:str ID:Id];
-//            
-//        }
-//    }];
-//    
-//}
-////把每一组数据传入字典中
-//-(void)addObjectForDic:(NSNumber *)numb PlayerName:(NSString*) Name Words:(NSString*)SaidWord ID:(NSString*)bgdID
-//{
-//    NSMutableDictionary * dict = [[NSMutableDictionary alloc]init];
-//[dict setObject:Name forKey:@"playerName"];
-//    [dict setObject:SaidWord forKey:@"saidWord"];
-//    [dict setObject:bgdID forKey:@"objectId"];
-//    [dict setObject:numb forKey:@"numberOfSaidWords"];
-//   _info = [PersonalInfo initwithInfo:dict];
-//      NSLog(@"%@",_info.Name);
-//}
+
 -(void)reloadData
 {
     [super reloadData];

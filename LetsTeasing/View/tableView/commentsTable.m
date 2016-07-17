@@ -16,7 +16,7 @@
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
     //    [self reloadData];
-    
+
 //    [self initDict];
     self = [super initWithFrame:frame style:UITableViewStyleGrouped];
     self.delegate =self;
@@ -112,4 +112,5 @@
     return height;
     
 }
+
 @end

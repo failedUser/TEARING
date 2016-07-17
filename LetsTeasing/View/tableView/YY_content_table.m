@@ -8,7 +8,7 @@
 
 #import "YY_content_table.h"
 #import "textCell.h"
-
+#import "mainPageDictFordata.h"
 #import "JCAlertView.h"
 #define lengthForRow  19
 
@@ -16,6 +16,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
+ 
     [self data];
     self = [super initWithFrame:frame style:UITableViewStyleGrouped];
     self.delegate =self;
@@ -84,10 +85,11 @@
     //cell里面字显示不出来是因为cell的高度不够，等以后整体功能做好了再仔细修改
     CGFloat  height = [self heightForString:label andWidth:YY_ININPONE5_WITH(240.0f)];
     _heightTable = height+28;
-    NSLog(@"%f",height);
+
     return YY_ININPONE5_HEIGHT(height)+YY_ININPONE5_HEIGHT(20.0f);
     
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 0.01;
@@ -112,6 +114,7 @@
     _comDict = [_comminfo neirong];
     
 }
+//直接给每条数据都建一张表
 
 
 @end

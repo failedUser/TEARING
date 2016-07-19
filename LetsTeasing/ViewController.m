@@ -29,7 +29,7 @@
 #define addHeight 10
 
 #define  HeightForTable SCREEN_HEIGHT*(538.0/568.0)
-#define TextBackGroundVIewHeight SCREEN_HEIGHT*(40.0/568.0)
+#define TextBackGroundVIewHeight SCREEN_HEIGHT*(44.0/568.0)
 #define TextBackGroundVIewY SCREEN_HEIGHT*(538.0/568.0)
 @interface ViewController ()<UITextViewDelegate,UITableViewDelegate,UITextViewDelegate,UITextViewDelegate>
 {
@@ -89,7 +89,7 @@
 {
    //编号有了数据也存进去，只是没有下载到数组中
     sleep(0.5);
-    NSLog(@"这下有多少个元素%ld",_yy_table.data.dataDict.count);
+//    NSLog(@"这下有多少个元素%ld",_yy_table.data.dataDict.count);
     [_yy_table reloadData];
     [_yy_table.data MainreloadData];
     [_yy_table.mj_footer endRefreshing];
@@ -217,7 +217,7 @@
 {
     if (message!= 0) {
         NSNumber * num = [NSNumber numberWithInteger:_yy_table.data.dataDict.count];
-        NSLog(@"编号应该是%@",num);
+//        NSLog(@"编号应该是%@",num);
         NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我自己的号",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",nil];
     
         BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
@@ -278,7 +278,8 @@
         if(indexPath == nil) ;
         else{
             [_baseVIew.yy_text resignFirstResponder];
-            [self showAlertWithOneButton:@"xxx的评论"];
+            //这边传进去数据，传进去一个对象，然view去操作数据，让table接受
+            [self showAlertWithOneButton:@"xxx的评论"index:indexPath.row];
             [_baseVIew dealloc1];
             //写完发送事件之后添加一下就好了
             
@@ -287,11 +288,20 @@
     }
     
 }
-- (void)showAlertWithOneButton:(NSString*)title{
-    [JCAlertView showOneButtonWithTitle:title];
+- (void)showAlertWithOneButton:(NSString*)title index:(NSInteger)index{
+    NSLog(@"%ld",(long)index);
+    JCAlertView * alert = [[JCAlertView alloc]init];
+//    alert.Adelegate =self;
 
+    NSLog(@"肯定先执行这个");
+  //这个里面要根据索引的内容生成了一个字典。
+
+   BmobObject * dict =  [self.yy_table.data creatNewClassFordata:index];
+    
+    [alert showOneButtonWithTitle:title data:dict];
     
 }
+
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     [_baseVIew  addObserver];
@@ -308,7 +318,8 @@
 -(void)showCommentAlert
 {
     [_msg_view setHidden:YES];
-        [JCAlertView showOneButtonWithTitle:@"未读的评论"];
+//    JCAlertView * alert =  [[JCAlertView  alloc]init];
+//        [alert showOneButtonWithTitle:@"未读的评论"];
 }
 //显示searchbar
 -(NSMutableArray *)resultFileterArry {
@@ -322,8 +333,8 @@
 -(NSMutableArray *)myData {
     if (!_myData) {
         _myData = [NSMutableArray new];
-//  
-  _myData = [_yy_table.data NameInTheDict:_yy_table.dict];
+        //
+        _myData = [_yy_table.data NameInTheDict:_yy_table.dict];
         [_testTableview reloadData];
     }
     return _myData;

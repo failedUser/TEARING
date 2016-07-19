@@ -16,11 +16,13 @@
 {
     NSArray<NSString*> * documentPath;
     NSFileManager *manager;
-    NSManagedObjectContext * context;
+    NSManagedObjectContext * Maincontext;
  
 }
 @property(nonatomic,strong)   NSMutableDictionary * dataDict;
+@property(nonatomic,strong)   NSMutableDictionary * AlertdataDict;
 @property(nonatomic,strong)   MainPageData * mainData;
+
 
 -(void)insertMainData:(BmobObject*)dict;
 -(void)fetchdata;

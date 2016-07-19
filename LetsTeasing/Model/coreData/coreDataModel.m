@@ -14,16 +14,16 @@
 @synthesize coordinator;
 @synthesize store;
 //单例模式保证这个实例只被实例化了一次，也就是在不同文件中，调用这个实例，都会得到这个实例中的数据
-+(id)shareShenmugui
-
-{
-    static coreDataModel * coredataStack = nil;
-    dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        coredataStack = [[self alloc] init];
-    });
-    return coredataStack;
-}
+//+(id)shareShenmugui
+//
+//{
+//    static coreDataModel * coredataStack = nil;
+//    dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        coredataStack = [[self alloc] init];
+//    });
+//    return coredataStack;
+//}
 -(instancetype)init
 {
     self = [super init];

@@ -7,10 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "coreDataModel.h"
+#import "CommentData.h"
 @interface commentInfo : NSObject
+{
+        NSManagedObjectContext * CommentContext;
+    CommentData * commentData;
+}
 
 @property(nonatomic,strong) NSMutableDictionary * Comment_DICT;
--(void)DICTaddDIct:(NSMutableDictionary*)Com_dict key:(NSString*)com_Dict;
--(NSMutableDictionary*)neirong;
+@property(nonatomic,strong) NSString * commentID;
+-(void)commentReload;
+-(NSMutableDictionary *)getDataForRow;
+-(void)saveAlertData:(BmobObject*)dict  CommentsID:(NSString*)comID;
+-(void)AlertDataReload;
 @end

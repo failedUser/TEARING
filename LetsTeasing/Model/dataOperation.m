@@ -85,7 +85,7 @@
     NSDictionary * dict2 = [NSDictionary dictionaryWithObjectsAndKeys:@"yueyin2",@"name",@"212",@"age",@"1752",@"height", nil];
     [dict writeToFile:plist atomically:YES];
     [dict2 writeToFile:plist atomically:YES];
-    NSDictionary  * DICT = [NSDictionary dictionaryWithContentsOfFile:plist];
+//    NSDictionary  * DICT = [NSDictionary dictionaryWithContentsOfFile:plist];
 
 }
 

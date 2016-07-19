@@ -26,7 +26,7 @@
     [self hidSearchBar:self];
 }
 -(void)initView {
-
+    
     self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
     
     UIView * searchBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
@@ -34,7 +34,7 @@
     [self addSubview:searchBg];
     
     self.searchBarText = [[UITextField alloc] initWithFrame:CGRectMake(7, 27, SCREEN_WIDTH * 0.8 , 31)];
-//    _searchBarText.backgroundColor = [UIColor blueColor];
+    //    _searchBarText.backgroundColor = [UIColor blueColor];
     
     self.searchBarText.borderStyle = UITextBorderStyleRoundedRect;
     self.searchBarText.delegate = self;
@@ -46,13 +46,13 @@
     
     UIButton * leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     leftBtn.frame = CGRectMake(0, 5, 10, 10);
-//    leftBtn.backgroundColor = [UIColor greenColor];
-  UIImage * image =  [photoChange OriginImage:[UIImage imageNamed:@"searchfb.png"] scaleToSize:CGSizeMake(14, 14)];
+    //    leftBtn.backgroundColor = [UIColor greenColor];
+    UIImage * image =  [photoChange OriginImage:[UIImage imageNamed:@"searchfb.png"] scaleToSize:CGSizeMake(14, 14)];
     [leftBtn setImage:image forState:UIControlStateNormal];
     self.searchBarText.leftView = leftBtn;
     [self.searchBarText.leftView setFrame:CGRectMake(0, 0, 25, 20)];
     self.searchBarText.leftViewMode = UITextFieldViewModeAlways;
- 
+    
     UIButton * cancleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     CGFloat cancleBtnW = 40;
     CGFloat cancleBtnH = 18;
@@ -62,7 +62,7 @@
     cancleBtn.frame = CGRectMake(cancleBtnX, cancleBtnY, cancleBtnW, cancleBtnH);
     [cancleBtn setTitle:@"取消" forState:UIControlStateNormal];
     [cancleBtn setTitleColor:YYColor(132, 134, 137) forState:UIControlStateNormal];
-//    cancleBtn.backgroundColor = [UIColor redColor];
+    //    cancleBtn.backgroundColor = [UIColor redColor];
     [cancleBtn addTarget:self action:@selector(cancleClick:) forControlEvents:UIControlEventTouchUpInside];
     [searchBg addSubview:cancleBtn];
     
@@ -87,7 +87,7 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(CustomSearchBar:cancleButton:)]) {
         [self.delegate CustomSearchBar:self cancleButton:sender];
     }
- 
+    
     [self hidSearchBar:self];
 }
 -(void)hidSearchBar:(serachView *)searchBar {
@@ -136,7 +136,7 @@
         cell.imageView.image = [UIImage imageNamed:imageName];
     }
     cell.textLabel.numberOfLines = 2;
-//    cell.textLabel.textColor = [UIColor colorWithRed:50 green:50 blue:50 alpha:1];
+    //    cell.textLabel.textColor = [UIColor colorWithRed:50 green:50 blue:50 alpha:1];
     cell.textLabel.textColor = YYColor(50, 50, 50);
     cell.textLabel.font = [UIFont systemFontOfSize:14.0];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -149,7 +149,7 @@
         [self.delegate CustomSearchBar:self didSelectRowAtIndexPath:path];
         [self hidSearchBar:self];
         NSLog(@"点击啦");
-        [JCAlertView showOneButtonWithTitle:@"XXX发表的评论"];
+//        [JCAlertView showOneButtonWithTitle:@"XXX发表的评论"];
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

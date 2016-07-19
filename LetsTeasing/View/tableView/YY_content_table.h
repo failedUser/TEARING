@@ -10,11 +10,18 @@
 #import "commentInfo.h"
 
 @interface YY_content_table :UITableView<UITableViewDelegate,UITableViewDataSource>
-@property(nonatomic,assign) NSMutableDictionary  * dicto;
+{
+   NSMutableDictionary *commDICT;
+NSMutableDictionary *comDict;
+}
+@property(nonatomic,assign) BmobObject  * dicto;
 @property(nonatomic,strong) commentInfo * comminfo;
-@property(nonatomic,assign) NSMutableDictionary *comDict;
+//@property(nonatomic,assign) NSMutableDictionary *comDict;
+
 @property(nonatomic,assign) NSInteger countOF;
 @property(nonatomic,assign) NSMutableArray * cellContent;
 @property(nonatomic,assign) CGFloat    heightTable;
-
+@property(nonatomic,strong) NSString * commenID;
+-(void)data;
+-(NSNumber *)returnCount;
 @end

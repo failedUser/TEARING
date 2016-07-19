@@ -17,7 +17,7 @@
     if(self)
     {
       
-        NSDate *currentDate = [NSDate date];//获取当前时间，日期
+//        NSDate *currentDate = [NSDate date];//获取当前时间，日期
      
         
         _dataLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 3, 100, 15)];

@@ -20,10 +20,10 @@
 -(NSMutableDictionary*)neirong;
 -(NSInteger)numberOfUnReadNews:(NSMutableDictionary *)dict;
 -(NSMutableArray *)NameInTheDict:(NSMutableDictionary *)dict;
--(void)fetchData;
--(BOOL)getObjectFromBomob;
--(BOOL)opSucess;
--(void)MainreloadData;
 
+-(BOOL)getObjectFromBomob;
+
+-(void)MainreloadData;
+-(BmobObject*)creatNewClassFordata:(NSInteger)index;
 
 @end

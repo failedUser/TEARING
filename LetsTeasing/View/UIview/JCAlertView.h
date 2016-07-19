@@ -9,40 +9,42 @@
 #import  <UIKit/UIKit.h>
 #import "AlertTextBaseView.h"
 #import "YY_content_table.h"
+#import "YY_base_table.h"
 
 // maybe useful
+@class JCAlertView;
 UIKIT_EXTERN NSString *const JCAlertViewWillShowNotification;
 
 typedef void(^clickHandle)(void);
 
-typedef void(^clickHandleWithIndex)(NSInteger index);
+//typedef void(^clickHandleWithIndex)(NSInteger index);
+//@protocol AlertViewDelegate <NSObject>
+//-(void)alertview:(JCAlertView*)view FuncSendstring:(NSString*)send;
+//@end
 
-typedef NS_ENUM(NSInteger, JCAlertViewButtonType) {
-    JCAlertViewButtonTypeDefault = 0,
-    JCAlertViewButtonTypeCancel,
-    JCAlertViewButtonTypeWarn
-};
 
-@interface JCAlertView : UIView<UITextViewDelegate>
-@property(nonatomic,strong) UITableView * UItable;
+@interface JCAlertView : UIView<UITextViewDelegate,UIAlertViewDelegate>
 @property(nonatomic,strong) AlertTextBaseView * basetextView;
 @property(nonatomic,strong) NSMutableArray *ScellContent;
 @property (nonatomic,strong) YY_content_table * table;
 @property(nonatomic,assign) NSInteger multiple;
+@property (nonatomic, getter=isAlertReady) BOOL alertReady;
+@property(nonatomic,strong) NSString * sendString;
+
+
+//@property(nonatomic,weak) id<AlertViewDelegate> Adelegate;
+
 
 // ------------------------Show AlertView with title and message----------------------
 
 //
-//+ (void)showOneButtonWithTitle:(NSString *)title array:(NSArray *)Array ButtonType:(JCAlertViewButtonType)buttonType ButtonTitle:(NSString *)buttonTitle Click:(clickHandle)click;
-+(void)showOneButtonWithTitle:(NSString *)title;
-
+- (void)setup;
+-(void)showOneButtonWithTitle:(NSString *)title data:(BmobObject*)datadict;
+//-(void)FuncSendstring:(NSString*)send;
 
 
 // ------------------------Show AlertView with customView-----------------------------
 
-// create a alertView with customView.
-// 'dismissWhenTouchBackground' : If you don't want to add a button on customView to call 'dismiss' method manually, set this property to 'YES'.
-//- (instancetype)initWithCustomView:(UIView *)customView dismissWhenTouchedBackground:(BOOL)dismissWhenTouchBackground;
 
 @end
 // 版权属于原作者

@@ -36,7 +36,8 @@
     line.backgroundColor = [UIColor blackColor];
     [self addSubview:line];
     
-    self.yy_text  = [[YY_TextView alloc]initWithFrame:CGRectMake(5, 5, 280, 22)];
+    self.yy_text  = [[YY_TextView alloc]initWithFrame:CGRectMake(5, 0, 280, 22)];
+//    self.yy_text.backgroundColor = [UIColor redColor];
     self.yy_text.constrainH = self.constrainH;
     [self addSubview:self.yy_text];
     
@@ -109,9 +110,9 @@
     
     [self.yy_text mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(8.0f));
-        make.height.offset(YY_ININPONE5_HEIGHT(30.0f));
+        make.height.offset(YY_ININPONE5_HEIGHT(25.0f));
         make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE5_WITH(-35.0f));
-        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE5_HEIGHT(5.0f));
+        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE5_HEIGHT(8.0f));
     }];
 }
 //添加监听

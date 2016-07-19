@@ -13,23 +13,7 @@
 
 NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotification";
 
-#define JCColor(r, g, b) [UIColor colorWithRed:(r/255.0) green:(g/255.0) blue:(b/255.0) alpha:1.0]
-#define JCScreenWidth [UIScreen mainScreen].bounds.size.width
-#define JCScreenHeight [UIScreen mainScreen].bounds.size.height
-#define JCAlertViewWidth YY_ININPONE5_WITH(280.0f)
-#define JCAlertViewHeight YY_ININPONE5_HEIGHT(400.0f)
-#define JCAlertViewMaxHeight YY_ININPONE5_HEIGHT(440.0f)
-#define JCMargin 8
-//#define JCButtonHeight 44
-#define JCAlertViewTitleLabelHeight YY_ININPONE5_HEIGHT(20.0f)
-#define JCAlertViewTitleColor [UIColor lightGrayColor]
-#define JCAlertViewTitleFont [UIFont boldSystemFontOfSize:13]
-#define JCAlertViewContentColor JCColor(102, 102, 102)
-#define JCAlertViewContentFont [UIFont systemFontOfSize:16]
-#define JCAlertViewContentHeight (JCAlertViewHeight - JCAlertViewTitleLabelHeight - JCButtonHeight - JCMargin * 2)
-#define JCiOS7OrLater ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7)
-#define tableViewHeight YY_ININPONE5_HEIGHT(290.0f)
-#define TextVIewHeight YY_ININPONE5_HEIGHT(30.0f)
+
 @class JCViewController;
 
 @protocol JCViewControllerDelegate <NSObject>
@@ -40,19 +24,12 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 @end
 
 @interface JCAlertView () <JCViewControllerDelegate>
-
+@property (nonatomic, weak) JCViewController *vc;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSArray *array;
-
 @property (nonatomic, strong) NSArray *buttons;
 @property (nonatomic, strong) NSArray *clicks;
-@property (nonatomic, copy) clickHandleWithIndex clickWithIndex;
-@property (nonatomic, weak) JCViewController *vc;
-@property (nonatomic, strong) UIImageView *screenShotView;
-@property (nonatomic, getter=isCustomAlert) BOOL customAlert;
-@property (nonatomic, getter=isDismissWhenTouchBackground) BOOL dismissWhenTouchBackground;
-@property (nonatomic, getter=isAlertReady) BOOL alertReady;
-
+@property(nonatomic,weak) BmobObject * dataforRow;
 - (void)setup;
 
 @end
@@ -111,6 +88,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 @implementation JCViewController
 
 - (void)viewDidLoad{
+//    NSLog(@"当jcviewcontroller开始加载");
     [super viewDidLoad];
     
 //    [self addScreenShot];
@@ -130,7 +108,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     [self.coverView addTarget:self action:@selector(coverViewClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.coverView];
 }
-//点击其他地方的
+//点击其他地方的一个代理
 - (void)coverViewClick{
 
     if ([self.delegate respondsToSelector:@selector(coverViewTouched)]) {
@@ -139,14 +117,16 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 }
 
 - (void)addAlertView{
+//     NSLog(@"在控制器中添加alertvirw");
     self.alertView.multiple =1;
     //这个里面开始配置Alertveiw
     [self.alertView setup];
+
     [self.view addSubview:self.alertView];
 }
 
 - (void)showAlert{
-
+//   NSLog(@"alert显示时候的动画");
     self.alertView.alertReady = NO;
     
     CGFloat duration = 0.3;
@@ -194,7 +174,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 }
 //退出时候的动画
 - (void)hideAlertWithCompletion:(void(^)(void))completion{
-
+// NSLog(@"alert退出时候的动画");
     self.alertView.alertReady = NO;
     
     CGFloat duration = 0.2;
@@ -259,6 +239,8 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 {
     self = [super initWithFrame:frame];
     if (self) {
+
+    
         _ScellContent = [NSMutableArray arrayWithObjects:@"你你你你你你你你你你",@"1",@"妮妮", @"你你你你你你你你你你",@"1",@"妮妮"@"你你你你你你你你你你",@"1",@"妮妮"@"你你你你你你你你你你",@"1",@"妮妮",@"你你你你你你你你你你",@"1",@"妮妮", @"你你你你你你你你你你",@"1",@"妮妮"@"你基地将诶菲菲和ufhweui你你你你你你你你你你你你你你你你你你你你你你你",@"1",@"妮妮"@"你你你你你你你你你你",nil];
 //        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange2:) name:UIKeyboardWillChangeFrameNotification object:nil];
 
@@ -276,35 +258,42 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 }
 
 //table版
-+(void)showOneButtonWithTitle:(NSString *)title  {
-    
+-(void)showOneButtonWithTitle:(NSString *)title data:(BmobObject*)datadict {
+//  NSLog(@"弹出框被执行的时候");
+    //只有这一个作用域？
+   
     JCAlertView *alertView = [JCAlertView new];
-    [alertView configAlertViewPropertyWithTitle:title];
+
+    [alertView configAlertViewPropertyWithTitle:title data:datadict];
 }
 //table版
-- (void)configAlertViewPropertyWithTitle:(NSString *)title  {
+- (void)configAlertViewPropertyWithTitle:(NSString *)title data:(BmobObject*)datadict{
     self.title = title;
-
+    self.dataforRow = datadict;
+// NSLog(@"配置alertview属性");
     [[jCSingleTon shareSingleTon].alertStack addObject:self];
     [self showAlert];
 }
 
 - (void)showAlert{
+//     NSLog(@"在alertview文件中显示alert");
       [self showAlertHandle];
 }
 
 - (void)showAlertHandle{
+//     NSLog(@"当弹出的时候新建一个controller显示在桌面上");
 //类似于自己手残创建了一个window 现在要设置window的根视图，也就是alert，都是为了节目效果啊
     UIWindow *keywindow = [UIApplication sharedApplication].keyWindow;
     if (keywindow != [jCSingleTon shareSingleTon].backgroundWindow) {
         [jCSingleTon shareSingleTon].oldKeyWindow = [UIApplication sharedApplication].keyWindow;
     }
-    
+    //实例化一个viewcontroller，
     JCViewController *vc = [[JCViewController alloc] init];
     vc.delegate = self;
     vc.alertView = self;
+
     self.vc = vc;
-    
+   
     [jCSingleTon shareSingleTon].backgroundWindow.frame = [UIScreen mainScreen].bounds;
     [[jCSingleTon shareSingleTon].backgroundWindow makeKeyAndVisible];
     [jCSingleTon shareSingleTon].backgroundWindow.rootViewController = self.vc;
@@ -321,14 +310,9 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 //这不才是真东西么
 
 - (void)dismissAlertWithCompletion:(void(^)(void))completion{
-
+// NSLog(@"弹出框退出的时候的事情");
     [self.vc hideAlertWithCompletion:^{
         [self stackHandle];
-        //这个屌玩意是干什么的
-//        if (completion) {
-//            completion();
-//        }
-//
     }];
 }
 
@@ -347,23 +331,15 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 }
 //配置alert view的基本信息
 - (void)setup{
-
+// NSLog(@"加载alertview的内容");
+    
     if (self.subviews.count > 0) {
         return;
     }
-    
-    if (self.isCustomAlert) {
-        return;
-    }
-
     self.frame = CGRectMake(0, 0, _multiple*JCAlertViewWidth, _multiple*JCAlertViewHeight);
 //    NSInteger count = self.buttons.count;
     self.center = CGPointMake(JCScreenWidth / 2, JCScreenHeight / 2);
-    
-    
     self.backgroundColor = [UIColor whiteColor];
-
-    
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(JCMargin, 0, JCAlertViewWidth - JCMargin * 2, JCAlertViewTitleLabelHeight)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.text = self.title;
@@ -381,9 +357,8 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     _basetextView.yy_text.placehoderLbl.text = (_basetextView.yy_text.placeHoder.length>0?_basetextView.yy_text.placeHoder:@"@评论");
           [_basetextView.send_btn addTarget:self action:@selector(SendToAlertTable) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_basetextView];
-    
-    [self addTable];
-    
+            [self addTable];
+
         UIButton * view =  [[UIButton alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(290.0f)- YY_ININPONE5_WITH(30.0), 0 , YY_ININPONE5_HEIGHT(20.0), YY_ININPONE5_HEIGHT(20.0))];
 //        view.backgroundColor = [UIColor redColor];
 //    _basetextView.popView =self;
@@ -396,31 +371,45 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 }
 -(void)addTable
 {
+//     NSLog(@"弹出框中table的配置");
     self.table = [[YY_content_table alloc]init];
+    //table中data的数据传输口在这
+    //在配置完table后才会执行这个,这个先放着
+   // _dataforRow只是传进来的一个外键属性
+    [self.table setCommenID:[_dataforRow objectForKey:@"objectId"]];
+    [self.table data];
+
+    
     //给table的array赋值
-    _UItable = self.table;
-    [_UItable setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight)];
-    [self addSubview:_UItable];
+    [_table setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight)];
+    [self addSubview:_table];
 }
 -(void)SendToAlertTable
 {
-    NSLog(@"点击啦");
+//    NSLog(@"点击啦");
     
     NSString * message = [self.basetextView.yy_text.text  copy];
-    NSString * num  = [NSString stringWithFormat:@"%ld",(_table.comminfo.Comment_DICT.count)];
-    NSMutableDictionary * Dict_Message = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"这是我自己的号",@"playerName",message,@"saidWord",num,@"numberOf",@"dwudhwufgw",@"objectId", nil];
-    [_table.comminfo DICTaddDIct:Dict_Message key:num];
-//        [_ScellContent addObject:message];
-//    NSLog(@"%@",message);
-//    //    self.index =ScellContent.count;
+    [self MessageManager:message];
     [self.basetextView.yy_text resignFirstResponder];
     [self.table reloadData];
 //    //滑到更新的那一行
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_table.comDict.count-1 inSection:0];
-    [self.table scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_table.comDict.count-1 inSection:0];
+//    [self.table scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     self.basetextView.yy_text.text = @"";
 }
-
+-(void)MessageManager:(NSString*) message
+{
+    if (message!= 0) {
+        NSNumber * num = [self.table returnCount];
+        NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我的评论",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",[NSNumber numberWithBool:YES],@"cheatMode",nil];
+        
+        BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
+    [self.table.comminfo saveAlertData:obj CommentsID:[_dataforRow objectForKey:@"objectId"]];
+//        [self.data baocunshuju:obj];
+        
+    }
+    
+}
 
 @end
 // 版权属于原作者

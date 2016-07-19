@@ -7,14 +7,17 @@
 //
 
 #import "coreDataOperation.h"
-
+#import "coreDataModel.h"
 @implementation coreDataOperation
 @synthesize mainData;
 -(instancetype)init
 {
     self = [super init];
     _dataDict = [NSMutableDictionary dictionaryWithCapacity:100];
-       context = [[coreDataModel shareShenmugui] context];
+//       context = [[coreDataModel shareShenmugui] context];
+    coreDataModel * model = [[coreDataModel alloc]init];
+   Maincontext= model.context ;
+
     return self;
 }
 
@@ -26,7 +29,7 @@
     //单例只调用一次导致上面的循环只能执行一次，这就尴尬了
     //构建实体对象
 
-    mainData  = [NSEntityDescription insertNewObjectForEntityForName:@"MainPageData" inManagedObjectContext:context];
+    mainData  = [NSEntityDescription insertNewObjectForEntityForName:@"MainPageData" inManagedObjectContext:Maincontext];
     mainData.playerName = [dict objectForKey:@"playerName"];
     mainData.numberOfSaidWords = [dict objectForKey:@"numberOfSaidWords"];
     mainData.saidWord = [dict objectForKey:@"saidWord"];
@@ -35,6 +38,7 @@
     [_dataDict setObject:dict forKey:[dict objectForKey:@"numberOfSaidWords"]];
 
 }
+
 //查询
 -(void)fetchdata
 {
@@ -52,7 +56,7 @@
     //    NSMutableArray * ary = [NSMutableArray arrayWithObject:sort];
     //    [request setSortDescriptors:ary];
     //一定要注意方法之前用的executeRequest，害死我了
-    NSArray * ArrayMainData = [context executeFetchRequest:request error:nil];
+    NSArray * ArrayMainData = [Maincontext executeFetchRequest:request error:nil];
     for (mainData in ArrayMainData) {
         NSLog(@"%@",mainData.numberOfSaidWords);
         NSLog(@"%@",mainData.playerName);
@@ -65,7 +69,7 @@
     request.resultType = NSCountResultType;
     
     NSError *error ;
-    NSArray * entries = [context executeFetchRequest:request error:&error];
+    NSArray * entries = [Maincontext executeFetchRequest:request error:&error];
     //吧下面id属性的格式转化为integer
     NSInteger count = [entries.firstObject integerValue];
     if (error) {
@@ -90,7 +94,7 @@
     description.expressionResultType = NSFloatAttributeType;//指定返回值类型
     request.propertiesToFetch = [NSArray arrayWithObject:description];
     NSError *error ;
-    NSArray * entries = [context executeFetchRequest:request error:&error];
+    NSArray * entries = [Maincontext executeFetchRequest:request error:&error];
     //吧下面id属性的格式转化为integer
     NSDictionary* dict = entries.firstObject;
 
@@ -106,7 +110,7 @@
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Student"];
     
     request.predicate = [NSPredicate predicateWithFormat:@"age>15"];
-    NSArray<MainPageData *> * students = [context executeFetchRequest:request error:nil];
+    NSArray<MainPageData *> * students = [Maincontext executeFetchRequest:request error:nil];
     for (mainData in students) {
         mainData.playerName = @"yueyin";
         
@@ -121,9 +125,9 @@
     
     request.predicate = [NSPredicate predicateWithFormat:@"age>15"];
     //students是一个保存对象的数组
-    NSArray<MainPageData *> * students = [context executeFetchRequest:request error:nil];
+    NSArray<MainPageData *> * students = [Maincontext executeFetchRequest:request error:nil];
     for (mainData in students) {
-        [context deleteObject:mainData];
+        [Maincontext deleteObject:mainData];
     }
 
     

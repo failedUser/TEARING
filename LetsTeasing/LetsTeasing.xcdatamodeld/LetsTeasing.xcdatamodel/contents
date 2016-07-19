@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
+    <entity name="CommentData" representedClassName="CommentData" syncable="YES">
+        <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="idForComments" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numberOfSaidWords" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="objectId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="playerName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="saidWord" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="states" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="MainPageData" representedClassName="MainPageData" syncable="YES">
         <attribute name="createdAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="numberOfSaidWords" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
@@ -9,5 +18,6 @@
     </entity>
     <elements>
         <element name="MainPageData" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="CommentData" positionX="-63" positionY="18" width="128" height="150"/>
     </elements>
 </model>

@@ -25,7 +25,7 @@
     self.delegate =self;
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
-
+ 
     return self;
 }
 
@@ -108,12 +108,14 @@
 {
     return 0.01;
 }
--(BOOL)initDict
+-(void )initDict
 {
     _data = [[mainPageDictFordata alloc]init];
 //    _dict = [_data neirong];
     _dict = _data.dataDict;
-    return YES;
+    
+  
+
 }
 //计算行高
 - (NSInteger) heightForString:(UILabel *)textView andWidth:(float)width{

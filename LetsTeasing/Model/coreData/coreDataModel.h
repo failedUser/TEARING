@@ -23,6 +23,6 @@
 
 
 -(void)saveContext;
-+(id)shareShenmugui;
+//+(id)shareShenmugui;
 
 @end

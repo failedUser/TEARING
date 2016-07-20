@@ -25,5 +25,7 @@
 
 -(void)MainreloadData;
 -(BmobObject*)creatNewClassFordata:(NSInteger)index;
+-(NSMutableArray *)searchDictFornameInTheDict:(NSMutableDictionary *)dict;
+//-(void)predicateDataWithNameArray:(NSArray*)predicate data:(NSMutableDictionary*)maindata;
 
 @end

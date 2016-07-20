@@ -11,6 +11,7 @@
 @interface ViewController : UIViewController<searchResults,CustomSearchBarDataSouce,CustomSearchBarDelegate>
 {
     NSMutableArray * _myData;
+    NSMutableArray * searchArray;
 }
 @property(nonatomic,weak) NSIndexPath * index;
 //search

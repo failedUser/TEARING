@@ -56,7 +56,7 @@
     [super viewWillAppear: animated];
     // 马上进入刷新状态
     
-    [_yy_table.mj_footer beginRefreshing];
+
        NSLog(@"进入刷新的时候元素%ld",_yy_table.data.dataDict.count);
   
 }
@@ -68,13 +68,15 @@
     [self addTableview];
     [self addViewForText];
     [self addMessageVIew];
+   
     //添加手势
     UITapGestureRecognizer * Gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchesBegan)];
     [_yy_table addGestureRecognizer:Gesture];
 //监听键盘状态进行刷新
       [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
-   [self MJrefresh];
-    
+        [_yy_table.mj_footer beginRefreshing];
+    NSLog(@"开始刷新");
+       [self MJrefresh];
 }
 -(void)keyboardWillDown
 {
@@ -90,11 +92,12 @@
    //编号有了数据也存进去，只是没有下载到数组中
     sleep(0.5);
 //    NSLog(@"这下有多少个元素%ld",_yy_table.data.dataDict.count);
-    [_yy_table reloadData];
+    NSLog(@"table重载数据%lu",(unsigned long)_yy_table.dict.count);
     [_yy_table.data MainreloadData];
+       NSLog(@"table重载之后数据%lu",(unsigned long)_yy_table.dict.count);
+     [_yy_table reloadData];
+    NSLog(@"table重新刷新数据");
     [_yy_table.mj_footer endRefreshing];
-  
-
 }
 
 -(void)configNavigation
@@ -224,6 +227,7 @@
 //        NSLog(@"对象中的元素%@",[obj objectForKey:@"saidWord"]);
 
         [_yy_table.data baocunshuju:obj];
+      
    
     }
     
@@ -279,8 +283,11 @@
         else{
             [_baseVIew.yy_text resignFirstResponder];
             //这边传进去数据，传进去一个对象，然view去操作数据，让table接受
-            [self showAlertWithOneButton:@"xxx的评论"index:indexPath.row];
+            BmobObject * obj = [_yy_table.dict objectForKey:[NSNumber numberWithInteger:indexPath.row]];
+            NSString * name = [obj objectForKey:@"playerName"];
+            [self showAlertWithOneButton:[NSString stringWithFormat:@"%@的评论",name]index:indexPath.row];
             [_baseVIew dealloc1];
+            [self ViewControllerDealloc];
             //写完发送事件之后添加一下就好了
             
         }
@@ -335,18 +342,35 @@
         _myData = [NSMutableArray new];
         //
         _myData = [_yy_table.data NameInTheDict:_yy_table.dict];
+//        _myData = [_yy_table.data searchDictFornameInTheDict:_yy_table.dict];
         [_testTableview reloadData];
     }
     return _myData;
 }
+-(NSMutableArray *)searchArray
+{
+    if (!searchArray) {
+        searchArray = [[NSMutableArray alloc]init];
+    }
+    return searchArray;
+}
 /**第一步根据输入的字符检索 必须实现*/
 -(void)CustomSearch:(serachView *)searchBar inputText:(NSString *)inputText {
     [self.resultFileterArry removeAllObjects];
-    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS %@",inputText];
-    //这里是要查询某个字符串，就先查找名字吧，先得到所有的名字，生成一个数组，
-    NSArray * arry = [self.myData filteredArrayUsingPredicate:predicate];
+//    NSPredicate * predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS %@",inputText];
+//    //这里是要查询某个字符串，就先查找名字吧，先得到所有的名字，生成一个数组，
+//    NSArray * arry = [self.myData filteredArrayUsingPredicate:predicate];
     //然后把数据放到结果这个数组里面，就是数组加数组
-    for (NSString * taxChat in arry) {
+   
+NSMutableArray * array111 = [_yy_table.data searchDictFornameInTheDict:_yy_table.dict];
+    
+  NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"playerName CONTAINS[c] %@",inputText];
+     NSArray * arry222 = [array111 filteredArrayUsingPredicate:predicate2];
+//    for (int i=0; i<arry222.count; i++) {
+//        NSLog(@"解析出来的值%@",arry222[i]);
+// 
+//    }
+    for (NSDictionary * taxChat in arry222) {
         [self.resultFileterArry addObject:taxChat];
     }
 }
@@ -355,21 +379,35 @@
     return self.resultFileterArry.count;
 }
 // 设置显示没行的内容
--(NSString *)CustomSearchBar:(serachView *)menu titleForRowAtIndexPath:(NSIndexPath *)indexPath {
+-(NSDictionary *)CustomSearchBar:(serachView *)menu titleForRowAtIndexPath:(NSIndexPath *)indexPath {
     //把内容输入到查询得到的cell中这个 时候我们将传进去一个带有数据字典的字典
-    return self.resultFileterArry[indexPath.row];
+    NSDictionary * dict =self.resultFileterArry[indexPath.row];
+    return dict;
+
 }
 - (void)CustomSearchBar:(serachView *)segment didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    //这个时候我们只能通过id来搜寻
+       NSDictionary * dict =self.resultFileterArry[indexPath.row];
+    NSNumber * numbstr = [dict objectForKey:@"numberOfSaidWords"];
+    BmobObject * objectOfId = [_yy_table.dict objectForKey:numbstr];
+    JCAlertView * alert = [[JCAlertView alloc]init];
+    NSString * str = [NSString stringWithFormat:@"%@的评论",[dict objectForKey:@"playerName"]];
+     [alert showOneButtonWithTitle:str data:objectOfId];
     NSLog(@"---->>>>>>>>>%ld",indexPath.row);
+    
 }
 
 -(void)CustomSearchBar:(serachView *)segment cancleButton:(UIButton *)sender {
     
 }
 -(NSString *)CustomSearchBar:(serachView *)searchBar imageNameForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return @"Search_noraml";
+//    return @"Search_noraml";
+    return nil;
 }
-
+-(void)ViewControllerDealloc
+{
+     [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
 
 
 

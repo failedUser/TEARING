@@ -12,13 +12,13 @@
 @interface commentInfo : NSObject
 {
         NSManagedObjectContext * CommentContext;
-    CommentData * commentData;
+//    CommentData * commentData;
 }
 
 @property(nonatomic,strong) NSMutableDictionary * Comment_DICT;
 @property(nonatomic,strong) NSString * commentID;
 -(void)commentReload;
--(NSMutableDictionary *)getDataForRow;
+-(NSMutableArray *)getDataForRow;
 -(void)saveAlertData:(BmobObject*)dict  CommentsID:(NSString*)comID;
 -(void)AlertDataReload;
 @end

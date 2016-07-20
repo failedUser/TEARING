@@ -23,7 +23,7 @@
 // 设置显示列的内容
 -(NSInteger)searchBarNumberOfRowInSection;
 // 设置显示没行的内容
--(NSString *)CustomSearchBar:(serachView *)searchBar titleForRowAtIndexPath:(NSIndexPath *)indexPath;
+-(NSDictionary *)CustomSearchBar:(serachView *)searchBar titleForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 
 @optional
@@ -42,6 +42,10 @@
 @end
 
 @interface serachView : UIView<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
+{
+    UILabel * Text_label;
+
+}
 
 
 

@@ -23,8 +23,6 @@
         _dataLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 3, 100, 15)];
         _namelabel = [[UILabel alloc]initWithFrame:CGRectMake(110, 3, 50, 15)];
         _TextLabel = [[UILabel alloc]init];
-        
-        
 //        NSString *dateString = [dateFormatter stringFromDate:currentDate];
 //        _dataLabel.text =dateString;
         //需要顶端对其？？

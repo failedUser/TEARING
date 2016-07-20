@@ -9,6 +9,7 @@
 #import "serachView.h"
 #import "photoChange.h"
 #import "JCAlertView.h"
+#import "textCell.h"
 
 
 @implementation serachView
@@ -120,29 +121,37 @@
 }
 
 -(UITableViewCell * )tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString * ID = @"cell";
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    static NSString * ID = @"textCell";
+    textCell * cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+        cell = [[textCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
     NSIndexPath * path = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     // 文字
-    if (self.DataSource && [self.DataSource respondsToSelector:@selector(CustomSearchBar:titleForRowAtIndexPath:)]) {
-        cell.textLabel.text = [self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
+    [self addtextlabel:cell];
+        if (self.DataSource && [self.DataSource respondsToSelector:@selector(CustomSearchBar:titleForRowAtIndexPath:)]) {
+        NSDictionary * dict =[self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
+        cell.namelabel.text = [dict objectForKey:@"playerName"];
+        NSLog(@"字典里面的值%@",[dict objectForKey:@"saidWord"]);
+        Text_label.text = [dict objectForKey:@"saidWord"];
+        NSString * date = [dict objectForKey:@"createdAt"];
+        NSString * cut = [date substringFromIndex:10];
+        cell.dataLabel.text = cut;
     }
     
     if (self.DataSource && [self.DataSource respondsToSelector:@selector(CustomSearchBar:imageNameForRowAtIndexPath:)]) {
         NSString *imageName = [self.DataSource CustomSearchBar:self imageNameForRowAtIndexPath:path];
         cell.imageView.image = [UIImage imageNamed:imageName];
     }
-    cell.textLabel.numberOfLines = 2;
-    //    cell.textLabel.textColor = [UIColor colorWithRed:50 green:50 blue:50 alpha:1];
-    cell.textLabel.textColor = YYColor(50, 50, 50);
-    cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
-
+-(void)addtextlabel:(textCell*)cell
+{
+   Text_label  = [[UILabel alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(10.0f), YY_ININPONE5_HEIGHT(10.0f), YY_ININPONE5_WITH(300.0f), YY_ININPONE5_HEIGHT(30.0f))];
+    Text_label.font = [UIFont fontWithName:@"Arial" size:12.0f];
+    Text_label.numberOfLines =0;
+    [cell.contentView addSubview:Text_label];
+}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSIndexPath * path = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     if (self.delegate && [self.delegate respondsToSelector:@selector(CustomSearchBar:didSelectRowAtIndexPath:)]) {

@@ -43,14 +43,14 @@
     //获取上下文
     //单例只调用一次导致上面的循环只能执行一次，这就尴尬了
     //构建实体对象
-    
-    commentData  = [NSEntityDescription insertNewObjectForEntityForName:@"CommentData" inManagedObjectContext:CommentContext];
-    commentData.playerName = [dict objectForKey:@"playerName"];
-    commentData.numberOfSaidWords = [dict objectForKey:@"numberOfSaidWords"];
-    commentData.saidWord = [dict objectForKey:@"saidWord"];
-    commentData.objectId = [dict objectForKey:@"objectId"];
-     commentData.states = [dict objectForKey:@"states"];
-     commentData.idForComments = [dict objectForKey:@"IdForComments"];
+//    
+//    commentData  = [NSEntityDescription insertNewObjectForEntityForName:@"CommentData" inManagedObjectContext:CommentContext];
+//    commentData.playerName = [dict objectForKey:@"playerName"];
+//    commentData.numberOfSaidWords = [dict objectForKey:@"numberOfSaidWords"];
+//    commentData.saidWord = [dict objectForKey:@"saidWord"];
+//    commentData.objectId = [dict objectForKey:@"objectId"];
+//     commentData.states = [dict objectForKey:@"states"];
+//     commentData.idForComments = [dict objectForKey:@"IdForComments"];
   
     [_Comment_DICT setObject:dict forKey:[dict objectForKey:@"numberOfSaidWords"]];
     
@@ -62,13 +62,13 @@
    
 }
 //这里由于计算量太大，会消耗很多时间，需要设计算法。
--(NSMutableDictionary *)getDataForRow
+-(NSMutableArray *)getDataForRow
 {
   
     int j = 0;
 //    NSLog(@"在没有筛选之前%@",_Comment_DICT);
 //    NSLog(@"这个里面的ID%@",_commentID);
-    NSMutableDictionary * commentdata = [NSMutableDictionary dictionaryWithCapacity:1000];
+    NSMutableArray * commentdataArray = [NSMutableArray arrayWithCapacity:100];
     for (int i =0; i<_Comment_DICT.count; i++) {
         
         NSNumber * number = [NSNumber numberWithInteger:i];
@@ -80,11 +80,8 @@
           }else{
         if ( [objectID isEqualToString:_commentID]) {
             
-                NSNumber * num = [NSNumber numberWithInteger:j];
-                 [commentdata setObject:obj forKey:num];
+            [commentdataArray addObject:obj];
             j = j+1;
-            
-            
             
         }
           }
@@ -93,7 +90,7 @@
 //            NSLog(@"这个里面没有评论");
     
 //    NSLog(@"筛选之后%@",commentdata);
-    return commentdata;
+    return commentdataArray;
 }
 
 -(void)saveAlertData:(BmobObject*)dict  CommentsID:(NSString*)comID

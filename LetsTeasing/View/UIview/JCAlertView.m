@@ -29,7 +29,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 @property (nonatomic, copy) NSArray *array;
 @property (nonatomic, strong) NSArray *buttons;
 @property (nonatomic, strong) NSArray *clicks;
-@property(nonatomic,weak) BmobObject * dataforRow;
+@property(nonatomic,strong) BmobObject * dataforRow;
 - (void)setup;
 
 @end
@@ -405,7 +405,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
         
         BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
     [self.table.comminfo saveAlertData:obj CommentsID:[_dataforRow objectForKey:@"objectId"]];
-//        [self.data baocunshuju:obj];
+    
         
     }
     

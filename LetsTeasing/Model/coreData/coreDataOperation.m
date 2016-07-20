@@ -24,16 +24,17 @@
 //}
 -(void)insertMainData:(BmobObject*)dict
 {
+
     //我不知道是不是可以这样调用属性，但是至今没有报错
     //获取上下文
     //单例只调用一次导致上面的循环只能执行一次，这就尴尬了
-    //构建实体对象
-
-    mainData  = [NSEntityDescription insertNewObjectForEntityForName:@"MainPageData" inManagedObjectContext:Maincontext];
-    mainData.playerName = [dict objectForKey:@"playerName"];
-    mainData.numberOfSaidWords = [dict objectForKey:@"numberOfSaidWords"];
-    mainData.saidWord = [dict objectForKey:@"saidWord"];
-    mainData.objectId = [dict objectForKey:@"objectId"];
+//    //构建实体对象
+//
+//    mainData  = [NSEntityDescription insertNewObjectForEntityForName:@"MainPageData" inManagedObjectContext:Maincontext];
+//    mainData.playerName = [dict objectForKey:@"playerName"];
+//    mainData.numberOfSaidWords = [dict objectForKey:@"numberOfSaidWords"];
+//    mainData.saidWord = [dict objectForKey:@"saidWord"];
+//    mainData.objectId = [dict objectForKey:@"objectId"];
 
     [_dataDict setObject:dict forKey:[dict objectForKey:@"numberOfSaidWords"]];
 

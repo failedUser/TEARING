@@ -27,9 +27,14 @@
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self MJrefresh];
+    //监听键盘状态进行刷新
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
     return self;
 }
-
+-(void)keyboardWillDown
+{
+    [self.mj_footer beginRefreshing];
+}
 -(void)MJrefresh
 {
     self.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
@@ -88,8 +93,7 @@
 
         NSLog(@" no data");
     }else{
-        NSNumber * str = [NSNumber numberWithInteger:indexPath.row];
-        _dicto = [comDict objectForKey:str];
+        _dicto = comDict[indexPath.row];
         NSString * dateStr = [_dicto objectForKey:@"createdAt"];
         NSString * cut  = [dateStr substringFromIndex:10];
     cell.TextLabel.text = [_dicto objectForKey:@"saidWord"];
@@ -111,8 +115,8 @@
     UIFont * font = [UIFont fontWithName:@"Arial" size:13.0];
     UILabel * label = [[UILabel alloc]init];
     [label setFont:font];
-    NSNumber * str = [NSNumber numberWithInteger:indexPath.row];
-    BmobObject * dict1 = [comDict objectForKey:str];
+
+    BmobObject * dict1 = comDict[indexPath.row];
     if (dict1 ==nil) {
         
     }else label.text = [dict1 objectForKey:@"saidWord"];
@@ -151,31 +155,28 @@
 
     [_comminfo setCommentID:_commenID];
     //interface for data
-    comDict = [NSMutableDictionary dictionaryWithCapacity:100];
-    comDict  = [_comminfo getDataForRow];
+    comDict = [NSMutableArray arrayWithCapacity:100];
+    //这个地方应该返回数组
+//    comDict = _comminfo.Comment_DICT;
+//    comDict  = [_comminfo getDataForRow];
+   comDict = [_comminfo getDataForRow];
 //    NSLog(@"选择出来的dict%lu",(unsigned long)comDict.count);
     if (comDict.count == 0) {
         NSLog(@"里面没有值");
             comDict =nil;
 //        NSLog(@"赋值的字典里面有多少个元素%lu",(unsigned long)comDict.count);
     }else  {;
-        
-//        NSLog(@"赋值后的comdict%@",comDict);
+
     }
-  
-//    NSLog(@"获取到的字典%@",dict);
-//    _comDict = _comminfo.Comment_DICT;
-//    _comDict = nil;
-//
+
 }
 -(NSNumber *)returnCount
 {
-    NSNumber * number = [NSNumber numberWithInteger:comDict.count];
+    NSNumber * number = [NSNumber numberWithInteger:_comminfo.Comment_DICT.count];
 //    NSLog(@"返回的numb值%@",number);
     return  number;
 }
 
-//直接给每条数据都建一张表
 
 
 @end

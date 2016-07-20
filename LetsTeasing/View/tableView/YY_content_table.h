@@ -12,7 +12,8 @@
 @interface YY_content_table :UITableView<UITableViewDelegate,UITableViewDataSource>
 {
    NSMutableDictionary *commDICT;
-NSMutableDictionary *comDict;
+//NSMutableDictionary *comDict;
+    NSMutableArray *comDict;
 }
 @property(nonatomic,assign) BmobObject  * dicto;
 @property(nonatomic,strong) commentInfo * comminfo;

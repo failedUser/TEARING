@@ -68,7 +68,7 @@
 }
 -(NSMutableArray *)NameInTheDict:(NSMutableDictionary *)dict
 {
-    NSLog(@"传进来的字典%@",dict);
+
     NSMutableArray * NameArray = [NSMutableArray new];
 
     
@@ -80,6 +80,33 @@
         }
 return NameArray;
  }
+-(NSMutableArray *)searchDictFornameInTheDict:(NSMutableDictionary *)dict
+{
+    NSMutableArray * NameArray = [NSMutableArray new];
+    
+    
+    for (int i =0; i< dict.count; i++) {
+        NSNumber * nub = [NSNumber numberWithInteger:i];
+        BmobObject * dict1 = [dict objectForKey:nub];
+
+        NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                               [dict1 objectForKey:@"playerName"],@"playerName",
+                               [dict1 objectForKey:@"objectId"],@"objectId",
+                               [dict1 objectForKey:@"numberOfSaidWords"],@"numberOfSaidWords",
+                               [dict1 objectForKey:@"saidWord"],@"saidWord",
+                               [dict1 objectForKey:@"createdAt"],@"createdAt",nil];
+         
+//        [dict setValue:[dict1 objectForKey:@"playerName"] forKey:@"playerName"];
+//        [dict setValue:[dict1 objectForKey:@"objectId"] forKey:@"objectId"];
+//        [dict setValue:[dict1 objectForKey:@"numberOfSaidWords"] forKey:@"numberOfSaidWords"];
+//        [dict setValue:[dict1 objectForKey:@"saidWord"] forKey:@"saidWord"];
+
+        [NameArray addObject:dict];
+        
+    }
+    return NameArray;
+}
+
 -(BOOL)getObjectFromBomob
 {
     BmobQuery   *bquery = [BmobQuery queryWithClassName:@"GameScore"];
@@ -103,39 +130,19 @@ return NameArray;
 {
     [self getObjectFromBomob];
 }
--(BmobObject*)creatNewClassFordata:(NSInteger)index
-{
-    NSLog(@"这里点击了%ld",(long)index);
-    NSNumber * numb = [NSNumber numberWithInteger:index];
-    //现在里面的数据还只是这个，等数据对接好久好了
-//     NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithObject:@"nihao" forKey:@"yueyin"];
-  BmobObject*  dict111 = [self.dataDict objectForKey:numb];
-
-      NSLog(@"所选行数的名字为%@",[dict111 objectForKey:@"playerName"]);
-    NSLog(@"所选行数的Id为%@",[dict111 objectForKey:@"objectId"]);
-    //根据id建一个类，然后获得
-//    [self AlertgetObjectFromBomob:[dict111 objectForKey:@"objectId"]];
-    return  dict111;
-}
-//-(BOOL)AlertgetObjectFromBomob:(NSString*)Id
+//-(BmobObject*)creatNewClassFordata:(NSInteger)index
 //{
-//    
-//    BmobObject *TableId = [BmobObject objectWithClassName:Id];
-//    [TableId setObject:@"默认" forKey:@"playerName"];
-//    [TableId setObject:@"我什么都没说" forKey:@"saidWord"];
-//    [TableId setObject:[NSNumber numberWithBool:YES] forKey:@"cheatMode"];
-//    [TableId saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-//        //进行操作
-//    }];
-//    BmobQuery   *bquery = [BmobQuery queryWithClassName:Id];
-//    //查找GameScore表的数据
-//    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-//        for (BmobObject *obj in array) {
-//            [self insertAlertData:obj];
-//        }
-//    }];
-//    
-//  
-//    return YES;
+//    NSLog(@"这里点击了%ld",(long)index);
+//    NSNumber * numb = [NSNumber numberWithInteger:index];
+//    //现在里面的数据还只是这个，等数据对接好久好了
+////     NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithObject:@"nihao" forKey:@"yueyin"];
+//  BmobObject*  dict111 = [self.dataDict objectForKey:numb];
+//
+//      NSLog(@"所选行数的名字为%@",[dict111 objectForKey:@"playerName"]);
+//    NSLog(@"所选行数的Id为%@",[dict111 objectForKey:@"objectId"]);
+//    //根据id建一个类，然后获得
+////    [self AlertgetObjectFromBomob:[dict111 objectForKey:@"objectId"]];
+//    return  dict111;
 //}
+
 @end

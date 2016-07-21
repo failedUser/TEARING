@@ -200,11 +200,10 @@
             [_baseVIew.yy_text resignFirstResponder];
         }else
         [_baseVIew.yy_text becomeFirstResponder];
-    }else
+    }else if (message.length <=140)
     {
     [self MessageManager:message];
     [_baseVIew.yy_text resignFirstResponder];
-     
     [self.yy_table reloadData];
     //滑到更新的那一行
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_yy_table.dict.count-1 inSection:0];
@@ -212,8 +211,7 @@
      _baseVIew.yy_text.text = @"";
         //传一个数据回去。作为值的变化
         [_msg_view  HIDDEN:NO num:[_yy_table.data numberOfUnReadNews:_yy_table.data.DICT]];
-     }
-
+    }
 }
 //这个时候需要一个缓存机制，生成一个bmob对象，保存在字典中，然后异步提交，要么提交之后刷新数据
 -(void)MessageManager:(NSString*) message
@@ -222,27 +220,16 @@
         NSNumber * num = [NSNumber numberWithInteger:_yy_table.data.dataDict.count];
 //        NSLog(@"编号应该是%@",num);
         NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我自己的号",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",nil];
-    
         BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
 //        NSLog(@"对象中的元素%@",[obj objectForKey:@"saidWord"]);
-
         [_yy_table.data baocunshuju:obj];
-      
-   
     }
-    
 }
 
 //键盘退出
 -(void)touchesBegan
 {
-    //隐藏键盘
     [_baseVIew.yy_text resignFirstResponder];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 //修改图片尺寸
 - (UIImage *)scaleImage:(UIImage *)image toScale:(float)scaleSize
@@ -298,8 +285,6 @@
 - (void)showAlertWithOneButton:(NSString*)title index:(NSInteger)index{
     NSLog(@"%ld",(long)index);
     JCAlertView * alert = [[JCAlertView alloc]init];
-//    alert.Adelegate =self;
-
     NSLog(@"肯定先执行这个");
   //这个里面要根据索引的内容生成了一个字典。
 

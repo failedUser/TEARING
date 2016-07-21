@@ -28,15 +28,13 @@
 }
 -(void)initView {
     
-    self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
+    self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
     
     UIView * searchBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
     searchBg.backgroundColor = YYColor(244, 244, 244);
     [self addSubview:searchBg];
     
     self.searchBarText = [[UITextField alloc] initWithFrame:CGRectMake(7, 27, SCREEN_WIDTH * 0.8 , 31)];
-    //    _searchBarText.backgroundColor = [UIColor blueColor];
-    
     self.searchBarText.borderStyle = UITextBorderStyleRoundedRect;
     self.searchBarText.delegate = self;
     [searchBg addSubview:self.searchBarText];
@@ -47,7 +45,6 @@
     
     UIButton * leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     leftBtn.frame = CGRectMake(0, 5, 10, 10);
-    //    leftBtn.backgroundColor = [UIColor greenColor];
     UIImage * image =  [photoChange OriginImage:[UIImage imageNamed:@"searchfb.png"] scaleToSize:CGSizeMake(14, 14)];
     [leftBtn setImage:image forState:UIControlStateNormal];
     self.searchBarText.leftView = leftBtn;
@@ -69,6 +66,7 @@
     
     UITableView * searchBarTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(searchBg.frame), SCREEN_WIDTH , SCREEN_HEIGHT - CGRectGetMaxY(searchBg.frame)) style:UITableViewStylePlain];
     searchBarTableView.backgroundColor = [UIColor orangeColor];
+    
     searchBarTableView.delegate = self;
     searchBarTableView.dataSource = self;
     [self addSubview:searchBarTableView];
@@ -126,19 +124,21 @@
     if (cell == nil) {
         cell = [[textCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
+    cell.backgroundColor=[UIColor clearColor];
+    cell.namelabel.textColor = [UIColor whiteColor];
+     cell.namelabel.textColor = [UIColor whiteColor];
+    Text_label.textColor =[UIColor whiteColor];
     NSIndexPath * path = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     // 文字
     [self addtextlabel:cell];
         if (self.DataSource && [self.DataSource respondsToSelector:@selector(CustomSearchBar:titleForRowAtIndexPath:)]) {
         NSDictionary * dict =[self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
         cell.namelabel.text = [dict objectForKey:@"playerName"];
-        NSLog(@"字典里面的值%@",[dict objectForKey:@"saidWord"]);
         Text_label.text = [dict objectForKey:@"saidWord"];
         NSString * date = [dict objectForKey:@"createdAt"];
         NSString * cut = [date substringFromIndex:10];
         cell.dataLabel.text = cut;
     }
-    
     if (self.DataSource && [self.DataSource respondsToSelector:@selector(CustomSearchBar:imageNameForRowAtIndexPath:)]) {
         NSString *imageName = [self.DataSource CustomSearchBar:self imageNameForRowAtIndexPath:path];
         cell.imageView.image = [UIImage imageNamed:imageName];

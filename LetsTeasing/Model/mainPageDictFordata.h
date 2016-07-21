@@ -17,7 +17,6 @@
 @property(nonatomic,strong) NSMutableDictionary * DICT;
 @property(nonatomic,strong) MainPageData * mainData1;
 -(void)DICTaddDIct:(NSMutableDictionary*)dict key:(NSString*)num;
--(NSMutableDictionary*)neirong;
 -(NSInteger)numberOfUnReadNews:(NSMutableDictionary *)dict;
 -(NSMutableArray *)NameInTheDict:(NSMutableDictionary *)dict;
 
@@ -26,6 +25,4 @@
 -(void)MainreloadData;
 -(BmobObject*)creatNewClassFordata:(NSInteger)index;
 -(NSMutableArray *)searchDictFornameInTheDict:(NSMutableDictionary *)dict;
-//-(void)predicateDataWithNameArray:(NSArray*)predicate data:(NSMutableDictionary*)maindata;
-
 @end

@@ -67,8 +67,8 @@
 
     NSString * dateStr = [dict1 objectForKey:@"createdAt"];
     NSString * cut  = [dateStr substringFromIndex:10];
-
     cell.TextLabel.text = [dict1 objectForKey:@"saidWord"];
+    
     cell.namelabel.text = [dict1 objectForKey:@"playerName"];
     cell.dataLabel.text = cut;
 //    cell.TextLabel.text = _cellContent[indexPath.row];
@@ -110,10 +110,11 @@
 }
 -(void )initDict
 {
-    _data = [[mainPageDictFordata alloc]init];
+//    _data = [[mainPageDictFordata alloc]init];
+    _data = [mainPageDictFordata shareMainData];
 //    _dict = [_data neirong];
     _dict = _data.dataDict;
-    
+
   
 
 }

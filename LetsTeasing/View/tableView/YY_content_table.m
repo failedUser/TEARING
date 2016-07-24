@@ -48,7 +48,7 @@
     //    NSLog(@"这下有多少个元素%ld",_yy_table.data.dataDict.count);
     [self.comminfo commentReload];
     [self.comminfo AlertDataReload];
-    [self data];
+//    [self data];
     [self reloadData];
 
     [self.mj_footer endRefreshing];
@@ -157,10 +157,8 @@
     //interface for data
     comDict = [NSMutableArray arrayWithCapacity:100];
     //这个地方应该返回数组
-//    comDict = _comminfo.Comment_DICT;
-//    comDict  = [_comminfo getDataForRow];
    comDict = [_comminfo getDataForRow];
-//    NSLog(@"选择出来的dict%lu",(unsigned long)comDict.count);
+
     if (comDict.count == 0) {
         NSLog(@"里面没有值");
             comDict =nil;
@@ -168,6 +166,12 @@
     }else  {;
 
     }
+
+}
+-(void)dataforName:(NSString*)name
+{
+      comDict = [NSMutableArray arrayWithCapacity:100];
+    comDict = [_comminfo dictWithName:name];
 
 }
 -(NSNumber *)returnCount

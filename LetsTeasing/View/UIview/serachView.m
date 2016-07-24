@@ -17,18 +17,30 @@
     self = [super initWithFrame:CGRectMake(origin.x, origin.y, SCREEN_WIDTH, height)];
     if (self) {
         [self initView];
+          [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textchange) name:UITextFieldTextDidChangeNotification object:nil];
         
     }
     return self;
 }
-
+-(void)textchange
+{
+    if (_searchBarText.text.length == 0) {
+        NSLog(@"里面的内容为0");
+        dict = NULL;
+        [_searchBarTableView reloadData];
+    }
+}
 -(void)TapClick {
-    //    NSLog(@"---->>>>>>>>>>>>>>>>>>>>>>>");
     [self hidSearchBar:self];
 }
 -(void)initView {
-    
-    self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+//毛玻璃特效
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    effectView.backgroundColor = [UIColor blackColor];
+    effectView.frame = self.bounds;
+    [self addSubview:effectView];
+    effectView.alpha = .6f;
     
     UIView * searchBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
     searchBg.backgroundColor = YYColor(244, 244, 244);
@@ -50,6 +62,7 @@
     self.searchBarText.leftView = leftBtn;
     [self.searchBarText.leftView setFrame:CGRectMake(0, 0, 25, 20)];
     self.searchBarText.leftViewMode = UITextFieldViewModeAlways;
+   
     
     UIButton * cancleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     CGFloat cancleBtnW = 40;
@@ -64,15 +77,17 @@
     [cancleBtn addTarget:self action:@selector(cancleClick:) forControlEvents:UIControlEventTouchUpInside];
     [searchBg addSubview:cancleBtn];
     
+    
     UITableView * searchBarTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(searchBg.frame), SCREEN_WIDTH , SCREEN_HEIGHT - CGRectGetMaxY(searchBg.frame)) style:UITableViewStylePlain];
     searchBarTableView.backgroundColor = [UIColor orangeColor];
-    
     searchBarTableView.delegate = self;
     searchBarTableView.dataSource = self;
     [self addSubview:searchBarTableView];
     searchBarTableView.tableFooterView = [[UIView alloc] init];
     searchBarTableView.backgroundColor = self.backgroundColor;
     self.searchBarTableView = searchBarTableView;
+    
+    
     
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(TapClick)];
     singleTap.cancelsTouchesInView = NO;
@@ -82,7 +97,6 @@
 }
 
 -(void)cancleClick:(UIButton *)sender {
-    
     if (self.delegate && [self.delegate respondsToSelector:@selector(CustomSearchBar:cancleButton:)]) {
         [self.delegate CustomSearchBar:self cancleButton:sender];
     }
@@ -103,7 +117,7 @@
 - (void)textFieldDidChange:(UITextField *)textField
 {
     if (self.searchResults && [self.searchResults respondsToSelector:@selector(CustomSearch:inputText:)]) {
-        [self.searchResults CustomSearch:self inputText:textField.text];
+      inputText = [self.searchResults CustomSearch:self inputText:textField.text];
         [self.searchBarTableView reloadData];
     }
 }
@@ -119,46 +133,51 @@
 }
 
 -(UITableViewCell * )tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString * ID = @"textCell";
-    textCell * cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    static NSString * ID = @"Cell";
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (cell == nil) {
-        cell = [[textCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+    
+//        [cell addtextlabel];
     }
-    cell.backgroundColor=[UIColor clearColor];
-    cell.namelabel.textColor = [UIColor whiteColor];
-     cell.namelabel.textColor = [UIColor whiteColor];
-    Text_label.textColor =[UIColor whiteColor];
+//
+//    cell.backgroundColor=[UIColor clearColor];
+//    cell.namelabel.textColor = [UIColor whiteColor];
+//    cell.namelabel.textColor = [UIColor whiteColor];
     NSIndexPath * path = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     // 文字
-    [self addtextlabel:cell];
-        if (self.DataSource && [self.DataSource respondsToSelector:@selector(CustomSearchBar:titleForRowAtIndexPath:)]) {
-        NSDictionary * dict =[self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
-        cell.namelabel.text = [dict objectForKey:@"playerName"];
-        Text_label.text = [dict objectForKey:@"saidWord"];
-        NSString * date = [dict objectForKey:@"createdAt"];
-        NSString * cut = [date substringFromIndex:10];
-        cell.dataLabel.text = cut;
-    }
-    if (self.DataSource && [self.DataSource respondsToSelector:@selector(CustomSearchBar:imageNameForRowAtIndexPath:)]) {
-        NSString *imageName = [self.DataSource CustomSearchBar:self imageNameForRowAtIndexPath:path];
-        cell.imageView.image = [UIImage imageNamed:imageName];
+    if (self.DataSource && [self.DataSource respondsToSelector:@selector(CustomSearchBar:titleForRowAtIndexPath:)]) {
+        cell.textLabel.text =[self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
+        cell.textLabel.font = YYSYSTEM_FONT;
+        cell.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.numberOfLines =2;
+        NSRange range= [cell.textLabel.text rangeOfString:inputText];
+        if (cell.textLabel.text == nil) {
+            NSLog(@"cell里面没有值");
+        }else  [string setTextColor:cell.textLabel FontNumber:[UIFont fontWithName:@"Arial" size:13.0] AndRange:range AndColor:[UIColor greenColor]];
+       
+        
+    
+        
+//        dict =[self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
+//        cell.namelabel.text = [dict objectForKey:@"playerName"];
+//        cell.TextLabel.backgroundColor = [UIColor redColor];
+//        cell.text_label.text = [dict objectForKey:@"saidWord"];
+//        NSString * date = [dict objectForKey:@"createdAt"];
+//        NSString * cut = [date substringFromIndex:10];
+//        cell.dataLabel.text = cut;
     }
     return cell;
 }
--(void)addtextlabel:(textCell*)cell
-{
-   Text_label  = [[UILabel alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(10.0f), YY_ININPONE5_HEIGHT(10.0f), YY_ININPONE5_WITH(300.0f), YY_ININPONE5_HEIGHT(30.0f))];
-    Text_label.font = [UIFont fontWithName:@"Arial" size:12.0f];
-    Text_label.numberOfLines =0;
-    [cell.contentView addSubview:Text_label];
-}
+
+
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSIndexPath * path = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     if (self.delegate && [self.delegate respondsToSelector:@selector(CustomSearchBar:didSelectRowAtIndexPath:)]) {
         [self.delegate CustomSearchBar:self didSelectRowAtIndexPath:path];
         [self hidSearchBar:self];
-        NSLog(@"点击啦");
-//        [JCAlertView showOneButtonWithTitle:@"XXX发表的评论"];
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

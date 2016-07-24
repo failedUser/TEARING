@@ -24,5 +24,6 @@
 @property(nonatomic,assign) CGFloat    heightTable;
 @property(nonatomic,strong) NSString * commenID;
 -(void)data;
+-(void)dataforName:(NSString*)name;
 -(NSNumber *)returnCount;
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "commentInfo.h"
+#import "mainPageDictFordata.h"
 
 
 
@@ -20,6 +21,9 @@
         CommentContext = model.context;
 //   CommentContext  =  [[coreDataModel shareShenmugui] context];
         [self getCommentObjectFromBomob];
+  
+  data = [mainPageDictFordata shareMainData];
+          _Comment_MainDICT = data.dataDict;
     }
     return  self;
 }
@@ -66,8 +70,6 @@
 {
   
     int j = 0;
-//    NSLog(@"在没有筛选之前%@",_Comment_DICT);
-//    NSLog(@"这个里面的ID%@",_commentID);
     NSMutableArray * commentdataArray = [NSMutableArray arrayWithCapacity:100];
     for (int i =0; i<_Comment_DICT.count; i++) {
         
@@ -87,10 +89,28 @@
           }
     }
     
-//            NSLog(@"这个里面没有评论");
-    
-//    NSLog(@"筛选之后%@",commentdata);
     return commentdataArray;
+}
+-(NSMutableArray *)dictWithName:(NSString *)name
+{
+    NSMutableArray * NameArray = [NSMutableArray new];
+
+    for (int i =0; i< _Comment_MainDICT.count; i++) {
+        NSNumber * nub = [NSNumber numberWithInteger:i];
+        BmobObject * dict1 = [_Comment_MainDICT objectForKey:nub];
+        if ([[dict1 objectForKey:@"playerName"]isEqualToString:name]) {
+        
+        NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                               [dict1 objectForKey:@"playerName"],@"playerName",
+                               [dict1 objectForKey:@"objectId"],@"objectId",
+                               [dict1 objectForKey:@"numberOfSaidWords"],@"numberOfSaidWords",
+                               [dict1 objectForKey:@"saidWord"],@"saidWord",
+                               [dict1 objectForKey:@"createdAt"],@"createdAt",nil];
+        [NameArray addObject:dict];
+        }
+        
+    }
+    return NameArray;
 }
 
 -(void)saveAlertData:(BmobObject*)dict  CommentsID:(NSString*)comID

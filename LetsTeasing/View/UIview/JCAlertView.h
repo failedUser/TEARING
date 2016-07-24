@@ -39,7 +39,8 @@ typedef void(^clickHandle)(void);
 
 //
 - (void)setup;
--(void)showOneButtonWithTitle:(NSString *)title data:(BmobObject*)datadict;
+//-(void)showOneButtonWithTitle:(NSString *)title data:(BmobObject*)datadict;
+-(void)showOneButtonWithTitle:(NSString *)title data:(BmobObject*)datadict sendName:(NSString*)name;
 //-(void)FuncSendstring:(NSString*)send;
 
 

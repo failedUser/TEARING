@@ -9,7 +9,7 @@
 #import "photoChange.h"
 
 @implementation photoChange
-+(UIImage*) OriginImage:(UIImage *)image scaleToSize:(CGSize)size
++(UIImage*)OriginImage:(UIImage *)image scaleToSize:(CGSize)size
 {
     UIGraphicsBeginImageContext(size); //size 为CGSize类型，即你所需要的图片尺寸
     

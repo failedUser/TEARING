@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface textCell : UITableViewCell
+
 @property(nonatomic,strong)UILabel * dataLabel;
 @property(nonatomic,strong)UILabel * namelabel;
 @property(nonatomic,strong)UILabel * TextLabel;
-
+@property(nonatomic,strong)UILabel * text_label;
+-(void)addtextlabel;
 @end

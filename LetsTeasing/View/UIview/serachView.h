@@ -15,7 +15,7 @@
 
 @required
 /**第一步根据输入的字符检索 必须实现*/
--(void)CustomSearch:(serachView *)searchBar inputText:(NSString *)inputText;
+-(NSString*)CustomSearch:(serachView *)searchBar inputText:(NSString *)inputText;
 @end
 
 @protocol CustomSearchBarDataSouce <NSObject>
@@ -23,7 +23,7 @@
 // 设置显示列的内容
 -(NSInteger)searchBarNumberOfRowInSection;
 // 设置显示没行的内容
--(NSDictionary *)CustomSearchBar:(serachView *)searchBar titleForRowAtIndexPath:(NSIndexPath *)indexPath;
+-(NSString *)CustomSearchBar:(serachView *)searchBar titleForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 
 @optional
@@ -43,7 +43,10 @@
 
 @interface serachView : UIView<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
 {
-    UILabel * Text_label;
+   
+    NSDictionary * dict;
+    NSString * inputText;
+    
 
 }
 

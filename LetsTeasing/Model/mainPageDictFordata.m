@@ -10,21 +10,24 @@
 #import "MainPageData.h"
 
 @implementation mainPageDictFordata
-
-
+@synthesize saidWordForName;
++(mainPageDictFordata *)shareMainData
+{
+    static mainPageDictFordata *MainData = nil;
+    if (!MainData) {
+        MainData = [[mainPageDictFordata alloc]init];
+    }
+    return  MainData;
+}
 -(instancetype)init
 {
     self = [super init];
     if (self) {
         [self getObjectFromBomob];
-       
     }
     return  self;
 }
--(void)DICTaddDIct:(NSMutableDictionary*)dict key:(NSString*)num
-{
-    [_DICT setObject:dict forKey:num];
-}
+
 -(NSInteger)numberOfUnReadNews:(NSMutableDictionary *)dict
 {
     NSInteger  num = 0;
@@ -89,11 +92,13 @@ return NameArray;
 -(void)insertMainData:(BmobObject*)dict
 {
     [super insertMainData:dict];
+
 }
 
 -(void)MainreloadData
 {
     [self getObjectFromBomob];
+
 }
 -(BmobObject*)creatNewClassFordata:(NSInteger)index
 {
@@ -103,5 +108,48 @@ return NameArray;
     //根据id建一个类，然后获得
     return  dict111;
 }
+-(NSMutableArray*)filterTheRepeatName:(NSArray *)NameArray
+{
+    [self releaseDict];
+    NSMutableArray * array = [NSMutableArray arrayWithCapacity:1000];
 
+    for (int i=0; i<NameArray.count; i++) {
+        if (i ==0) {
+            [array addObject:NameArray[i]];
+            NSString * name = [NameArray[i] objectForKey:@"playerName"];
+            [self addDictWhenFilterName:name adddict:NameArray[i]];
+        }else
+        {
+            if ([[NameArray[i] objectForKey:@"playerName"] isEqualToString:[NameArray[i-1] objectForKey:@"playerName"]]) {
+                NSString * name = [NameArray[i] objectForKey:@"playerName"];
+                [self addDictWhenFilterName:name adddict:NameArray[i]];
+                continue;
+            }else
+             [array addObject:NameArray[i]];
+            NSString * name = [NameArray[i] objectForKey:@"playerName"];
+            [self addDictWhenFilterName:name adddict:NameArray[i]];
+        }
+    }
+    return array;
+}
+-(void)addDictWhenFilterName:(NSString *)Name adddict:(NSDictionary *)dict
+{
+    if (!saidWordForName) {
+        NSLog(@"字典不存在");
+        saidWordForName = [NSMutableDictionary dictionaryWithCapacity:1000];
+    }
+    NSMutableArray * nameArray = [saidWordForName objectForKey:Name];
+    if (!nameArray) {
+        NSLog(@"数组不存在");
+        NSMutableArray * nameArray = [NSMutableArray new];
+        [saidWordForName setObject:nameArray forKey:Name];
+    }
+    [nameArray addObject:dict];
+    NSLog(@"过滤出来的字典%lu",(unsigned long)saidWordForName.count);
+   
+}
+-(void)releaseDict
+{
+    [saidWordForName removeAllObjects];
+}
 @end

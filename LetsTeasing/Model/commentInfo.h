@@ -9,16 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "coreDataModel.h"
 #import "CommentData.h"
+#import "mainPageDictFordata.h"
 @interface commentInfo : NSObject
 {
         NSManagedObjectContext * CommentContext;
+    mainPageDictFordata * data ;
+    NSMutableArray *mergeArray;
 //    CommentData * commentData;
 }
-
+@property(nonatomic,strong) NSMutableDictionary * Comment_MainDICT;
 @property(nonatomic,strong) NSMutableDictionary * Comment_DICT;
 @property(nonatomic,strong) NSString * commentID;
 -(void)commentReload;
 -(NSMutableArray *)getDataForRow;
 -(void)saveAlertData:(BmobObject*)dict  CommentsID:(NSString*)comID;
 -(void)AlertDataReload;
+-(NSMutableArray *)dictWithName:(NSString *)name;
+
 @end

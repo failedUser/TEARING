@@ -66,6 +66,13 @@
     }];
 }
 
-
+-(void)addtextlabel
+{
+  _text_label = [[UILabel alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(10.0f), YY_ININPONE5_HEIGHT(10.0f), YY_ININPONE5_WITH(300.0f), YY_ININPONE5_HEIGHT(30.0f))];
+    _text_label.font = [UIFont fontWithName:@"Arial" size:12.0f];
+    _text_label.numberOfLines =0;
+    _text_label.textColor =[UIColor whiteColor];
+    [self.contentView addSubview:_text_label];
+}
 
 @end

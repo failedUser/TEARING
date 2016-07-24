@@ -12,6 +12,9 @@
 {
     NSMutableArray * _myData;
     NSMutableArray * searchArray;
+    NSMutableArray * filerNameArray;
+    NSMutableArray * mergeArray;
+    NSArray * arry333;
 }
 @property(nonatomic,weak) NSIndexPath * index;
 //search

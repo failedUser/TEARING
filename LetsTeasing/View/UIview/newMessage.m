@@ -49,7 +49,6 @@
 {
     UIImage * image =[photoChange OriginImage: [UIImage imageNamed:@"message.png"]scaleToSize:CGSizeMake(15, 15)];
     UIImageView * imageView = [[UIImageView alloc]initWithImage:image];
-//    imageView.backgroundColor = [UIColor redColor];
     [imageView setFrame:CGRectMake(YY_ININPONE5_WITH(210.0f),YY_ININPONE5_HEIGHT(2.0f), YY_ININPONE5_HEIGHT(15.0f), YY_ININPONE5_HEIGHT(15.0f))];
     [_button addSubview:imageView];
 

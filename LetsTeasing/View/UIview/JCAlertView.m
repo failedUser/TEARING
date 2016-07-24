@@ -30,6 +30,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 @property (nonatomic, strong) NSArray *buttons;
 @property (nonatomic, strong) NSArray *clicks;
 @property(nonatomic,strong) BmobObject * dataforRow;
+@property(nonatomic,strong) NSString * SendName;
 - (void)setup;
 
 @end
@@ -239,9 +240,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 {
     self = [super initWithFrame:frame];
     if (self) {
-
-    
-        _ScellContent = [NSMutableArray arrayWithObjects:@"你你你你你你你你你你",@"1",@"妮妮", @"你你你你你你你你你你",@"1",@"妮妮"@"你你你你你你你你你你",@"1",@"妮妮"@"你你你你你你你你你你",@"1",@"妮妮",@"你你你你你你你你你你",@"1",@"妮妮", @"你你你你你你你你你你",@"1",@"妮妮"@"你基地将诶菲菲和ufhweui你你你你你你你你你你你你你你你你你你你你你你你",@"1",@"妮妮"@"你你你你你你你你你你",nil];
+       
 //        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange2:) name:UIKeyboardWillChangeFrameNotification object:nil];
 
 
@@ -258,18 +257,16 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 }
 
 //table版
--(void)showOneButtonWithTitle:(NSString *)title data:(BmobObject*)datadict {
-//  NSLog(@"弹出框被执行的时候");
-    //只有这一个作用域？
-   
+-(void)showOneButtonWithTitle:(NSString *)title data:(BmobObject*)datadict sendName:(NSString*)name{
     JCAlertView *alertView = [JCAlertView new];
 
-    [alertView configAlertViewPropertyWithTitle:title data:datadict];
+    [alertView configAlertViewPropertyWithTitle:title data:datadict sendName:name];
 }
 //table版
-- (void)configAlertViewPropertyWithTitle:(NSString *)title data:(BmobObject*)datadict{
+- (void)configAlertViewPropertyWithTitle:(NSString *)title data:(BmobObject*)datadict sendName:(NSString*)name{
     self.title = title;
     self.dataforRow = datadict;
+    self.SendName = name;
 // NSLog(@"配置alertview属性");
     [[jCSingleTon shareSingleTon].alertStack addObject:self];
     [self showAlert];
@@ -281,7 +278,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 }
 
 - (void)showAlertHandle{
-//     NSLog(@"当弹出的时候新建一个controller显示在桌面上");
+
 //类似于自己手残创建了一个window 现在要设置window的根视图，也就是alert，都是为了节目效果啊
     UIWindow *keywindow = [UIApplication sharedApplication].keyWindow;
     if (keywindow != [jCSingleTon shareSingleTon].backgroundWindow) {
@@ -302,7 +299,6 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 }
 //妈的智障，clicks数组都被我删了，你们还有什么用
 - (void)alertBtnClick{
-
     [self dismissAlertWithCompletion:^{
     }];
 
@@ -310,7 +306,6 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 //这不才是真东西么
 
 - (void)dismissAlertWithCompletion:(void(^)(void))completion{
-// NSLog(@"弹出框退出的时候的事情");
     [self.vc hideAlertWithCompletion:^{
         [self stackHandle];
     }];
@@ -360,8 +355,6 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
             [self addTable];
 
         UIButton * view =  [[UIButton alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(290.0f)- YY_ININPONE5_WITH(30.0), 0 , YY_ININPONE5_HEIGHT(20.0), YY_ININPONE5_HEIGHT(20.0))];
-//        view.backgroundColor = [UIColor redColor];
-//    _basetextView.popView =self;
     [view setImage:[UIImage imageNamed:@"delete1.png"] forState:UIControlStateNormal];
     [view addTarget:self action:@selector(alertBtnClick) forControlEvents:UIControlEventTouchUpInside];
 //        view.popView = self;
@@ -373,13 +366,22 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 {
 //     NSLog(@"弹出框中table的配置");
     self.table = [[YY_content_table alloc]init];
+    _table.comminfo = [[commentInfo alloc]init];
     //table中data的数据传输口在这
     //在配置完table后才会执行这个,这个先放着
    // _dataforRow只是传进来的一个外键属性
+           NSLog(@"传进来的对象是%@",_dataforRow);
+       NSLog(@"传进来的值是多少%@",_SendName);
+    if (_dataforRow ==nil && _SendName.length != 0) {
+//        NSLog(@"传进来的值是多少%@",_SendName);
+        [self.table  dataforName:_SendName];
+    }else if(_SendName.length == 0)
+    {
+//        NSLog(@"传进来的对象是%@",_dataforRow);
     [self.table setCommenID:[_dataforRow objectForKey:@"objectId"]];
     [self.table data];
 
-    
+    }
     //给table的array赋值
     [_table setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight)];
     [self addSubview:_table];

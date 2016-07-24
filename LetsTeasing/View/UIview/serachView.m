@@ -10,7 +10,7 @@
 #import "photoChange.h"
 #import "JCAlertView.h"
 #import "textCell.h"
-
+#import "UIImageView+LBBlurredImage.h"
 
 @implementation serachView
 -(instancetype)initWithOrgin:(CGPoint)origin andHeight:(CGFloat)height {
@@ -41,7 +41,16 @@
     effectView.frame = self.bounds;
     [self addSubview:effectView];
     effectView.alpha = .6f;
+    //虚化搜索背景，只是现在没有图片
     
+//    imageViewXX = [[UIImageView alloc]init];
+//    imageViewXX.frame = self.bounds;
+//    [imageViewXX setImageToBlur:[UIImage imageNamed:@"clear.png"]
+//                        blurRadius:kLBBlurredImageDefaultBlurRadius
+//                   completionBlock:^(){
+//                       NSLog(@"The blurred image has been set");
+//                   }];
+//    [self addSubview:imageViewXX];
     UIView * searchBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
     searchBg.backgroundColor = YYColor(244, 244, 244);
     [self addSubview:searchBg];
@@ -147,18 +156,32 @@
     NSIndexPath * path = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     // 文字
     if (self.DataSource && [self.DataSource respondsToSelector:@selector(CustomSearchBar:titleForRowAtIndexPath:)]) {
-        cell.textLabel.text =[self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
+        
+        NSString * Name = [self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
+              NSRange range2= [Name rangeOfString:inputText];
+        if (range2.location!=NSNotFound) {
+            if (range2.location >45 ) {
+                NSString * EndSting = [Name substringWithRange:NSMakeRange(range2.location -20, Name.length-range2.location+20)];
+                cell.textLabel.text = EndSting;
+            }
+            else cell.textLabel.text = Name;
+                }
+        else
+        {
+            
+            NSLog(@"not found");
+            
+        }
+//        cell.textLabel.text =[self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
         cell.textLabel.font = YYSYSTEM_FONT;
         cell.backgroundColor = [UIColor clearColor];
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.textLabel.numberOfLines =2;
-        NSRange range= [cell.textLabel.text rangeOfString:inputText];
+       NSRange range= [cell.textLabel.text rangeOfString:inputText];
         if (cell.textLabel.text == nil) {
             NSLog(@"cell里面没有值");
         }else  [string setTextColor:cell.textLabel FontNumber:[UIFont fontWithName:@"Arial" size:13.0] AndRange:range AndColor:[UIColor greenColor]];
-       
         
-    
         
 //        dict =[self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
 //        cell.namelabel.text = [dict objectForKey:@"playerName"];

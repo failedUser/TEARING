@@ -18,6 +18,7 @@
     if (self) {
         [self addBUtton];
         [self addimage];
+        [self buttonSetTitle:0];
     }
     return self;
 }
@@ -25,7 +26,7 @@
 {
     if (bools == NO) {
         [self setHidden:NO];
-        [self buttonSetTitle:integ];
+     
       
     }
 }

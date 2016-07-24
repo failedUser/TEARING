@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "View_for_Text.h"
 
+
 @class serachView;
 
 @protocol searchResults <NSObject>
@@ -46,13 +47,15 @@
    
     NSDictionary * dict;
     NSString * inputText;
-    
+    UIImageView *imageViewXX;
 
 }
 
 
 
 // 显示
+
+
 +(instancetype)show:(CGPoint)orgin andHeight:(CGFloat)height;
 @property (nonatomic, strong) UITextField * searchBarText;
 

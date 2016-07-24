@@ -20,10 +20,12 @@
 @property(nonatomic,strong) NSMutableDictionary * Comment_MainDICT;
 @property(nonatomic,strong) NSMutableDictionary * Comment_DICT;
 @property(nonatomic,strong) NSString * commentID;
++(commentInfo*)ShareCommentData;
 -(void)commentReload;
 -(NSMutableArray *)getDataForRow;
 -(void)saveAlertData:(BmobObject*)dict  CommentsID:(NSString*)comID;
 -(void)AlertDataReload;
 -(NSMutableArray *)dictWithName:(NSString *)name;
+-(NSInteger)Count:(NSString *)objectId;
 
 @end

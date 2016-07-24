@@ -20,7 +20,7 @@
  
 //    [self data];
     [self.mj_footer beginRefreshing];
-      _comminfo = [[commentInfo alloc]init];
+    _comminfo = [commentInfo ShareCommentData];
 
     self = [super initWithFrame:frame style:UITableViewStyleGrouped];
     self.delegate =self;
@@ -29,6 +29,8 @@
     [self MJrefresh];
     //监听键盘状态进行刷新
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
+    
+    _states =YES;
     return self;
 }
 -(void)keyboardWillDown
@@ -42,13 +44,14 @@
 }
 -(void)refresh1
 {
-//    NSLog(@"刷新");
     //编号有了数据也存进去，只是没有下载到数组中
     sleep(0.5);
-    //    NSLog(@"这下有多少个元素%ld",_yy_table.data.dataDict.count);
     [self.comminfo commentReload];
     [self.comminfo AlertDataReload];
-//    [self data];
+    if (_states) {
+            [self data];
+    } else [self dataforName];
+   
     [self reloadData];
 
     [self.mj_footer endRefreshing];
@@ -89,8 +92,6 @@
     }
         if (comDict ==nil) {
             //创建完字体格式之后就告诉cell
-    
-
         NSLog(@" no data");
     }else{
         _dicto = comDict[indexPath.row];
@@ -155,10 +156,10 @@
 
     [_comminfo setCommentID:_commenID];
     //interface for data
-    comDict = [NSMutableArray arrayWithCapacity:100];
+    comDict = [NSMutableArray arrayWithCapacity:1000];
     //这个地方应该返回数组
    comDict = [_comminfo getDataForRow];
-
+    NSLog(@"最终评论界面有多少个%lu",(unsigned long)comDict.count);
     if (comDict.count == 0) {
         NSLog(@"里面没有值");
             comDict =nil;
@@ -168,10 +169,10 @@
     }
 
 }
--(void)dataforName:(NSString*)name
+-(void)dataforName
 {
       comDict = [NSMutableArray arrayWithCapacity:100];
-    comDict = [_comminfo dictWithName:name];
+    comDict = [_comminfo dictWithName:_commenName];
 
 }
 -(NSNumber *)returnCount

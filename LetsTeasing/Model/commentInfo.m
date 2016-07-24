@@ -12,6 +12,14 @@
 
 
 @implementation commentInfo
++(commentInfo*)ShareCommentData
+{
+    static commentInfo * comminfo = nil;
+    if (!comminfo) {
+        comminfo = [[commentInfo alloc]init];
+    }
+    return comminfo;
+}
 -(instancetype)init
 {
     self = [super init];
@@ -68,9 +76,9 @@
 //这里由于计算量太大，会消耗很多时间，需要设计算法。
 -(NSMutableArray *)getDataForRow
 {
-  
+      NSLog(@"数组里面有多少个%lu",(unsigned long)_Comment_DICT.count);
     int j = 0;
-    NSMutableArray * commentdataArray = [NSMutableArray arrayWithCapacity:100];
+    NSMutableArray * commentdataArray = [NSMutableArray arrayWithCapacity:1000];
     for (int i =0; i<_Comment_DICT.count; i++) {
         
         NSNumber * number = [NSNumber numberWithInteger:i];
@@ -88,7 +96,7 @@
         }
           }
     }
-    
+    NSLog(@"过滤出来的字典里面有多少%lu",(unsigned long)commentdataArray.count);
     return commentdataArray;
 }
 -(NSMutableArray *)dictWithName:(NSString *)name
@@ -111,6 +119,20 @@
         
     }
     return NameArray;
+}
+-(NSInteger)Count:(NSString *)objectId
+{
+    int j =0;
+    for (int i =0; i< _Comment_DICT.count; i++) {
+        NSNumber * nub = [NSNumber numberWithInteger:i];
+        BmobObject * dict1 = [_Comment_DICT objectForKey:nub];
+        if ([[dict1 objectForKey:@"IdForComments"]isEqualToString:objectId]) {
+            j = j+1;
+         
+        }
+    }
+
+    return j;
 }
 
 -(void)saveAlertData:(BmobObject*)dict  CommentsID:(NSString*)comID

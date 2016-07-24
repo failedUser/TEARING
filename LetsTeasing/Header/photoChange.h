@@ -11,4 +11,5 @@
 @interface photoChange : NSObject
 //change the size of image ,
 +(UIImage*) OriginImage:(UIImage *)image scaleToSize:(CGSize)size;
+
 @end

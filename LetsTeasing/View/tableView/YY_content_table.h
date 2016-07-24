@@ -23,7 +23,9 @@
 @property(nonatomic,assign) NSMutableArray * cellContent;
 @property(nonatomic,assign) CGFloat    heightTable;
 @property(nonatomic,strong) NSString * commenID;
+@property(nonatomic,strong) NSString * commenName;
+@property(nonatomic,assign) BOOL  states;
 -(void)data;
--(void)dataforName:(NSString*)name;
+-(void)dataforName;
 -(NSNumber *)returnCount;
 @end

@@ -13,8 +13,7 @@
 -(instancetype)init
 {
     self = [super init];
-    _dataDict = [NSMutableDictionary dictionaryWithCapacity:100];
-//       context = [[coreDataModel shareShenmugui] context];
+    _dataDict = [NSMutableDictionary dictionaryWithCapacity:1000];
     coreDataModel * model = [[coreDataModel alloc]init];
    Maincontext= model.context ;
 

@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "mainPageDictFordata.h"
-
+#import "commentInfo.h"
 
 @interface YY_base_table : UITableView<UITableViewDelegate,UITableViewDataSource>
 {
     NSMutableDictionary * dataDict;
- 
+    CGFloat heightForTextLavbel;
+    commentInfo * info;
    
 }
 @property(nonatomic,strong)   mainPageDictFordata * data;

@@ -38,13 +38,18 @@
 
 #ifndef __Color
 #define YYColor(r, g, b)            [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
-#define NANECOLOR                   [UIColor grayColor]
+#define NANECOLOR                   UIColorFromHex(0x1d1d26);
+
+#define UIColorFromHex(s)           [UIColor colorWithRed:(((s & 0xFF0000) >> 16))/255.0 green:(((s &0xFF00) >>8))/255.0 blue:((s &0xFF))/255.0 alpha:1.0]
+
+
 #endif
 
 
 #ifndef __FONT_SYSTEM__
 #define  YYBUTTON_FONT              [UIFont fontWithName:@"Arial" size:15.0f];
 #define  YYSYSTEM_FONT              [UIFont fontWithName:@"Arial" size:13.0f];
+#define  YYDATE_FONT                [UIFont fontWithName:@"Arial" size:10.0f];
 #endif
 
 

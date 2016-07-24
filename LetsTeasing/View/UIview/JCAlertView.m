@@ -374,7 +374,10 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
        NSLog(@"传进来的值是多少%@",_SendName);
     if (_dataforRow ==nil && _SendName.length != 0) {
 //        NSLog(@"传进来的值是多少%@",_SendName);
-        [self.table  dataforName:_SendName];
+        [self.table setCommenName:_SendName];
+        [self.table setStates:NO];
+        [self.table  dataforName];
+        
     }else if(_SendName.length == 0)
     {
 //        NSLog(@"传进来的对象是%@",_dataforRow);

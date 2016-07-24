@@ -28,7 +28,7 @@
 #define defaultHeigeht  30
 #define addHeight 10
 
-#define  HeightForTable SCREEN_HEIGHT*(538.0/568.0)
+#define  HeightForTable SCREEN_HEIGHT*(518.0/568.0)
 #define TextBackGroundVIewHeight SCREEN_HEIGHT*(44.0/568.0)
 #define TextBackGroundVIewY SCREEN_HEIGHT*(538.0/568.0)
 @interface ViewController ()<UITextViewDelegate,UITableViewDelegate,UITextViewDelegate,UITextViewDelegate>
@@ -74,27 +74,30 @@
     [_yy_table addGestureRecognizer:Gesture];
 //监听键盘状态进行刷新
       [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
-        [_yy_table.mj_footer beginRefreshing];
+    
+        [_yy_table.mj_header beginRefreshing];
        [self MJrefresh];
 }
 -(void)keyboardWillDown
 {
-        [_yy_table.mj_footer beginRefreshing];
+        [_yy_table.mj_header beginRefreshing];
 }
 -(void)MJrefresh
 {
-    self.yy_table.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
-    self.yy_table.mj_footer.automaticallyChangeAlpha =YES;
+//    self.yy_table.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
+       MJRefreshHeader * header = [MJRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
+    self.yy_table.mj_header = header;
+    self.yy_table.mj_header.automaticallyChangeAlpha =YES;
 }
 -(void)refresh1
 {
    //编号有了数据也存进去，只是没有下载到数组中
     sleep(0.5);
-
     [_yy_table.data MainreloadData];
     [_Alertview.table.comminfo AlertDataReload];
+
     [_yy_table reloadData];
-    [_yy_table.mj_footer endRefreshing];
+    [_yy_table.mj_header endRefreshing];
 }
 
 -(void)configNavigation
@@ -132,7 +135,7 @@
     [self longGesture:YES];
 //       [self TavbleViewCellSeletShowAlert:YES];
     heighett = HeightForTable + self.yy_table.heightTable;
-    [_yy_table setFrame:CGRectMake(0, 0, SCREEN_WIDTH, heighett)];
+    [_yy_table setFrame:CGRectMake(0, YY_ININPONE5_HEIGHT(20.0f), SCREEN_WIDTH, heighett)];
     [self.view addSubview:_yy_table];
 }
 
@@ -199,11 +202,11 @@
     [_baseVIew.yy_text resignFirstResponder];
     [self.yy_table reloadData];
     //滑到更新的那一行
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_yy_table.dict.count-1 inSection:0];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.yy_table scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
      _baseVIew.yy_text.text = @"";
-        //传一个数据回去。作为值的变化
-        [_msg_view  HIDDEN:NO num:[_yy_table.data numberOfUnReadNews:_yy_table.data.DICT]];
+        //new传一个数据回去。作为值的变化
+//        [_msg_view  HIDDEN:NO num:[_yy_table.data numberOfUnReadNews:_yy_table.data.DICT]];
     }
 }
 
@@ -278,7 +281,10 @@
     JCAlertView * alert = [[JCAlertView alloc]init];
   //这个里面要根据索引的内容生成了一个字典。
 
-   BmobObject * dict =  [self.yy_table.data creatNewClassFordata:index];
+   BmobObject * dict =  [self.yy_table.data creatNewClassFordata:_yy_table.dict.count-index-1];
+    if (index==0) {
+        NSLog(@"传进来的名字%@",[dict objectForKey:@"playerName"]);
+    }
     
     [alert showOneButtonWithTitle:title data:dict sendName:nil];
     
@@ -292,7 +298,7 @@
 -(void)addMessageVIew
 {
    _msg_view = [[newMessage alloc]initWithFrame:CGRectMake(0,64 , YY_ININPONE5_WITH(320.0f), YY_ININPONE5_HEIGHT(20.0f))];
-    [_msg_view setHidden:YES];
+    [_msg_view setHidden:NO];
     [self.view addSubview:_msg_view];
       [_msg_view.button addTarget:self action:@selector(showCommentAlert) forControlEvents:UIControlEventTouchUpInside];
     

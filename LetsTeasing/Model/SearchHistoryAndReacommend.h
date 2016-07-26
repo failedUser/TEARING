@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface dataOperation : NSObject
+@interface SearchHistoryAndReacommend : NSObject
 {
     
     NSArray<NSString*> * documentPath;

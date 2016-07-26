@@ -6,9 +6,9 @@
 //  Copyright © 2016年 yueyin. All rights reserved.
 //
 
-#import "dataOperation.h"
+#import "SearchHistoryAndReacommend.h"
 
-@implementation dataOperation
+@implementation SearchHistoryAndReacommend
 -(instancetype)init
 {
     self= [super init];

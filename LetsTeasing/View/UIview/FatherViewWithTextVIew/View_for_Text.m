@@ -24,35 +24,45 @@
         [self addSendBUtton];
         //4.监听键盘的弹起和收缩
         [self autolayoutWithMasonry];
+        self.backgroundColor = UIColorFromHex(0x313131);
           }
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    [self setUIColor];
+    [self addNOtificaiton];
     return self;
+}
+-(void)addNOtificaiton
+{
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textChange) name:UITextViewTextDidChangeNotification object:nil];
+}
+-(void)textChange
+{
+
+//    CGRect fame = self.frame;
+//    fame.size.height = _yy_text.textHeight;
+////    self.frame =fame;
+//}
+
 }
 
 -(void)addViewForText
 {
     
     line = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 300, 1)];
-    line.backgroundColor = [UIColor blackColor];
     [self addSubview:line];
+
     
-    self.yy_text  = [[YY_TextView alloc]initWithFrame:CGRectMake(5, 0, 280, 22)];
-//    self.yy_text.backgroundColor = [UIColor redColor];
+    self.yy_text  = [[YY_TextView alloc]initWithFrame:CGRectMake(20, 0, 280, 22)];
     self.yy_text.constrainH = self.constrainH;
+    
     [self addSubview:self.yy_text];
-    
-    
- 
-  
 }
 -(void)addSendBUtton
 {
     _send_btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_send_btn setFrame:CGRectMake(285, 0, 30, 30)];
-    UIImage* image =[UIImage imageNamed:@"send.png"];
-    [_send_btn setImage: [self OriginImage:image scaleToSize:CGSizeMake(15, 15)] forState:UIControlStateNormal];
-    _send_btn.imageEdgeInsets = UIEdgeInsetsMake(13, 0, 0, 0);
-    
+    [_send_btn setTitle:@"发布" forState:UIControlStateNormal];
+    _send_btn.titleLabel.font = [UIFont fontWithName:@"Arial" size:13];
     [self addSubview:_send_btn];
     
   
@@ -87,39 +97,48 @@
     }];
 
 }
+-(void)setUIColor
+{
+    self.backgroundColor = UIColorFromHex(0x313131);
+    _yy_text.backgroundColor = UIColorFromHex(0x313131);
+    line.backgroundColor = UIColorFromHex(0x8a8a8f);
+//    line.backgroundColor = [UIColor whiteColor];
+
+    _yy_text.placehoderLbl.textColor=UIColorFromHex(0x8a8a8f);
+    
+// _yy_text.placehoderLbl.backgroundColor=UIColorFromHex(0x313131);
+    _send_btn.backgroundColor = UIColorFromHex(0x50d2c2);
+    [_send_btn setTintColor:UIColorFromHex(0xffffff)];
+    
+
+
+}
 -(void)autolayoutWithMasonry
 {
-    
     [_send_btn mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.leftMargin.equalTo(self.mas_left).offset(5);
-        make.height.offset(YY_ININPONE5_HEIGHT(30.0f));
-        make.width.offset(YY_ININPONE5_WITH(30.0f));
-        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE5_WITH(-10.0f));
-        make.topMargin.equalTo(self.mas_top).offset(0);
+        make.width.offset(YY_ININPONE6_WITH(50.0f));
+        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE6_WITH(-24.0f));
+        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE6_HEIGHT(15.0f));
+        make.bottomMargin.equalTo(self.mas_bottom).offset(YY_ININPONE5_HEIGHT(-15.0f));
     }];
     
     
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(10.0f));
+        make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(20.0f));
         make.height.offset(1);
-        make.width.offset(YY_ININPONE5_WITH(300.0f));
-        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE5_WITH(-10.0f));
-        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE5_HEIGHT(35.0f));
+        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE5_WITH(-75.0f));
+        make.bottomMargin.equalTo(self.mas_bottom).offset(YY_ININPONE5_HEIGHT(-15.0f));
     }];
-    
     
     [self.yy_text mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(8.0f));
-        make.height.offset(YY_ININPONE5_HEIGHT(25.0f));
-        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE5_WITH(-35.0f));
-        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE5_HEIGHT(8.0f));
+        make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(20.0f));
+        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE5_WITH(-75.0f));
+        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE5_HEIGHT(15.0f));
+        make.bottomMargin.equalTo(self.mas_bottom).offset(YY_ININPONE6_HEIGHT(-20.0f));
     }];
 }
-//添加监听
--(void)addObserver
-{
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
-}
+
 - (void)dealloc1{
     //移除所有通知
     [[NSNotificationCenter defaultCenter]removeObserver:self];

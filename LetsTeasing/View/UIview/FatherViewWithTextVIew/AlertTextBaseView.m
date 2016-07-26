@@ -16,6 +16,8 @@
     if (self) {
         [self addViewForText];
         [self addSendBUtton];
+        [self setColor];
+        self.yy_text.textColor = UIColorFromHex(0x8a8a8f);
     }
     
     
@@ -29,7 +31,7 @@
 -(void)addViewForText
 {
     
-    UILabel *  line = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 300, 1)];
+    line = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 300, 1)];
     line.backgroundColor = [UIColor blackColor];
     [self addSubview:line];
     
@@ -41,36 +43,46 @@
     
     
     
+    
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(10.0f));
-        make.height.offset(YY_ININPONE5_HEIGHT(1.0f));
-        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE5_WITH(-10.0f));
-        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE5_HEIGHT(30.0f));
+        make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(20.0f));
+        make.height.offset(1);
+        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE5_WITH(-70.0f));
+        make.bottomMargin.equalTo(self.mas_bottom).offset(YY_ININPONE5_HEIGHT(-12.0f));
     }];
+    
     [self.yy_text mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(5.0f));
-        make.height.offset(YY_ININPONE5_HEIGHT(22.0f));
-        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE5_WITH(-35.0f));
-        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE5_HEIGHT(8.0f));
+        make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(20.0f));
+        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE5_WITH(-70.0f));
+        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE5_HEIGHT(10.0f));
+        make.bottomMargin.equalTo(self.mas_bottom).offset(YY_ININPONE6_HEIGHT(-20.0f));
     }];
 }
 -(void)addSendBUtton
 {
     _send_btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_send_btn setFrame:CGRectMake(285, 0, 30, 30)];
-    UIImage* image =[UIImage imageNamed:@"send.png"];
-    [_send_btn setImage: [self OriginImage:image scaleToSize:CGSizeMake(15, 15)] forState:UIControlStateNormal];
-    _send_btn.imageEdgeInsets = UIEdgeInsetsMake(13, 0, 0, 0);
-    
+    [_send_btn setTitle:@"发布" forState:UIControlStateNormal];
+    _send_btn.titleLabel.font = [UIFont fontWithName:@"Arial" size:13];
     [self addSubview:_send_btn];
+    
     
     [_send_btn mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.leftMargin.equalTo(self.mas_left).offset(5);
-        make.height.offset(YY_ININPONE5_HEIGHT(30.0f));
-        make.width.offset(YY_ININPONE5_WITH(30.0f));
-        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE5_WITH(-10.0f));
-        make.topMargin.equalTo(self.mas_top).offset(0);
+        make.width.offset(YY_ININPONE6_WITH(45.0f));
+        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE6_WITH(-20.0f));
+        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE6_HEIGHT(15.0f));
+        make.bottomMargin.equalTo(self.mas_bottom).offset(YY_ININPONE6_HEIGHT(-15.0f));
     }];
+}
+-(void)setColor
+{
+    self.backgroundColor = [UIColor whiteColor];
+    _send_btn.backgroundColor = UIColorFromHex(0x50d2c2);
+    [_send_btn setTintColor:UIColorFromHex(0xffffff)];
+    _yy_text.backgroundColor = [UIColor whiteColor];
+    line.backgroundColor = [UIColor lightGrayColor];
+    _yy_text.placehoderLbl.textColor = UIColorFromHex(0x8a8a8f);
 }
 
 -(UIImage*) OriginImage:(UIImage *)image scaleToSize:(CGSize)size

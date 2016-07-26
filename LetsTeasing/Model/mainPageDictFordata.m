@@ -117,6 +117,7 @@ return NameArray;
         if (i ==0) {
             [array addObject:NameArray[i]];
             NSString * name = [NameArray[i] objectForKey:@"playerName"];
+            
             [self addDictWhenFilterName:name adddict:NameArray[i]];
         }else
         {
@@ -145,7 +146,7 @@ return NameArray;
         [saidWordForName setObject:nameArray forKey:Name];
     }
     [nameArray addObject:dict];
-    NSLog(@"过滤出来的字典%lu",(unsigned long)saidWordForName.count);
+
    
 }
 -(void)releaseDict

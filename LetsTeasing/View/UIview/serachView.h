@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "View_for_Text.h"
-
+#import "SearchHistoryAndReacommend.h"
 
 @class serachView;
 
@@ -24,7 +24,7 @@
 // 设置显示列的内容
 -(NSInteger)searchBarNumberOfRowInSection;
 // 设置显示没行的内容
--(NSString *)CustomSearchBar:(serachView *)searchBar titleForRowAtIndexPath:(NSIndexPath *)indexPath;
+-(NSArray *)CustomSearchBar:(serachView *)searchBar titleForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 
 @optional
@@ -48,6 +48,7 @@
     NSDictionary * dict;
     NSString * inputText;
     UIImageView *imageViewXX;
+   
 
 }
 
@@ -55,8 +56,9 @@
 
 // 显示
 
-
+@property (nonatomic, strong)  SearchHistoryAndReacommend *searchPlistContent;
 +(instancetype)show:(CGPoint)orgin andHeight:(CGFloat)height;
+@property (nonatomic, assign) BOOL  setImageBOOL;
 @property (nonatomic, strong) UITextField * searchBarText;
 
 @property (nonatomic, weak) UITableView * searchBarTableView;
@@ -64,5 +66,5 @@
 @property (nonatomic, weak) id<CustomSearchBarDataSouce>    DataSource;
 @property (nonatomic, weak) id<CustomSearchBarDelegate>     delegate;
 @property (nonatomic, weak) id<searchResults>               searchResults;
-
+@property (nonatomic, strong)NSArray * searchContentArray;
 @end

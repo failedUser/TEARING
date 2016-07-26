@@ -33,6 +33,8 @@
 #define YY_ININPONE5_WITH(x)        ([[UIScreen mainScreen] bounds].size.width)*x/320.0f
 #define YY_ININPONE5_HEIGHT(x)      ([[UIScreen mainScreen] bounds].size.height)*x/568.0f
 
+#define YY_ININPONE6_WITH(x)        ([[UIScreen mainScreen] bounds].size.width)*x/375.0f
+#define YY_ININPONE6_HEIGHT(x)      ([[UIScreen mainScreen] bounds].size.height)*x/667.0f
 #endif
 
 
@@ -47,6 +49,7 @@
 
 
 #ifndef __FONT_SYSTEM__
+#define  YYSEARCHCANCEL_FONT        [UIFont fontWithName:@"Arial" size:16.0f];
 #define  YYBUTTON_FONT              [UIFont fontWithName:@"Arial" size:15.0f];
 #define  YYSYSTEM_FONT              [UIFont fontWithName:@"Arial" size:13.0f];
 #define  YYDATE_FONT                [UIFont fontWithName:@"Arial" size:10.0f];
@@ -61,15 +64,15 @@
 #define JCAlertViewHeight           YY_ININPONE5_HEIGHT(400.0f)
 #define JCAlertViewMaxHeight        YY_ININPONE5_HEIGHT(440.0f)
 #define JCMargin                    8
-#define JCAlertViewTitleLabelHeight YY_ININPONE5_HEIGHT(20.0f)
-#define JCAlertViewTitleColor       [UIColor lightGrayColor]
-#define JCAlertViewTitleFont        [UIFont boldSystemFontOfSize:13]
+#define JCAlertViewTitleLabelHeight YY_ININPONE5_HEIGHT(44.0f)
+#define JCAlertViewTitleColor       UIColorFromHex(0x1d1d26)
+#define JCAlertViewTitleFont        [UIFont boldSystemFontOfSize:15.0]
 #define JCAlertViewContentColor     JCColor(102, 102, 102)
 #define JCAlertViewContentFont      [UIFont systemFontOfSize:16]
 #define JCAlertViewContentHeight    (JCAlertViewHeight - JCAlertViewTitleLabelHeight - JCButtonHeight - JCMargin * 2)
 #define JCiOS7OrLater               ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7)
 #define tableViewHeight             YY_ININPONE5_HEIGHT(290.0f)
-#define TextVIewHeight              YY_ININPONE5_HEIGHT(30.0f)
+#define TextVIewHeight              YY_ININPONE6_HEIGHT(44.0f)
 #endif
 
 #endif

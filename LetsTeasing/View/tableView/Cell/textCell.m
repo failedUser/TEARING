@@ -52,10 +52,10 @@
         [self.contentView addSubview:_line_label];
         [self.contentView addSubview:commentImageView];
         [self.contentView addSubview:_comment_Count];
+
         [self autolayout];
         
-        
-        [self addCommentImage];
+      
         [self setIconAndLabelInCommentLabel];
     }
     return self;
@@ -63,7 +63,7 @@
 
 -(void)autolayout
 {
-    
+    //红色/绿色小点
     [commentImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.offset(YY_ININPONE5_WITH(8.0f));
         make.height.offset(YY_ININPONE5_HEIGHT(8.0f));
@@ -75,7 +75,7 @@
         make.width.offset(YY_ININPONE5_WITH(30.0f));
         make.height.offset(YY_ININPONE5_HEIGHT(13.0f));
         make.topMargin.equalTo(self.contentView.mas_top).offset(topMerge);
-        make.rightMargin.equalTo(self.contentView.mas_right).offset(YY_ININPONE5_HEIGHT(-20.0f));
+        make.rightMargin.equalTo(self.contentView.mas_right).offset(YY_ININPONE5_HEIGHT(-10.0f));
     }];
     [_namelabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leftMargin.equalTo(self.contentView.mas_leftMargin).offset(leftMerge);
@@ -88,7 +88,7 @@
         make.leftMargin.equalTo(self.contentView.mas_leftMargin).offset(leftMerge-YY_ININPONE5_WITH(2.0f));
         make.height.offset(YY_ININPONE5_HEIGHT(10.0f));
         make.width.offset(YY_ININPONE5_WITH(80.0f));
-        make.topMargin.equalTo(self.contentView.mas_top).offset(YY_ININPONE5_HEIGHT(35.0f));
+        make.topMargin.equalTo(self.contentView.mas_top).offset(YY_ININPONE5_HEIGHT(32.0f));
     }];
     
     
@@ -179,12 +179,15 @@
         make.width.offset(YY_ININPONE5_WITH(20.0f));
         make.height.offset(YY_ININPONE5_HEIGHT(13.0f));
         make.top.equalTo(_comment_Count.mas_top).offset(0.1f);
-        make.leftMargin.equalTo(_comment_Count.mas_left).offset(YY_ININPONE5_WITH(12.0f));
+        make.leftMargin.equalTo(_comment_Count.mas_left).offset(YY_ININPONE5_WITH(14.0f));
     }];
 }
 -(void)setLabelText:(NSInteger)count
 {
-    NSLog(@"传进来的值%ld",(long)count);
     _ComCount.text = [NSString stringWithFormat:@"%ld",(long)count];
+    if (count>=1)
+        [self addhotCommentImage];
+    else [self addCommentImage];
 }
+
 @end

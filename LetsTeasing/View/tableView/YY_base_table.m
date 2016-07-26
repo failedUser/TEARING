@@ -14,19 +14,23 @@
 
 
 @implementation YY_base_table
-
++(YY_base_table *)shareBaseTable
+{
+    static YY_base_table *BaseTable = nil;
+    if (!BaseTable) {
+        BaseTable = [[YY_base_table alloc]init];
+    }
+    return  BaseTable;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
-//    [self reloadData];
-  
     [self initDict];
-
     self = [super initWithFrame:frame style:UITableViewStyleGrouped];
     self.delegate =self;
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
-
+ 
     return self;
 }
 
@@ -48,15 +52,18 @@
    textCell *  cell = [tableView dequeueReusableCellWithIdentifier:CMainCell];
     
     if(cell == nil) cell = [[textCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CMainCell];
-    
     if(cell.TextLabel.text != nil)  cell.TextLabel.text = @"";
 
-
     NSNumber * num = [NSNumber numberWithInteger:_dict.count-indexPath.row-1];
-    BmobObject * dict1 = [_dict objectForKey:num];
-    //给他们传值
-    NSInteger count = [info Count:[dict1 objectForKey:@"objectId"]];
+    dict1 = [_dict objectForKey:num];
+    //给里面的评论个数传值传值
+    [self setCount];
+//    if (count>=1)[cell addhotCommentImage];
+//        
+//    else if(count==0) [cell addCommentImage];
+    
     [cell setLabelText:count];
+    
     NSString * dateStr = [dict1 objectForKey:@"createdAt"];
     NSString * cut  = [dateStr substringFromIndex:10];
     
@@ -65,12 +72,15 @@
     cell.dataLabel.text = cut;
     cell.TextLabel.numberOfLines = 0;
     
-    
+    //自适应textview的高度
     if (cell.TextLabel.text != nil) heightForTextLavbel = [cell height];
-
+    else NSLog(@"主页面中说的话为空");
     return cell;
 }
-
+-(void)setCount
+{
+    count = [info Count:[dict1 objectForKey:@"objectId"]];
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _heightTable = YY_ININPONE5_HEIGHT(heightForTextLavbel)+YY_ININPONE5_HEIGHT(18.0f);
@@ -104,7 +114,29 @@
 
 -(void)reloadData
 {
+   
     [super reloadData];
+    [info AlertDataReload];
+
     info = [commentInfo ShareCommentData];
+    if (_getString1>=0) {
+        NSLog(@"从alert传进来的数%ld", (long)_getString1);
+        [self refreshIndexCell:_getString1];
+    }
+  
+}
+-(void)refreshIndexCell:(NSInteger)getIndex
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:getIndex inSection:0];
+    textCell *cell = [self cellForRowAtIndexPath:indexPath];
+    NSNumber * num = [NSNumber numberWithInteger:_dict.count-indexPath.row-1];
+    BmobObject* dict2 = [_dict objectForKey:num];
+    //给里面的评论个数传值传值
+    NSInteger COUNTT =[info Count:[dict2 objectForKey:@"objectId"]];
+    if (count>=1)[cell addhotCommentImage];
+    else if(count==0) [cell addCommentImage];
+    [cell setLabelText:COUNTT];
+
+    
 }
 @end

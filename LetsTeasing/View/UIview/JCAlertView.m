@@ -240,7 +240,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 {
     self = [super initWithFrame:frame];
     if (self) {
-       
+        baseTable  = [YY_base_table shareBaseTable];
 //        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange2:) name:UIKeyboardWillChangeFrameNotification object:nil];
 
 
@@ -301,7 +301,11 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 - (void)alertBtnClick{
     [self dismissAlertWithCompletion:^{
     }];
-
+    NSLog(@"一共%lu",(unsigned long)baseTable.dict.count);
+    NSInteger  numb = [[_dataforRow objectForKey:@"numberOfSaidWords"] intValue];
+    NSInteger indexROw = (NSInteger)baseTable.dict.count-numb-1;
+    baseTable.getString1 =indexROw;
+    [baseTable reloadData];
 }
 //这不才是真东西么
 
@@ -332,12 +336,14 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
         return;
     }
     self.frame = CGRectMake(0, 0, _multiple*JCAlertViewWidth, _multiple*JCAlertViewHeight);
+    self.layer.cornerRadius= 12;
 //    NSInteger count = self.buttons.count;
     self.center = CGPointMake(JCScreenWidth / 2, JCScreenHeight / 2);
     self.backgroundColor = [UIColor whiteColor];
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(JCMargin, 0, JCAlertViewWidth - JCMargin * 2, JCAlertViewTitleLabelHeight)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.text = self.title;
+    
     titleLabel.textColor = JCAlertViewTitleColor;
     titleLabel.font = JCAlertViewTitleFont;
     titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -348,17 +354,17 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
         frame.origin.y -= 10;
         self.frame = frame;
     }
-    _basetextView = [[AlertTextBaseView alloc]initWithFrame:CGRectMake(JCMargin, self.frame.size.height - TextVIewHeight, JCAlertViewWidth - JCMargin * 2, TextVIewHeight)];
-    _basetextView.yy_text.placehoderLbl.text = (_basetextView.yy_text.placeHoder.length>0?_basetextView.yy_text.placeHoder:@"@评论");
+    _basetextView = [[AlertTextBaseView alloc]initWithFrame:CGRectMake(JCMargin, self.frame.size.height - TextVIewHeight-JCMargin, JCAlertViewWidth - JCMargin * 2, TextVIewHeight)];
+    _basetextView.yy_text.placehoderLbl.text = (_basetextView.yy_text.placeHoder.length>0?_basetextView.yy_text.placeHoder:@"我来吐槽");
           [_basetextView.send_btn addTarget:self action:@selector(SendToAlertTable) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_basetextView];
             [self addTable];
 
-        UIButton * view =  [[UIButton alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(290.0f)- YY_ININPONE5_WITH(30.0), 0 , YY_ININPONE5_HEIGHT(20.0), YY_ININPONE5_HEIGHT(20.0))];
-    [view setImage:[UIImage imageNamed:@"delete1.png"] forState:UIControlStateNormal];
-    [view addTarget:self action:@selector(alertBtnClick) forControlEvents:UIControlEventTouchUpInside];
+         _CancelButton=  [[UIButton alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(270.0f)- YY_ININPONE6_WITH(30.0), YY_ININPONE6_HEIGHT(10.0f) , YY_ININPONE6_HEIGHT(30.0), YY_ININPONE6_HEIGHT(30.0))];
+    [_CancelButton setImage:[UIImage imageNamed:@"icon_cancel.png"] forState:UIControlStateNormal];
+ [_CancelButton addTarget:self action:@selector(alertBtnClick) forControlEvents:UIControlEventTouchUpInside];
 //        view.popView = self;
-        [self addSubview:view];
+        [self addSubview:_CancelButton];
 
 
 }
@@ -367,7 +373,6 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 //     NSLog(@"弹出框中table的配置");
     self.table = [[YY_content_table alloc]init];
     _table.comminfo = [[commentInfo alloc]init];
-    //table中data的数据传输口在这
     //在配置完table后才会执行这个,这个先放着
    // _dataforRow只是传进来的一个外键属性
            NSLog(@"传进来的对象是%@",_dataforRow);
@@ -386,7 +391,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 
     }
     //给table的array赋值
-    [_table setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight)];
+    [_table setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight-JCMargin)];
     [self addSubview:_table];
 }
 -(void)SendToAlertTable
@@ -396,9 +401,10 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     NSString * message = [self.basetextView.yy_text.text  copy];
     [self MessageManager:message];
     [self.basetextView.yy_text resignFirstResponder];
+    
     [self.table reloadData];
 //    //滑到更新的那一行
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_table.comDict.count-1 inSection:0];
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.table.comDict.count-1 inSection:0];
 //    [self.table scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     self.basetextView.yy_text.text = @"";
 }

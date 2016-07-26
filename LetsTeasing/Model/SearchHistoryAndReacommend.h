@@ -17,4 +17,9 @@
 //        Student * student;
 
 }
+@property(nonatomic,assign)NSString * Searchplist ;
+
+-(NSArray*)getArrayfromPlist;
++(SearchHistoryAndReacommend*)shareSearchPlist;
+-(void)writeIntoPlist:(NSArray*)array;
 @end

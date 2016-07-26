@@ -31,9 +31,16 @@
 {
         [super viewWillAppear: animated];
     // 马上进入刷新状态
- 
+
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"icon_nav_arrow.png"] style:UIBarButtonItemStyleDone target:self action:@selector(comeBack)];
+    //导航栏左边按钮颜色
     [person_tabV.mj_header beginRefreshing];
     
+}
+-(void)comeBack
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -50,6 +57,9 @@
     List_name3 = [NSArray arrayWithObjects:@"给个好评",@"帮助",@"关于", nil];
     Array_section = [NSArray arrayWithObjects:List_name1,List_name2,List_name3, nil];
     person_tabV = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStyleGrouped];
+       person_tabV.separatorStyle = UITableViewCellSelectionStyleNone;
+    person_tabV.backgroundColor = [UIColor whiteColor];
+//    person_tabV = UITableViewCellSeparatorStyleNone;
     //下拉刷新
        MJRefreshHeader * header = [MJRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(refresh)];
     header.automaticallyChangeAlpha =YES;
@@ -122,7 +132,13 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.tintColor = [UIColor redColor];
         
+        
+  
     }
+    UILabel * line = [[UILabel alloc]initWithFrame:CGRectMake(cell.frame.size.width*0.05, cell.frame.size.height-1, cell.frame.size.width*0.9, 1)];
+    line.backgroundColor =  UIColorFromHex(0xf3f3f4);
+    //        line.backgroundColor = [UIColor redColor];
+    [cell.contentView addSubview:line];
     return cell;
 }
 -(void)addNameLabel:(UITableViewCell *)cell
@@ -168,21 +184,21 @@
 //添加switch
 -(void)addbutton:(UITableViewCell *) cell1 button:(UISwitch *)Switch1
 {
-    Switch1 = [[UISwitch alloc]initWithFrame:CGRectMake(275,10, 10, 15)];
+    Switch1 = [[UISwitch alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(270.0f),YY_ININPONE5_HEIGHT(7.0f), YY_ININPONE5_WITH(10.0f), YY_ININPONE5_HEIGHT(15.0f))];
     [Switch1 setOn:YES animated:YES];
 
-    [Switch1 setOnTintColor:[UIColor blackColor]];
+    [Switch1 setOnTintColor:UIColorFromHex(0x50d2c2)];
     Switch1.transform = CGAffineTransformMakeScale(0.6, 0.6);
     [cell1 addSubview:Switch1];
-    
-    [Switch1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.offset(YY_ININPONE5_HEIGHT(15.0f));
-        make.leftMargin.equalTo(cell1.mas_left).offset(YY_ININPONE5_WITH(280.0f));
-        make.topMargin.equalTo(cell1.mas_top).offset(YY_ININPONE5_HEIGHT(15.0f));
-        make.width.offset(YY_ININPONE5_WITH(10.0f));
-        
-        
-    }];
+//    
+//    [Switch1 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.height.offset(YY_ININPONE5_HEIGHT(15.0f));
+//        make.leftMargin.equalTo(cell1.mas_left).offset(YY_ININPONE5_WITH(280.0f));
+//        make.topMargin.equalTo(cell1.mas_top).offset(YY_ININPONE5_HEIGHT(15.0f));
+//        make.width.offset(YY_ININPONE5_WITH(10.0f));
+//        
+//        
+//    }];
     
 }
 //需要写事件
@@ -192,7 +208,8 @@
     [logOut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     logOut.titleLabel.font = [UIFont systemFontOfSize: 15.0];
     logOut.titleLabel.textAlignment = NSTextAlignmentCenter;
-    logOut.backgroundColor = [UIColor whiteColor];
+    logOut.backgroundColor = UIColorFromHex(0x313131);
+    [logOut setTitleColor:UIColorFromHex(0x50d2c2) forState:UIControlStateNormal];
     [logOut setTitle:@"退出当前登录" forState:(UIControlStateNormal)];
 
 
@@ -252,10 +269,7 @@
     if (indexPath.section ==0) {
      
         changeName * view = [[changeName alloc]init];
-          UIBarButtonItem *backbutton = [[UIBarButtonItem alloc]init];
-        backbutton.title = @"";
-        [backbutton setTintColor:[UIColor whiteColor]];
-        self.navigationItem.backBarButtonItem = backbutton;
+        
         [self.navigationController pushViewController:view animated:YES];
     }
        [person_tabV deselectRowAtIndexPath:indexPath animated:NO];

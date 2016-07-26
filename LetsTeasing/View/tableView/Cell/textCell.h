@@ -23,4 +23,6 @@
 -(void)addtextlabel;
 -(CGFloat)height;
 -(void)setLabelText:(NSInteger)count;
+-(void)addCommentImage;
+-(void)addhotCommentImage;
 @end

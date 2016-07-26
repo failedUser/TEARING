@@ -10,4 +10,7 @@
 
 @interface arrayOperation : NSObject
 +(NSMutableArray *)mergeArray:(NSArray*)array1 array2:(NSArray *)array2;
++(NSMutableArray *)addObjectForDict:(NSArray*)array;
++(NSMutableArray *)addUserObjectForDict:(NSArray*)array;
++(NSMutableArray *)addHistoryObjectForDict:(NSArray*)array;
 @end

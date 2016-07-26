@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface YY_TextView : UITextView
-
+@interface YY_TextView : UITextView<UITextViewDelegate>
+@property (nonatomic,assign)   CGFloat            textHeight;
 @property (nonatomic,strong) UIColor            * placehoderColor;
 @property (nonatomic,copy)   NSString           * placeHoder;
 @property (nonatomic,strong) UILabel            * Under_line;

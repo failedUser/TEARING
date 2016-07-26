@@ -10,10 +10,7 @@
 
 @interface changeName : UIViewController
 {
-    UITextField * view;
     NSString * changeName;
 }
-@property (nonatomic,strong) UILabel *          placehoderLbl;
-@property (nonatomic,strong) UIColor            * placehoderColor;
-@property (nonatomic,copy)   NSString           * placeHoder;
+
 @end

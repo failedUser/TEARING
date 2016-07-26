@@ -40,9 +40,44 @@
             [mergeArray addObject:array1[i]];
         }
     }
+    
+    
+    
        return mergeArray;
     
     
 }
-
++(NSMutableArray *)addObjectForDict:(NSArray*)array
+{
+    NSMutableArray * arr = [NSMutableArray new];
+    for (int i=0; i<array.count; i++) {
+            NSDictionary * dict = array[i];
+        NSMutableDictionary * dict2 = [NSMutableDictionary  dictionaryWithDictionary:dict];
+        [dict2 setObject:@"SearchContent" forKey:@"identifier"];
+        [arr addObject:dict2];
+    }
+    return arr;
+}
++(NSMutableArray *)addUserObjectForDict:(NSArray*)array
+{
+    NSMutableArray * arr = [NSMutableArray new];
+    for (int i=0; i<array.count; i++) {
+        NSDictionary * dict = array[i];
+        NSMutableDictionary * dict2 = [NSMutableDictionary  dictionaryWithDictionary:dict];
+        [dict2 setObject:@"User" forKey:@"identifier"];
+        [arr addObject:dict2];
+    }
+    return arr;
+}
++(NSMutableArray *)addHistoryObjectForDict:(NSArray*)array
+{
+    NSMutableArray * arr = [NSMutableArray new];
+    for (int i=0; i<array.count; i++) {
+        NSMutableDictionary * dict = [NSMutableDictionary new];
+        [dict setObject:array[i] forKey:@"playerName"];
+        [dict setObject:@"History" forKey:@"identifier"];
+        [arr addObject:dict];
+    }
+    return arr;
+}
 @end

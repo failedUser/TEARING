@@ -76,7 +76,6 @@
 //这里由于计算量太大，会消耗很多时间，需要设计算法。
 -(NSMutableArray *)getDataForRow
 {
-      NSLog(@"数组里面有多少个%lu",(unsigned long)_Comment_DICT.count);
     int j = 0;
     NSMutableArray * commentdataArray = [NSMutableArray arrayWithCapacity:1000];
     for (int i =0; i<_Comment_DICT.count; i++) {
@@ -96,7 +95,7 @@
         }
           }
     }
-    NSLog(@"过滤出来的字典里面有多少%lu",(unsigned long)commentdataArray.count);
+
     return commentdataArray;
 }
 -(NSMutableArray *)dictWithName:(NSString *)name

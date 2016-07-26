@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TTTAttributedLabel.h"
 
 @interface searchCell : UITableViewCell
 
+@property(nonatomic,strong)  UILabel     * TextLabel;
+@property(nonatomic,strong)  UIImageView * stateImage;
+
+-(void)setHistoryImage;
+-(void)setSearchUserImage;
+-(void)setSearchWOrdImage;
 @end

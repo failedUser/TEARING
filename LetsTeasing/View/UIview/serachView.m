@@ -11,22 +11,37 @@
 #import "JCAlertView.h"
 #import "textCell.h"
 #import "UIImageView+LBBlurredImage.h"
+#import "searchCell.h"
 
 @implementation serachView
+@synthesize searchContentArray;
 -(instancetype)initWithOrgin:(CGPoint)origin andHeight:(CGFloat)height {
     self = [super initWithFrame:CGRectMake(origin.x, origin.y, SCREEN_WIDTH, height)];
     if (self) {
         [self initView];
-          [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textchange) name:UITextFieldTextDidChangeNotification object:nil];
-        
+          [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textchange) name:UITextViewTextDidBeginEditingNotification object:nil];
+        [self initSearchPlist];
     }
     return self;
 }
+-(void)initSearchPlist
+{
+    _searchPlistContent = [SearchHistoryAndReacommend shareSearchPlist];
+    searchContentArray = [_searchPlistContent getArrayfromPlist];
+    if (searchContentArray==nil) {
+        searchContentArray = [NSArray arrayWithObjects:@"#带井号的是系统关键词",@"#你好",@"#a", nil];
+        [_searchPlistContent writeIntoPlist:searchContentArray];
+    }else  NSLog(@"%@",searchContentArray);
+   
+    NSLog(@"plist文件已经执行了啊，cell里面应该有值");
+
+}
+
 -(void)textchange
 {
     if (_searchBarText.text.length == 0) {
-        NSLog(@"里面的内容为0");
         dict = NULL;
+        self.searchResults =0;
         [_searchBarTableView reloadData];
     }
 }
@@ -42,22 +57,23 @@
     [self addSubview:effectView];
     effectView.alpha = .6f;
     //虚化搜索背景，只是现在没有图片
-    
+//    
 //    imageViewXX = [[UIImageView alloc]init];
 //    imageViewXX.frame = self.bounds;
-//    [imageViewXX setImageToBlur:[UIImage imageNamed:@"clear.png"]
+//    [imageViewXX setImageToBlur:[UIImage imageNamed:@"clearsearchBack.png"]
 //                        blurRadius:kLBBlurredImageDefaultBlurRadius
 //                   completionBlock:^(){
 //                       NSLog(@"The blurred image has been set");
 //                   }];
 //    [self addSubview:imageViewXX];
     UIView * searchBg = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
-    searchBg.backgroundColor = YYColor(244, 244, 244);
+    searchBg.backgroundColor =UIColorFromHex(0x313131);
     [self addSubview:searchBg];
     
-    self.searchBarText = [[UITextField alloc] initWithFrame:CGRectMake(7, 27, SCREEN_WIDTH * 0.8 , 31)];
+    self.searchBarText = [[UITextField alloc] initWithFrame:CGRectMake(YY_ININPONE6_WITH(16.0f), 27, SCREEN_WIDTH * 0.78 , 29)];
     self.searchBarText.borderStyle = UITextBorderStyleRoundedRect;
     self.searchBarText.delegate = self;
+    self.searchBarText.font = YYSYSTEM_FONT;
     [searchBg addSubview:self.searchBarText];
     self.searchBarText.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.searchBarText becomeFirstResponder];
@@ -78,15 +94,15 @@
     CGFloat cancleBtnH = 18;
     CGFloat cancleBtnX = SCREEN_WIDTH - 10 - cancleBtnW;
     CGFloat cancleBtnY = (44 * 0.5 - 9) + 20;
-    cancleBtn.titleLabel.font = YYBUTTON_FONT;
+    cancleBtn.titleLabel.font = YYSEARCHCANCEL_FONT;
     cancleBtn.frame = CGRectMake(cancleBtnX, cancleBtnY, cancleBtnW, cancleBtnH);
     [cancleBtn setTitle:@"取消" forState:UIControlStateNormal];
-    [cancleBtn setTitleColor:YYColor(132, 134, 137) forState:UIControlStateNormal];
+    [cancleBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     //    cancleBtn.backgroundColor = [UIColor redColor];
     [cancleBtn addTarget:self action:@selector(cancleClick:) forControlEvents:UIControlEventTouchUpInside];
     [searchBg addSubview:cancleBtn];
     
-    
+   
     UITableView * searchBarTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(searchBg.frame), SCREEN_WIDTH , SCREEN_HEIGHT - CGRectGetMaxY(searchBg.frame)) style:UITableViewStylePlain];
     searchBarTableView.backgroundColor = [UIColor orangeColor];
     searchBarTableView.delegate = self;
@@ -95,7 +111,7 @@
     searchBarTableView.tableFooterView = [[UIView alloc] init];
     searchBarTableView.backgroundColor = self.backgroundColor;
     self.searchBarTableView = searchBarTableView;
-    
+    searchBarTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(TapClick)];
@@ -142,29 +158,32 @@
 }
 
 -(UITableViewCell * )tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString * ID = @"Cell";
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    static NSString * ID = @"searchCell";
+    searchCell * cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
-    
-//        [cell addtextlabel];
+        cell = [[searchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
-//
-//    cell.backgroundColor=[UIColor clearColor];
-//    cell.namelabel.textColor = [UIColor whiteColor];
-//    cell.namelabel.textColor = [UIColor whiteColor];
+
     NSIndexPath * path = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     // 文字
     if (self.DataSource && [self.DataSource respondsToSelector:@selector(CustomSearchBar:titleForRowAtIndexPath:)]) {
         
-        NSString * Name = [self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
-              NSRange range2= [Name rangeOfString:inputText];
+        NSArray * NameArry = [self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
+        if([NameArry[1] isEqualToString:@"YES"]) [cell setSearchUserImage];
+        else if([NameArry[1]isEqualToString:@"NO"])[cell setSearchWOrdImage];
+        else if([NameArry[1] isEqualToString:@"HHH"])
+        {cell.TextLabel.text = NameArry[0];
+            [cell setHistoryImage];
+        }
+//        [cell setSearchUserImage];
+        NSString * Name =NameArry[0];
+            NSRange range2= [Name rangeOfString:inputText];
         if (range2.location!=NSNotFound) {
             if (range2.location >45 ) {
                 NSString * EndSting = [Name substringWithRange:NSMakeRange(range2.location -20, Name.length-range2.location+20)];
-                cell.textLabel.text = EndSting;
+                cell.TextLabel.text = EndSting;
             }
-            else cell.textLabel.text = Name;
+            else cell.TextLabel.text = Name;
                 }
         else
         {
@@ -172,24 +191,15 @@
             NSLog(@"not found");
             
         }
-//        cell.textLabel.text =[self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
-        cell.textLabel.font = YYSYSTEM_FONT;
-        cell.backgroundColor = [UIColor clearColor];
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.numberOfLines =2;
-       NSRange range= [cell.textLabel.text rangeOfString:inputText];
-        if (cell.textLabel.text == nil) {
-            NSLog(@"cell里面没有值");
-        }else  [string setTextColor:cell.textLabel FontNumber:[UIFont fontWithName:@"Arial" size:13.0] AndRange:range AndColor:[UIColor greenColor]];
-        
-        
-//        dict =[self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
-//        cell.namelabel.text = [dict objectForKey:@"playerName"];
-//        cell.TextLabel.backgroundColor = [UIColor redColor];
-//        cell.text_label.text = [dict objectForKey:@"saidWord"];
-//        NSString * date = [dict objectForKey:@"createdAt"];
-//        NSString * cut = [date substringFromIndex:10];
-//        cell.dataLabel.text = cut;
+     
+        cell.TextLabel.numberOfLines =2;
+       NSRange range= [cell.TextLabel.text rangeOfString:inputText];
+        if (cell.TextLabel.text == nil) {
+            NSLog(@"cell里面没有值"); 
+        }else
+        {
+            [string setTextColor:cell.TextLabel FontNumber:[UIFont fontWithName:@"Arial" size:13.0] AndRange:range AndColor:UIColorFromHex(0x50d2c2)];
+        }
     }
     return cell;
 }
@@ -204,6 +214,6 @@
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YY_ININPONE5_HEIGHT(44.0f);
+    return YY_ININPONE6_HEIGHT(60);
 }
 @end

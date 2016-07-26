@@ -10,6 +10,9 @@
 #import "YY_TextView.h"
 
 @interface AlertTextBaseView : UIView
+{
+    UILabel *  line ;
+}
 @property   (weak, nonatomic)   NSLayoutConstraint * constrainH;
 @property   (nonatomic,strong)  UIView             * popView;
 @property   (nonatomic,strong)  YY_TextView        * yy_text;

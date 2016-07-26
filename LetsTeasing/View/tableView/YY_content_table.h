@@ -12,12 +12,13 @@
 @interface YY_content_table :UITableView<UITableViewDelegate,UITableViewDataSource>
 {
    NSMutableDictionary *commDICT;
-//NSMutableDictionary *comDict;
+   CGFloat heightForTextLabel;
     NSMutableArray *comDict;
+ 
 }
 @property(nonatomic,assign) BmobObject  * dicto;
 @property(nonatomic,strong) commentInfo * comminfo;
-//@property(nonatomic,assign) NSMutableDictionary *comDict;
+//@property(nonatomic,assign)
 
 @property(nonatomic,assign) NSInteger countOF;
 @property(nonatomic,assign) NSMutableArray * cellContent;

@@ -9,7 +9,11 @@
 #import "changeName.h"
 #import "Personal_centerViewController.h"
 
-@interface changeName ()<UITableViewDelegate,UITableViewDataSource>
+@interface changeName ()
+{
+    UITextField * changeNameField;
+    UILabel *line;
+}
 
 @end
 
@@ -17,26 +21,53 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UITableView * table = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStyleGrouped];
-    table.delegate =self;
-    table.dataSource =self;
-    [self.view addSubview:table];
+    self.view.backgroundColor = [UIColor whiteColor];
+   changeNameField =[[UITextField alloc]initWithFrame:CGRectMake(15, 64, 350, 44)];
+    changeNameField.textColor =[UIColor lightGrayColor];
+    changeNameField.font =[UIFont boldSystemFontOfSize:14];
+    changeNameField.tintColor = UIColorFromHex(0x50d2c2);
+    [changeNameField becomeFirstResponder];
+    [self.view addSubview:changeNameField];
+    
+   line  = [[UILabel alloc]initWithFrame:CGRectMake(0, 43, 340, 1)];
+    line.backgroundColor =  UIColorFromHex(0xf3f3f4);
+    
+    [self.view addSubview:line];
+    
+    [changeNameField textRectForBounds:CGRectMake(0, 20, 300, 30)];
+    [changeNameField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.offset(YY_ININPONE6_HEIGHT(50.0f));
+        make.topMargin.equalTo(self.view.mas_top).offset(70.0f);
+        make.leftMargin.equalTo(self.view.mas_left).offset(YY_ININPONE6_WITH(25.0f));
+             make.rightMargin.equalTo(self.view.mas_right).offset(YY_ININPONE6_WITH(-25.0f));
+    }];
+    
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.offset(YY_ININPONE5_HEIGHT(1.0f));
+        make.topMargin.equalTo(self.view.mas_top).offset(YY_ININPONE6_HEIGHT(52.0f)+64.0f);
+                make.leftMargin.equalTo(self.view.mas_left).offset(YY_ININPONE6_WITH(25.0f));
+        make.rightMargin.equalTo(self.view.mas_right).offset(YY_ININPONE6_WITH(-25.0f));
+    }];
     self.navigationItem.title = @"修改昵称";
 
-//    self.view.backgroundColor = [UIColor colorWithRed:239 green:239 blue:244 alpha:1];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"icon_nav_arrow.png"] style:UIBarButtonItemStyleDone target:self action:@selector(comeBack)];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(changeDone)];
 
     
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],NSForegroundColorAttributeName,[UIFont fontWithName:@"Arial" size:13.0],NSFontAttributeName, nil] forState:UIControlStateNormal];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:UIColorFromHex(0x50d2c2),NSForegroundColorAttributeName,[UIFont fontWithName:@"Arial" size:15.0],NSFontAttributeName, nil] forState:UIControlStateNormal];
 
+}
+-(void)comeBack
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)changeDone
 {
-    NSString * str = [view.text copy];
+    NSString * str = [changeNameField.text copy];
     [self changeBackGroundid:@"UVTaKKKP" changeValueName:@"playerName" value:str];
     
-    if (view.text.length != 0) {
+    if (changeNameField.text.length != 0) {
 
         [self.navigationController  popViewControllerAnimated:YES];
     }
@@ -65,46 +96,6 @@
     }];
 }
 
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 1;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-    }
-    
-    view =  [[UITextField alloc]initWithFrame:CGRectMake(0,0,320, 44)];
-    
-    view.placeholder = @"请修改昵称";
-    view.font = [UIFont fontWithName:@"Arial" size:13];
-    [cell addSubview:view];
-    [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.offset(YY_ININPONE5_HEIGHT(44.0f));
-        make.width.offset(YY_ININPONE5_WITH(320.0f));
-    }];
-    return  cell;
-}
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return YY_ININPONE5_HEIGHT(5.0f);
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
-{
-    return YY_ININPONE5_HEIGHT(44.0f);
-}
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 /*
 #pragma mark - Navigation

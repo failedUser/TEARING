@@ -8,6 +8,7 @@
 
 #import "YY_content_table.h"
 #import "textCell.h"
+#import "AlertTableCell.h"
 #import "mainPageDictFordata.h"
 #import "JCAlertView.h"
 #import "MJRefresh.h"
@@ -21,17 +22,21 @@
 //    [self data];
     [self.mj_footer beginRefreshing];
     _comminfo = [commentInfo ShareCommentData];
-
+    self.backgroundColor = [UIColor whiteColor];
     self = [super initWithFrame:frame style:UITableViewStyleGrouped];
     self.delegate =self;
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self MJrefresh];
     //监听键盘状态进行刷新
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
+    [self addNotifincation];
     
     _states =YES;
     return self;
+}
+-(void)addNotifincation
+{
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
 }
 -(void)keyboardWillDown
 {
@@ -48,6 +53,7 @@
     sleep(0.5);
     [self.comminfo commentReload];
     [self.comminfo AlertDataReload];
+    [self addNotifincation];
     if (_states) {
             [self data];
     } else [self dataforName];
@@ -79,11 +85,11 @@
 {
  
     static NSString *CMainCell = @"textCell";
-    textCell * cell = [tableView dequeueReusableCellWithIdentifier:CMainCell];
+   AlertTableCell  * cell = [tableView dequeueReusableCellWithIdentifier:CMainCell];
     
     if(cell == nil)
     {
-        cell = [[textCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CMainCell];
+        cell = [[AlertTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CMainCell];
     }
     if(cell.TextLabel.text != nil)
     {
@@ -102,8 +108,8 @@
         cell.dataLabel.text =cut;
     }
     cell.TextLabel.numberOfLines =0;
-    CGFloat  height = [self heightForString:cell.TextLabel andWidth:YY_ININPONE5_WITH(240.0f)];
-    [cell.TextLabel setFrame:CGRectMake(YY_ININPONE5_WITH(10.0f), YY_ININPONE5_HEIGHT(5.0f) , YY_ININPONE5_WITH(240.0f), YY_ININPONE5_HEIGHT(height)+YY_ININPONE5_HEIGHT(20.0f))];
+    if (cell.TextLabel.text != nil) heightForTextLabel = [cell height];
+    else NSLog(@"主页面中说的话为空");
     //设置cell不能被选中
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -111,24 +117,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
-    //Arial是字体的名字，他妈的不是给字体命名啊 我日
-    UIFont * font = [UIFont fontWithName:@"Arial" size:13.0];
-    UILabel * label = [[UILabel alloc]init];
-    [label setFont:font];
-
-    BmobObject * dict1 = comDict[indexPath.row];
-    if (dict1 ==nil) {
-        
-    }else label.text = [dict1 objectForKey:@"saidWord"];
-   
-
-    label.numberOfLines =0;
-    //cell里面字显示不出来是因为cell的高度不够，等以后整体功能做好了再仔细修改
-    CGFloat  height = [self heightForString:label andWidth:YY_ININPONE5_WITH(240.0f)];
-    _heightTable = height+28;
-
-    return YY_ININPONE5_HEIGHT(height)+YY_ININPONE5_HEIGHT(20.0f);
+    _heightTable = YY_ININPONE5_HEIGHT(heightForTextLabel)+YY_ININPONE5_HEIGHT(18.0f);
+    return YY_ININPONE5_HEIGHT(heightForTextLabel)+YY_ININPONE5_HEIGHT(40.0f);
     
 }
 
@@ -160,7 +150,7 @@
     //这个地方应该返回数组
    comDict = [_comminfo getDataForRow];
     NSLog(@"最终评论界面有多少个%lu",(unsigned long)comDict.count);
-    if (comDict.count == 0) {
+    if (comDict ==nil) {
         NSLog(@"里面没有值");
             comDict =nil;
 //        NSLog(@"赋值的字典里面有多少个元素%lu",(unsigned long)comDict.count);
@@ -178,7 +168,6 @@
 -(NSNumber *)returnCount
 {
     NSNumber * number = [NSNumber numberWithInteger:_comminfo.Comment_DICT.count];
-//    NSLog(@"返回的numb值%@",number);
     return  number;
 }
 

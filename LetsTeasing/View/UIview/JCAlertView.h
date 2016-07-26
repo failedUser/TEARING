@@ -24,13 +24,16 @@ typedef void(^clickHandle)(void);
 
 
 @interface JCAlertView : UIView<UITextViewDelegate,UIAlertViewDelegate>
+{
+    YY_base_table  * baseTable;
+}
 @property(nonatomic,strong) AlertTextBaseView * basetextView;
 @property(nonatomic,strong) NSMutableArray *ScellContent;
 @property (nonatomic,strong) YY_content_table * table;
 @property(nonatomic,assign) NSInteger multiple;
 @property (nonatomic, getter=isAlertReady) BOOL alertReady;
 @property(nonatomic,strong) NSString * sendString;
-
+@property(nonatomic,strong) UIButton * CancelButton;
 
 //@property(nonatomic,weak) id<AlertViewDelegate> Adelegate;
 
@@ -39,6 +42,7 @@ typedef void(^clickHandle)(void);
 
 //
 - (void)setup;
+
 //-(void)showOneButtonWithTitle:(NSString *)title data:(BmobObject*)datadict;
 -(void)showOneButtonWithTitle:(NSString *)title data:(BmobObject*)datadict sendName:(NSString*)name;
 //-(void)FuncSendstring:(NSString*)send;

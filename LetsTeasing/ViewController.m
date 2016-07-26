@@ -28,13 +28,15 @@
 #define defaultHeigeht  30
 #define addHeight 10
 
-#define  HeightForTable SCREEN_HEIGHT*(518.0/568.0)
-#define TextBackGroundVIewHeight SCREEN_HEIGHT*(44.0/568.0)
-#define TextBackGroundVIewY SCREEN_HEIGHT*(538.0/568.0)
+#define MesaageViewHeight SCREEN_HEIGHT*(36.0/667.0)
+#define HeightForTable TextBackGroundVIewY-MesaageViewHeight
+#define TextBackGroundVIewHeight SCREEN_HEIGHT*(49.0/667.0)
+#define TextBackGroundVIewY SCREEN_HEIGHT*(618.0/667.0)
 @interface ViewController ()<UITextViewDelegate,UITableViewDelegate,UITextViewDelegate,UITextViewDelegate>
 {
     
     NSMutableArray * ScellContent;
+    
 }
 @property(nonatomic,strong) UILabel             * title_label;
 @property(nonatomic,strong) UITableView         * table_Center;
@@ -55,9 +57,7 @@
     //现在的问题是自动刷新不能刷新出来数据，而得手动刷新一次才行//13:26分
     [super viewWillAppear: animated];
     // 马上进入刷新状态
-    
-
-       NSLog(@"进入刷新的时候元素%ld",_yy_table.data.dataDict.count);
+       NSLog(@"进入刷新的时候元素%ld",(unsigned long)_yy_table.data.dataDict.count);
   
 }
 - (void)viewDidLoad {
@@ -68,13 +68,12 @@
     [self addTableview];
     [self addViewForText];
     [self addMessageVIew];
-   
+
     //添加手势
     UITapGestureRecognizer * Gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchesBegan)];
     [_yy_table addGestureRecognizer:Gesture];
 //监听键盘状态进行刷新
       [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
-    
         [_yy_table.mj_header beginRefreshing];
        [self MJrefresh];
 }
@@ -95,8 +94,9 @@
     sleep(0.5);
     [_yy_table.data MainreloadData];
     [_Alertview.table.comminfo AlertDataReload];
-
+    [_baseVIew addNOtificaiton];
     [_yy_table reloadData];
+    [_Alertview.table reloadData];
     [_yy_table.mj_header endRefreshing];
 }
 
@@ -111,13 +111,16 @@
 
     //导航栏左边按钮
 //    self.navigationItem.leftBarButtonItem =[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(selfCenter)];
-    UIImage * image = [self scaleImage:[UIImage imageNamed:@"personal.png"] toScale:0.7];
+    UIImage * image = [UIImage imageNamed:@"icon_nav_user.png"];
    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStyleDone target:self action:@selector(selfCenter) ];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStyleDone target:self action:@selector(selfCenter)];
     //导航栏左边按钮颜色
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor whiteColor];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchToSm)];
+    UIImage * image2 = [UIImage imageNamed:@"icon_nav_search.png"];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:image2 style:UIBarButtonItemStyleDone target:self action:@selector(searchToSm)];
+
+    
     //导航栏右边边按钮颜色
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
     //修改这个可以修改所有的背景色、但是不能单独在页面上改所有导航栏上的属性，只能在跟页面修改
@@ -129,13 +132,13 @@
     _yy_table = [[YY_base_table alloc]init];
 //    _yy_table.cellContent = ScellContent;
     //整理逻辑的关键牌，我想写个监听
-    _yy_table.backgroundColor = [UIColor grayColor];
+    _yy_table.backgroundColor = [UIColor whiteColor];
  
     NSInteger  heighett = 0 ;
     [self longGesture:YES];
 //       [self TavbleViewCellSeletShowAlert:YES];
     heighett = HeightForTable + self.yy_table.heightTable;
-    [_yy_table setFrame:CGRectMake(0, YY_ININPONE5_HEIGHT(20.0f), SCREEN_WIDTH, heighett)];
+    [_yy_table setFrame:CGRectMake(0, MesaageViewHeight, SCREEN_WIDTH, heighett)];
     [self.view addSubview:_yy_table];
 }
 
@@ -147,9 +150,10 @@
 -(void)addViewForText
 {
    _baseVIew  = [[View_for_Text alloc]initWithFrame:CGRectMake(0, TextBackGroundVIewY, SCREEN_WIDTH, TextBackGroundVIewHeight)];
+
     _baseVIew.constrainH =self.constrainH;
     _baseVIew.popView =self.view;
-    _baseVIew.yy_text.delegate =self;
+
         [self.view addSubview:_baseVIew];
     [_baseVIew.send_btn addTarget:self action:@selector(sendText) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -161,10 +165,10 @@
         [_baseVIew.yy_text resignFirstResponder];
     }
     Personal_centerViewController * perV= [[Personal_centerViewController alloc]init];
-    UIBarButtonItem *backbutton = [[UIBarButtonItem alloc]init];
-    backbutton.title = @"";
-    [backbutton setTintColor:[UIColor whiteColor]];
-    self.navigationItem.backBarButtonItem = backbutton;
+//    UIBarButtonItem *backbutton = [[UIBarButtonItem alloc]init];
+//    backbutton.title = @"";
+//    [backbutton setTintColor:[UIColor whiteColor]];
+//    self.navigationItem.backBarButtonItem = backbutton;
     [self.navigationController pushViewController:perV animated:YES];
 }
 
@@ -178,9 +182,10 @@
     self.customSearchBar.DataSource = self;
     self.customSearchBar.delegate = self;
     [self.navigationController.view insertSubview:self.customSearchBar aboveSubview:self.navigationController.navigationBar];
+
     
 }
-- (NSInteger) heightForString:(UITextView *)textView andWidth:(float)width{
+- (NSInteger)heightForString:(UITextView *)textView andWidth:(float)width{
     
     CGSize sizeToFit = [textView sizeThatFits:CGSizeMake(width, MAXFLOAT)];
     NSInteger height = sizeToFit.height;
@@ -265,11 +270,11 @@
         else{
             [_baseVIew.yy_text resignFirstResponder];
             //这边传进去数据，传进去一个对象，然view去操作数据，让table接受
-            BmobObject * obj = [_yy_table.dict objectForKey:[NSNumber numberWithInteger:indexPath.row]];
+            BmobObject * obj = [_yy_table.dict objectForKey:[NSNumber numberWithInteger:_yy_table.dict.count-indexPath.row-1]];
             NSString * name = [obj objectForKey:@"playerName"];
             [self showAlertWithOneButton:[NSString stringWithFormat:@"%@的评论",name]index:indexPath.row];
             [_baseVIew dealloc1];
-            [self ViewControllerDealloc];
+//            [self ViewControllerDealloc];
             //写完发送事件之后添加一下就好了
             
         }
@@ -280,7 +285,7 @@
 - (void)showAlertWithOneButton:(NSString*)title index:(NSInteger)index{
     JCAlertView * alert = [[JCAlertView alloc]init];
   //这个里面要根据索引的内容生成了一个字典。
-
+   
    BmobObject * dict =  [self.yy_table.data creatNewClassFordata:_yy_table.dict.count-index-1];
     if (index==0) {
         NSLog(@"传进来的名字%@",[dict objectForKey:@"playerName"]);
@@ -290,14 +295,15 @@
     
 }
 
+
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    [_baseVIew  addObserver];
+    [_baseVIew  addNOtificaiton];
     return YES;
 }
 -(void)addMessageVIew
 {
-   _msg_view = [[newMessage alloc]initWithFrame:CGRectMake(0,64 , YY_ININPONE5_WITH(320.0f), YY_ININPONE5_HEIGHT(20.0f))];
+   _msg_view = [[newMessage alloc]initWithFrame:CGRectMake(0,64 , YY_ININPONE5_WITH(320.0f), MesaageViewHeight)];
     [_msg_view setHidden:NO];
     [self.view addSubview:_msg_view];
       [_msg_view.button addTarget:self action:@selector(showCommentAlert) forControlEvents:UIControlEventTouchUpInside];
@@ -344,22 +350,37 @@
 /**第一步根据输入的字符检索 必须实现*/
 -(NSString*)CustomSearch:(serachView *)searchBar inputText:(NSString *)inputText {
     [self.resultFileterArry removeAllObjects];
+        NSMutableArray * array111 = [_yy_table.data searchDictFornameInTheDict:_yy_table.dict];
 //    //这里是要查询某个字符串，就先查找名字吧，先得到所有的名字，生成一个数组，
     //然后把数据放到结果这个数组里面，就是数组加数组
-    NSMutableArray * array111 = [_yy_table.data searchDictFornameInTheDict:_yy_table.dict];
+    if (searchBar.searchBarText.text.length ==0) {
+        [self.resultFileterArry removeAllObjects];
+        NSLog(@"%@",searchBar.searchContentArray);
+
+        NSMutableArray * Recommend =[arrayOperation addHistoryObjectForDict:searchBar.searchContentArray];
+        for (NSDictionary * taxChat in Recommend) [self.resultFileterArry addObject:taxChat];
+
+        [searchBar.searchBarTableView reloadData];
+    }else
+    {
+
     NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"playerName CONTAINS[c] %@",inputText];
     NSArray * arry222 = [array111 filteredArrayUsingPredicate:predicate2];
     //过滤出来的名字，里面没有重复
     filerNameArray = [_yy_table.data filterTheRepeatName:arry222];
-    
     //对里面的字符进行过滤
     NSPredicate * predicate3 = [NSPredicate predicateWithFormat:@"saidWord CONTAINS[c] %@",inputText];
     arry333= [array111 filteredArrayUsingPredicate:predicate3];
+        
+        
+        NSMutableArray * afterAdd =  [arrayOperation addObjectForDict:arry333];
+        NSMutableArray * afterAddUser = [arrayOperation addUserObjectForDict:filerNameArray];
     //数据交叉合并，这里没有值
-    NSMutableArray * arr = [arrayOperation mergeArray:filerNameArray array2:arry333];
+    NSMutableArray * arr = [arrayOperation mergeArray:afterAddUser array2:afterAdd];
     for (NSDictionary * taxChat in arr) {
         [self.resultFileterArry addObject:taxChat];
         
+    }
     }
     return inputText;
   
@@ -369,51 +390,37 @@
 -(NSInteger)searchBarNumberOfRowInSection {
     return self.resultFileterArry.count;
 }
-// 设置显示没行的内容
--(NSString *)CustomSearchBar:(serachView *)menu titleForRowAtIndexPath:(NSIndexPath *)indexPath {
+// 设置显示没行的内容，这边需要好好分析，重新实现交叉，有点麻烦
+-(NSArray *)CustomSearchBar:(serachView *)menu titleForRowAtIndexPath:(NSIndexPath *)indexPath {
     //把内容输入到查询得到的cell中这个 时候我们将传进去一个带有数据字典的字典
     NSDictionary * dict =self.resultFileterArry[indexPath.row];
-    if (filerNameArray.count < arry333.count) {
-        if (indexPath.row<2*filerNameArray.count) {
-            if (indexPath.row%2 ==0)   return [dict objectForKey:@"playerName"];
-            else  return [dict objectForKey:@"saidWord"];
-        }else return [dict objectForKey:@"saidWord"];
-    }else
+ 
+    if ([[dict objectForKey:@"identifier"]isEqualToString:@"User"]) {
+        return  [self SrearchCellTextAndIamge:[dict objectForKey:@"playerName"] diffentIamge:@"YES"];
+    }else if([[dict objectForKey:@"identifier"]isEqualToString:@"SearchContent"])
+        return  [self SrearchCellTextAndIamge: [dict objectForKey:@"saidWord"] diffentIamge:@"NO"];
+    else if([[dict objectForKey:@"identifier"]isEqualToString:@"History"])
     {
-        if (indexPath.row<2*arry333.count) {
-            if (indexPath.row-1%2 ==0)  return [dict objectForKey:@"saidWord"];
-        else  return [dict objectForKey:@"playerName"];
-        }
-            return [dict objectForKey:@"playerName"];
-        }
-
+           NSLog(@"没有值的时候%@",dict);
+         return [self SrearchCellTextAndIamge:[dict objectForKey:@"playerName"] diffentIamge:@"HHH"];
+    }
 
     return  nil;
 
 }
 - (void)CustomSearchBar:(serachView *)segment didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //这个时候我们只能通过id来搜寻
-    
+
     NSDictionary * dict =self.resultFileterArry[indexPath.row];
     JCAlertView * alert = [[JCAlertView alloc]init];
     NSString * str = [NSString stringWithFormat:@"%@的评论",[dict objectForKey:@"playerName"]];
-    if (filerNameArray.count < arry333.count) {
-        if (indexPath.row<2*filerNameArray.count) {
-            if (indexPath.row%2 ==0) [alert showOneButtonWithTitle:str data:nil  sendName:[dict objectForKey:@"playerName"]];
-            else [self showAlertWithID:dict alert:alert sendID:str];
-        
-        }else  [self showAlertWithID:dict alert:alert sendID:str];
+    if ([[dict objectForKey:@"identifier"]isEqualToString:@"User"])
+        [alert showOneButtonWithTitle:str data:nil  sendName:[dict objectForKey:@"playerName"]];
 
-    }else
-    {    if (indexPath.row<2*arry333.count) {
-            if (indexPath.row-1%2 ==0) [self showAlertWithID:dict alert:alert sendID:str];
-            else [alert showOneButtonWithTitle:str data:nil  sendName:[dict objectForKey:@"playerName"]];
-        }else[alert showOneButtonWithTitle:str data:nil  sendName:[dict objectForKey:@"playerName"]];
+    else if([[dict objectForKey:@"identifier"]isEqualToString:@"SearchContent"])
+      [self showAlertWithID:dict alert:alert sendID:str];
+    else if([[dict objectForKey:@"identifier"]isEqualToString:@"History"])
+        NSLog(@"暂时什么都不弹出来");
 
-    }
-    
-
-  
         [self ViewControllerDealloc];
 }
 -(void)showAlertWithID:(NSDictionary *)dict alert:(JCAlertView *)alert sendID:(NSString *)str
@@ -433,7 +440,14 @@
      [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
+-(NSArray *)SrearchCellTextAndIamge:(NSString*)Text diffentIamge:(NSString *)boos
+{
+    NSArray * arry = [NSArray arrayWithObjects:Text,boos, nil];
+    NSLog(@"%@",arry);
+    return arry;
 
+    
+}
 
 
 

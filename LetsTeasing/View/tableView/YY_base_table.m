@@ -30,7 +30,6 @@
     self.delegate =self;
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
-
     [self reloadData];
     return self;
 }
@@ -141,4 +140,23 @@
 
     
 }
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    BmobObject * obj = [_dict objectForKey:[NSNumber numberWithInteger:_dict.count-indexPath.row-1]];
+    NSString * name = [obj objectForKey:@"playerName"];
+    [self showAlertWithOneButton:[NSString stringWithFormat:@"%@的评论",name]index:indexPath.row];
+}
+- (void)showAlertWithOneButton:(NSString*)title index:(NSInteger)index{
+    JCAlertView * alert = [[JCAlertView alloc]init];
+    //这个里面要根据索引的内容生成了一个字典。
+    BmobObject * dict =  [self.data creatNewClassFordata:_dict.count-index-1];
+    if (index==0) {
+        //        NSLog(@"传进来的名字%@",[dict objectForKey:@"playerName"]);
+    }
+    
+    [alert showOneButtonWithTitle:title data:dict sendName:nil];
+    
+}
+
 @end

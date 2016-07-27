@@ -49,7 +49,6 @@
         [manager createFileAtPath:_Searchplist contents:nil attributes:nil];
     }
     NSLog(@"searchPlist的地址是%@",_Searchplist);
-    
     //    if ([self fileExists]) {
     //        NSLog(@"目录不存在");
     //        //创建一个新目录，可以用一个布尔值来接受状态
@@ -70,11 +69,10 @@
     BOOL result = [manager fileExistsAtPath:path];
     return result;
 }
-//数组里面的内容写进plist文件中
+//数组里面的内容写进plist文n件中
 -(void)writeIntoPlist:(NSArray*)array
 {    //构建路径
     [array writeToFile:_Searchplist atomically:YES];
-
 }
 
 //把字典中的内容写进plist中

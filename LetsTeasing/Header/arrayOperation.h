@@ -13,4 +13,5 @@
 +(NSMutableArray *)addObjectForDict:(NSArray*)array;
 +(NSMutableArray *)addUserObjectForDict:(NSArray*)array;
 +(NSMutableArray *)addHistoryObjectForDict:(NSArray*)array;
++(NSArray*)addDataInArray:(NSArray*)FatherArray addString:(NSString*)addString;
 @end

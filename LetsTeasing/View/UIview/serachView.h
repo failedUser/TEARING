@@ -67,4 +67,6 @@
 @property (nonatomic, weak) id<CustomSearchBarDelegate>     delegate;
 @property (nonatomic, weak) id<searchResults>               searchResults;
 @property (nonatomic, strong)NSArray * searchContentArray;
+-(void)searchReload;
+-(void)insertHistory:(NSString *)input;
 @end

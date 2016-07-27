@@ -30,11 +30,16 @@
     _searchPlistContent = [SearchHistoryAndReacommend shareSearchPlist];
     searchContentArray = [_searchPlistContent getArrayfromPlist];
     if (searchContentArray==nil) {
-        searchContentArray = [NSArray arrayWithObjects:@"#带井号的是系统关键词",@"#你好",@"#a", nil];
+        searchContentArray = [NSArray arrayWithObjects:@"这是",@"很好",@"a", nil];
+        
         [_searchPlistContent writeIntoPlist:searchContentArray];
-    }else  NSLog(@"%@",searchContentArray);
-   
-    NSLog(@"plist文件已经执行了啊，cell里面应该有值");
+    }else  NSLog(@"里面都死什么%@",searchContentArray);
+}
+-(void)insertHistory:(NSString *)input
+{
+//    [searchContentArray addObject:input];
+////    [searchContentArray writeToFile:_searchPlistContent.Searchplist atomically:YES];
+//    [self searchReload];
 
 }
 
@@ -215,5 +220,9 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return YY_ININPONE6_HEIGHT(60);
+}
+-(void)searchReload
+{
+    [self initSearchPlist];
 }
 @end

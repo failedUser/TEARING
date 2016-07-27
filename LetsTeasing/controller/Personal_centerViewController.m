@@ -31,8 +31,6 @@
 {
         [super viewWillAppear: animated];
     // 马上进入刷新状态
-
-    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"icon_nav_arrow.png"] style:UIBarButtonItemStyleDone target:self action:@selector(comeBack)];
     //导航栏左边按钮颜色
     [person_tabV.mj_header beginRefreshing];
@@ -47,15 +45,11 @@
  
    // 或
     // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
-
-    
-  
-    
     self.navigationItem.title = @"我";
     List_name1 = [NSArray arrayWithObjects:@"昵称", nil];
-    List_name2 = [NSArray arrayWithObjects:@"消息推送",@"个性化", nil];
+//    List_name2 = [NSArray arrayWithObjects:@"消息推送",@"个性化", nil];
     List_name3 = [NSArray arrayWithObjects:@"给个好评",@"帮助",@"关于", nil];
-    Array_section = [NSArray arrayWithObjects:List_name1,List_name2,List_name3, nil];
+    Array_section = [NSArray arrayWithObjects:List_name1,List_name3, nil];
     person_tabV = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) style:UITableViewStyleGrouped];
        person_tabV.separatorStyle = UITableViewCellSelectionStyleNone;
     person_tabV.backgroundColor = [UIColor whiteColor];
@@ -90,10 +84,12 @@
         return 1;
     }else if (section == 1)
     {
-        return 2;
-    }else if(section == 2){
         return 3;
-    }else
+    }
+//    else if(section == 2){
+//        return 3;
+//    }
+    else
     {
         return 0;
     }
@@ -101,7 +97,7 @@
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -119,22 +115,12 @@
     //获取cell当前section的数组
     NSArray * list = Array_section[indexPath.section];
     cell.textLabel.text = list[indexPath.row];
-    
-    if(indexPath.section == 1)
-    {
-        [self addbutton:cell button:Switch];
-    }else if(indexPath.section == 0||indexPath.section == 2)
-    {
         if (indexPath.section == 0) {
             [self addNameLabel:cell];
-            
         }
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.tintColor = [UIColor redColor];
-        
-        
-  
-    }
+    
     UILabel * line = [[UILabel alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(16.0f), HeightforCell-2,YY_ININPONE5_HEIGHT(280.0f), 1)];
     line.backgroundColor =  UIColorFromHex(0xf3f3f4);
     //        line.backgroundColor = [UIColor redColor];
@@ -147,7 +133,7 @@
     [self getDAta];
     _self_Name_lbl.textAlignment = NSTextAlignmentRight;
     _self_Name_lbl.backgroundColor= [UIColor whiteColor];
-    _self_Name_lbl.tintColor = [UIColor grayColor];
+    _self_Name_lbl.textColor = [UIColor lightGrayColor];
     _self_Name_lbl.font = [UIFont fontWithName:@"Arial" size:13];
     [cell.contentView addSubview:_self_Name_lbl];
 
@@ -166,8 +152,8 @@
         return heigdtforSection*2;
     else if (section == 1)
         return heigdtforSection;
-    else if (section == 2)
-        return heigdtforSection;
+//    else if (section == 2)
+//        return heigdtforSection;
     return  0;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -176,31 +162,21 @@
         return heigdtforSection;
     else if (section == 1)
         return heigdtforSection;
-    else if (section == 2)
-        return heigdtforSection;
+//    else if (section == 2)
+//        return heigdtforSection;
     return  0;
     
 }
-//添加switch
--(void)addbutton:(UITableViewCell *) cell1 button:(UISwitch *)Switch1
-{
-    Switch1 = [[UISwitch alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(270.0f),YY_ININPONE5_HEIGHT(7.0f), YY_ININPONE5_WITH(10.0f), YY_ININPONE5_HEIGHT(15.0f))];
-    [Switch1 setOn:YES animated:YES];
-
-    [Switch1 setOnTintColor:UIColorFromHex(0x50d2c2)];
-    Switch1.transform = CGAffineTransformMakeScale(0.6, 0.6);
-    [cell1 addSubview:Switch1];
-//    
-//    [Switch1 mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.height.offset(YY_ININPONE5_HEIGHT(15.0f));
-//        make.leftMargin.equalTo(cell1.mas_left).offset(YY_ININPONE5_WITH(280.0f));
-//        make.topMargin.equalTo(cell1.mas_top).offset(YY_ININPONE5_HEIGHT(15.0f));
-//        make.width.offset(YY_ININPONE5_WITH(10.0f));
-//        
-//        
-//    }];
-    
-}
+////添加switch
+//-(void)addbutton:(UITableViewCell *) cell1 button:(UISwitch *)Switch1
+//{
+//    Switch1 = [[UISwitch alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(270.0f),YY_ININPONE5_HEIGHT(7.0f), YY_ININPONE5_WITH(10.0f), YY_ININPONE5_HEIGHT(15.0f))];
+//    [Switch1 setOn:YES animated:YES];
+//
+//    [Switch1 setOnTintColor:UIColorFromHex(0x50d2c2)];
+//    Switch1.transform = CGAffineTransformMakeScale(0.6, 0.6);
+//    [cell1 addSubview:Switch1];
+//}
 //需要写事件
 -(void)addLogOutButton:(UITableView * ) tableview
 {
@@ -208,11 +184,20 @@
     [logOut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     logOut.titleLabel.font = [UIFont systemFontOfSize: 15.0];
     logOut.titleLabel.textAlignment = NSTextAlignmentCenter;
-    logOut.backgroundColor = UIColorFromHex(0x313131);
-    [logOut setTitleColor:UIColorFromHex(0x50d2c2) forState:UIControlStateNormal];
-    [logOut setTitle:@"退出当前登录" forState:(UIControlStateNormal)];
+    NSString * str = [NSString stringWithFormat:@"退出登录"];
+    NSDictionary *dic = @{NSKernAttributeName:@4.0f,NSForegroundColorAttributeName:UIColorFromHex(0x50d2c2),NSFontAttributeName:[UIFont fontWithName:@"Arial" size:16.0]};
+    
+    NSAttributedString *attributeStr = [[NSAttributedString alloc] initWithString:str attributes:dic];
+    [logOut setAttributedTitle:attributeStr forState:UIControlStateNormal];
 
 
+    
+    UILabel * line = [[UILabel alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(16.0f),YY_ININPONE5_HEIGHT(44.0f)-1 ,YY_ININPONE5_HEIGHT(280.0f), 1)];
+    line.backgroundColor =  UIColorFromHex(0xf3f3f4);
+    //        line.backgroundColor = [UIColor redColor];
+
+    [logOut addSubview:line];
+    
 
     [tableview addSubview:logOut];
     [logOut mas_makeConstraints:^(MASConstraintMaker *make) {

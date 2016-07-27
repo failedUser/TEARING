@@ -80,4 +80,14 @@
     }
     return arr;
 }
++(NSArray*)addDataInArray:(NSArray*)FatherArray addString:(NSString*)addString
+{
+    NSMutableArray * mutableArray = [NSMutableArray new];
+    for (int i=0; i<FatherArray.count; i++) {
+        [mutableArray addObject:FatherArray[i]];
+    }
+    [mutableArray addObject:addString];
+    NSArray * resultArray = [NSArray arrayWithArray:mutableArray];
+    return resultArray;
+}
 @end

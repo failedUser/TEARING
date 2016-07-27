@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "serachView.h"
 
-@interface ViewController : UIViewController<searchResults,CustomSearchBarDataSouce,CustomSearchBarDelegate>
+@interface ViewController : UIViewController<UITableViewDelegate,searchResults,CustomSearchBarDataSouce,CustomSearchBarDelegate>
 {
     NSMutableArray * _myData;
     NSMutableArray * searchArray;
@@ -18,6 +18,7 @@
     NSArray * arry333;
    
 }
+
 @property(nonatomic,weak) NSIndexPath * index;
 //search
 @property (nonatomic, strong) serachView * customSearchBar;

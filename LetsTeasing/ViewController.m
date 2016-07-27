@@ -57,8 +57,6 @@
     //现在的问题是自动刷新不能刷新出来数据，而得手动刷新一次才行//13:26分
     [super viewWillAppear: animated];
     // 马上进入刷新状态
-    [self mainPageFresh];
-    [_yy_table reloadData];
             [_yy_table.mj_header beginRefreshing];
        NSLog(@"进入刷新的时候元素%ld",(unsigned long)_yy_table.data.dataDict.count);
   
@@ -72,9 +70,9 @@
     [self addViewForText];
     [self addMessageVIew];
 
-    //添加手势
-    UITapGestureRecognizer * Gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchesBegan)];
-    [_yy_table addGestureRecognizer:Gesture];
+//    //添加手势
+//    UITapGestureRecognizer * Gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchesBegan)];
+//    [_yy_table addGestureRecognizer:Gesture];
 //监听键盘状态进行刷新
     [self addAllNotifition];
 
@@ -84,8 +82,10 @@
 {
     [self addKeboardDownNOtification];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(WindowBeacome) name:UIWindowDidResignKeyNotification object:nil];
+
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(SearchViewCustomSearch) name:UIWindowDidBecomeVisibleNotification object:nil];
 }
+
 -(void)addKeboardDownNOtification
 {
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
@@ -93,8 +93,8 @@
 //当年真是无知啊，不知道这个函数，这个破问题纠结了我一个周
 -(void)WindowBeacome
 {
-    NSLog(@"主界面出来了");
-       [_baseVIew addNOtificaiton];
+    [_baseVIew addNOtificaiton];
+    [_baseVIew.yy_text resignFirstResponder];
 }
 -(void)keyboardWillDown
 {
@@ -130,7 +130,7 @@
     //设置导航栏的背景色
     [self.navigationController.navigationBar setBarTintColor:[UIColor blackColor]];
     //设置导航栏标题字体的颜色
-    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],NSForegroundColorAttributeName,[UIFont fontWithName:@"Arial" size:13.0],NSFontAttributeName, nil]];
+    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],NSForegroundColorAttributeName,[UIFont fontWithName:@"Arial" size:16.0],NSFontAttributeName, nil]];
 
     //导航栏左边按钮
 //    self.navigationItem.leftBarButtonItem =[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(selfCenter)];
@@ -155,11 +155,10 @@
     _yy_table = [[YY_base_table alloc]init];
     //整理逻辑的关键牌，我想写个监听
     _yy_table.backgroundColor = [UIColor whiteColor];
- 
     NSInteger  heighett = 0 ;
-    [self longGesture:YES];
+//    [self longGesture:YES];
 //       [self TavbleViewCellSeletShowAlert:YES];
-    heighett = HeightForTable + self.yy_table.heightTable;
+    heighett = HeightForTable + _yy_table.heightTable;
     [_yy_table setFrame:CGRectMake(0, MesaageViewHeight, SCREEN_WIDTH, heighett)];
     [self.view addSubview:_yy_table];
 }
@@ -250,11 +249,11 @@
     }
 }
 
-//键盘退出
--(void)touchesBegan
-{
-    [_baseVIew.yy_text resignFirstResponder];
-}
+////键盘退出
+//-(void)touchesBegan
+//{
+//    [_baseVIew.yy_text resignFirstResponder];
+//}
 //修改图片尺寸
 - (UIImage *)scaleImage:(UIImage *)image toScale:(float)scaleSize
 
@@ -268,52 +267,11 @@
                                 return scaledImage;
                                 
  }
-//给Cell添加长按手势
--(void)longGesture:(BOOL)bools
-{
-    if (bools) {
-        UILongPressGestureRecognizer * longGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(LongGesture:)];
-        longGesture.minimumPressDuration = 0.2;
-        [_yy_table addGestureRecognizer:longGesture];
-    }
-    else{
-        NSLog(@"长按事件失败");
-    }
-    
-    
-}
--(void)LongGesture:(UILongPressGestureRecognizer *)gesture
-{
-    if(gesture.state == UIGestureRecognizerStateBegan)
-    {
-        CGPoint point = [gesture locationInView:_yy_table];
-        
-        NSIndexPath * indexPath = [_yy_table indexPathForRowAtPoint:point];
-        if(indexPath == nil) ;
-        else{
-            [_baseVIew.yy_text resignFirstResponder];
-            //这边传进去数据，传进去一个对象，然view去操作数据，让table接受
-            BmobObject * obj = [_yy_table.dict objectForKey:[NSNumber numberWithInteger:_yy_table.dict.count-indexPath.row-1]];
-            NSString * name = [obj objectForKey:@"playerName"];
-            [self showAlertWithOneButton:[NSString stringWithFormat:@"%@的评论",name]index:indexPath.row];
-            [_baseVIew dealloc1];
-//            [self ViewControllerDealloc];
-            //写完发送事件之后添加一下就好了
-            
-        }
-        
-    }
-    
-}
+
 - (void)showAlertWithOneButton:(NSString*)title index:(NSInteger)index{
     JCAlertView * alert = [[JCAlertView alloc]init];
   //这个里面要根据索引的内容生成了一个字典。
-   
    BmobObject * dict =  [self.yy_table.data creatNewClassFordata:_yy_table.dict.count-index-1];
-    if (index==0) {
-//        NSLog(@"传进来的名字%@",[dict objectForKey:@"playerName"]);
-    }
-    
     [alert showOneButtonWithTitle:title data:dict sendName:nil];
     
 }
@@ -379,14 +337,13 @@
     if (searchBar.searchBarText.text.length ==0) {
         [self.resultFileterArry removeAllObjects];
         NSLog(@"本来就有%@",searchBar.searchContentArray);
-
         NSMutableArray * Recommend =[arrayOperation addHistoryObjectForDict:searchBar.searchContentArray];
         for (NSDictionary * taxChat in Recommend) [self.resultFileterArry addObject:taxChat];
 
         [searchBar.searchBarTableView reloadData];
     }else
     {
-
+        [searchBar insertHistory:inputText];
     NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"playerName CONTAINS[c] %@",inputText];
     NSArray * arry222 = [array111 filteredArrayUsingPredicate:predicate2];
     //过滤出来的名字，里面没有重复

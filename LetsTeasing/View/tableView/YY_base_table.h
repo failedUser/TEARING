@@ -9,17 +9,21 @@
 #import <UIKit/UIKit.h>
 #import "mainPageDictFordata.h"
 #import "commentInfo.h"
+#import "serachView.h"
 
 @interface YY_base_table : UITableView<UITableViewDelegate,UITableViewDataSource>
 {
     NSMutableDictionary * dataDict;
-    CGFloat heightForTextLavbel;
+   
     commentInfo * info;
     BmobObject * dict1;
     NSInteger count;
+     CGFloat heightForTextLavbel;
 
    
 }
+
+@property (nonatomic, strong) serachView * customSearchBar;
 @property(nonatomic,assign)   NSInteger  getString1;
 @property(nonatomic,strong)   NSString *    IdforSeletedRow;
 @property(nonatomic,strong)   mainPageDictFordata * data;

@@ -46,7 +46,7 @@
 {
    
     NSDictionary * dict;
-    NSString * inputText;
+  
     UIImageView *imageViewXX;
    
 
@@ -55,7 +55,7 @@
 
 
 // 显示
-
+@property (nonatomic, strong)  NSString * inputText;
 @property (nonatomic, strong)  SearchHistoryAndReacommend *searchPlistContent;
 +(instancetype)show:(CGPoint)orgin andHeight:(CGFloat)height;
 @property (nonatomic, assign) BOOL  setImageBOOL;

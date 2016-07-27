@@ -161,5 +161,9 @@
       [self getCommentObjectFromBomob];
     [self getDataForRow];
 }
-
+-(BmobObject *)bmobObjectWithId:(NSString *)objectId
+{
+    BmobObject * obj = [_Comment_MainDICT objectForKey:objectId];
+    return obj;
+}
 @end

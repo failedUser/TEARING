@@ -22,11 +22,13 @@
 //    [self data];
     [self.mj_footer beginRefreshing];
     _comminfo = [commentInfo ShareCommentData];
+    [_comminfo AlertDataReload];
     self.backgroundColor = [UIColor whiteColor];
     self = [super initWithFrame:frame style:UITableViewStyleGrouped];
     self.delegate =self;
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.backgroundColor = [UIColor whiteColor];
     [self MJrefresh];
     //监听键盘状态进行刷新
     [self addNotifincation];
@@ -50,14 +52,13 @@
 -(void)refresh1
 {
     //编号有了数据也存进去，只是没有下载到数组中
-    sleep(0.5);
     [self.comminfo commentReload];
     [self.comminfo AlertDataReload];
     [self addNotifincation];
     if (_states) {
             [self data];
     } else [self dataforName];
-   
+    sleep(0.5);
     [self reloadData];
 
     [self.mj_footer endRefreshing];
@@ -87,27 +88,22 @@
     static NSString *CMainCell = @"textCell";
    AlertTableCell  * cell = [tableView dequeueReusableCellWithIdentifier:CMainCell];
     
-    if(cell == nil)
-    {
-        cell = [[AlertTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CMainCell];
-    }
-    if(cell.TextLabel.text != nil)
-    {
-
-        cell.TextLabel.text = @"";
-    }
+    if(cell == nil) cell = [[AlertTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CMainCell];
+    if(cell.TextLabel.text != nil)cell.TextLabel.text = @"";
         if (comDict ==nil) {
             //创建完字体格式之后就告诉cell
         NSLog(@" no data");
     }else{
+    
         _dicto = comDict[indexPath.row];
         NSString * dateStr = [_dicto objectForKey:@"createdAt"];
         NSString * cut  = [dateStr substringFromIndex:10];
-    cell.TextLabel.text = [_dicto objectForKey:@"saidWord"];
-    cell.namelabel.text = [_dicto objectForKey:@"playerName"];
+        cell.TextLabel.text = [_dicto objectForKey:@"saidWord"];
+        cell.namelabel.text = [_dicto objectForKey:@"playerName"];
         cell.dataLabel.text =cut;
     }
     cell.TextLabel.numberOfLines =0;
+    //自适应高度
     if (cell.TextLabel.text != nil) heightForTextLabel = [cell height];
     else NSLog(@"主页面中说的话为空");
     //设置cell不能被选中
@@ -142,18 +138,16 @@
 }
 -(void)data
 {
-    //为什么有你就不行
-
     [_comminfo setCommentID:_commenID];
     //interface for data
     comDict = [NSMutableArray arrayWithCapacity:1000];
     //这个地方应该返回数组
+[_comminfo AlertDataReload];
    comDict = [_comminfo getDataForRow];
-    NSLog(@"最终评论界面有多少个%lu",(unsigned long)comDict.count);
+
     if (comDict ==nil) {
         NSLog(@"里面没有值");
             comDict =nil;
-//        NSLog(@"赋值的字典里面有多少个元素%lu",(unsigned long)comDict.count);
     }else  {;
 
     }
@@ -170,7 +164,9 @@
     NSNumber * number = [NSNumber numberWithInteger:_comminfo.Comment_DICT.count];
     return  number;
 }
-
-
-
+-(void)reloadData
+{
+    [super reloadData];
+    [_comminfo AlertDataReload];
+}
 @end

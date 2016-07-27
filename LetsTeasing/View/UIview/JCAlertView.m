@@ -241,6 +241,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     self = [super initWithFrame:frame];
     if (self) {
         baseTable  = [YY_base_table shareBaseTable];
+
 //        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange2:) name:UIKeyboardWillChangeFrameNotification object:nil];
 
 
@@ -297,7 +298,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     
     [self.vc showAlert];
 }
-//妈的智障，clicks数组都被我删了，你们还有什么用
+//弹出框退出
 - (void)alertBtnClick{
     [self dismissAlertWithCompletion:^{
     }];
@@ -305,6 +306,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     NSInteger  numb = [[_dataforRow objectForKey:@"numberOfSaidWords"] intValue];
     NSInteger indexROw = (NSInteger)baseTable.dict.count-numb-1;
     baseTable.getString1 =indexROw;
+
     [baseTable reloadData];
 }
 //这不才是真东西么
@@ -375,17 +377,13 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     _table.comminfo = [[commentInfo alloc]init];
     //在配置完table后才会执行这个,这个先放着
    // _dataforRow只是传进来的一个外键属性
-           NSLog(@"传进来的对象是%@",_dataforRow);
-       NSLog(@"传进来的值是多少%@",_SendName);
     if (_dataforRow ==nil && _SendName.length != 0) {
-//        NSLog(@"传进来的值是多少%@",_SendName);
         [self.table setCommenName:_SendName];
         [self.table setStates:NO];
         [self.table  dataforName];
         
     }else if(_SendName.length == 0)
     {
-//        NSLog(@"传进来的对象是%@",_dataforRow);
     [self.table setCommenID:[_dataforRow objectForKey:@"objectId"]];
     [self.table data];
 
@@ -421,6 +419,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     }
     
 }
+
 
 @end
 // 版权属于原作者

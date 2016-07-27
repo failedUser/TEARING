@@ -65,7 +65,7 @@
 -(void)changeDone
 {
     NSString * str = [changeNameField.text copy];
-    [self changeBackGroundid:@"UVTaKKKP" changeValueName:@"playerName" value:str];
+    [self changeBackGroundid:@"a5f5759fb4" changeValueName:@"playerName" value:str];
     
     if (changeNameField.text.length != 0) {
 

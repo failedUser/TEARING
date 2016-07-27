@@ -11,7 +11,6 @@
 #define JQPlacehoderPadding 8 //提示语与边框的距离(上下左)
 #define NumberOfInputText 140
 @implementation YY_TextView
-
 -(instancetype)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer
 {
     self = [super initWithFrame:frame textContainer:textContainer];

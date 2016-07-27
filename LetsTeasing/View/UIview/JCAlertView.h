@@ -10,6 +10,7 @@
 #import "AlertTextBaseView.h"
 #import "YY_content_table.h"
 #import "YY_base_table.h"
+#import "View_for_Text.h"
 
 // maybe useful
 @class JCAlertView;
@@ -26,6 +27,8 @@ typedef void(^clickHandle)(void);
 @interface JCAlertView : UIView<UITextViewDelegate,UIAlertViewDelegate>
 {
     YY_base_table  * baseTable;
+
+
 }
 @property(nonatomic,strong) AlertTextBaseView * basetextView;
 @property(nonatomic,strong) NSMutableArray *ScellContent;

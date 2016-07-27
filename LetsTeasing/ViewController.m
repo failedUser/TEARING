@@ -57,6 +57,9 @@
     //现在的问题是自动刷新不能刷新出来数据，而得手动刷新一次才行//13:26分
     [super viewWillAppear: animated];
     // 马上进入刷新状态
+    [self mainPageFresh];
+    [_yy_table reloadData];
+            [_yy_table.mj_header beginRefreshing];
        NSLog(@"进入刷新的时候元素%ld",(unsigned long)_yy_table.data.dataDict.count);
   
 }
@@ -73,9 +76,25 @@
     UITapGestureRecognizer * Gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchesBegan)];
     [_yy_table addGestureRecognizer:Gesture];
 //监听键盘状态进行刷新
-      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
-        [_yy_table.mj_header beginRefreshing];
+    [self addAllNotifition];
+
        [self MJrefresh];
+}
+-(void)addAllNotifition
+{
+    [self addKeboardDownNOtification];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(WindowBeacome) name:UIWindowDidResignKeyNotification object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(SearchViewCustomSearch) name:UIWindowDidBecomeVisibleNotification object:nil];
+}
+-(void)addKeboardDownNOtification
+{
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
+}
+//当年真是无知啊，不知道这个函数，这个破问题纠结了我一个周
+-(void)WindowBeacome
+{
+    NSLog(@"主界面出来了");
+       [_baseVIew addNOtificaiton];
 }
 -(void)keyboardWillDown
 {
@@ -83,7 +102,6 @@
 }
 -(void)MJrefresh
 {
-//    self.yy_table.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
        MJRefreshHeader * header = [MJRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
     self.yy_table.mj_header = header;
     self.yy_table.mj_header.automaticallyChangeAlpha =YES;
@@ -91,15 +109,20 @@
 -(void)refresh1
 {
    //编号有了数据也存进去，只是没有下载到数组中
+    [_baseVIew addNOtificaiton];
+    [self mainPageFresh];
     sleep(0.5);
+    [_yy_table reloadData];
+    [_yy_table.mj_header endRefreshing];
+  
+
+}
+-(void)mainPageFresh
+{
+    [_Alertview.table reloadData];
     [_yy_table.data MainreloadData];
     [_Alertview.table.comminfo AlertDataReload];
-    [_baseVIew addNOtificaiton];
-    [_yy_table reloadData];
-    [_Alertview.table reloadData];
-    [_yy_table.mj_header endRefreshing];
 }
-
 -(void)configNavigation
 {
     //设置导航栏的标题
@@ -130,7 +153,6 @@
 -(void)addTableview
 {
     _yy_table = [[YY_base_table alloc]init];
-//    _yy_table.cellContent = ScellContent;
     //整理逻辑的关键牌，我想写个监听
     _yy_table.backgroundColor = [UIColor whiteColor];
  
@@ -149,6 +171,7 @@
 
 -(void)addViewForText
 {
+
    _baseVIew  = [[View_for_Text alloc]initWithFrame:CGRectMake(0, TextBackGroundVIewY, SCREEN_WIDTH, TextBackGroundVIewHeight)];
 
     _baseVIew.constrainH =self.constrainH;
@@ -250,7 +273,7 @@
 {
     if (bools) {
         UILongPressGestureRecognizer * longGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(LongGesture:)];
-        longGesture.minimumPressDuration = 0.5;
+        longGesture.minimumPressDuration = 0.2;
         [_yy_table addGestureRecognizer:longGesture];
     }
     else{
@@ -288,7 +311,7 @@
    
    BmobObject * dict =  [self.yy_table.data creatNewClassFordata:_yy_table.dict.count-index-1];
     if (index==0) {
-        NSLog(@"传进来的名字%@",[dict objectForKey:@"playerName"]);
+//        NSLog(@"传进来的名字%@",[dict objectForKey:@"playerName"]);
     }
     
     [alert showOneButtonWithTitle:title data:dict sendName:nil];
@@ -355,7 +378,7 @@
     //然后把数据放到结果这个数组里面，就是数组加数组
     if (searchBar.searchBarText.text.length ==0) {
         [self.resultFileterArry removeAllObjects];
-        NSLog(@"%@",searchBar.searchContentArray);
+        NSLog(@"本来就有%@",searchBar.searchContentArray);
 
         NSMutableArray * Recommend =[arrayOperation addHistoryObjectForDict:searchBar.searchContentArray];
         for (NSDictionary * taxChat in Recommend) [self.resultFileterArry addObject:taxChat];
@@ -406,7 +429,6 @@
     }
 
     return  nil;
-
 }
 - (void)CustomSearchBar:(serachView *)segment didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
@@ -421,7 +443,7 @@
     else if([[dict objectForKey:@"identifier"]isEqualToString:@"History"])
         NSLog(@"暂时什么都不弹出来");
 
-        [self ViewControllerDealloc];
+//        [self ViewControllerDealloc];
 }
 -(void)showAlertWithID:(NSDictionary *)dict alert:(JCAlertView *)alert sendID:(NSString *)str
 {   NSString * ObjectId = [dict objectForKey:@"objectId"];
@@ -448,7 +470,12 @@
 
     
 }
-
+-(void)SearchViewCustomSearch
+{
+    NSLog(@"searchview点击了");
+    //这个实现了默认搜索
+   _customSearchBar.inputText=[self CustomSearch:_customSearchBar inputText:@""];
+}
 
 
 

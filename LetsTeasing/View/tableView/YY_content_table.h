@@ -14,7 +14,6 @@
    NSMutableDictionary *commDICT;
    CGFloat heightForTextLabel;
     NSMutableArray *comDict;
- 
 }
 @property(nonatomic,assign) BmobObject  * dicto;
 @property(nonatomic,strong) commentInfo * comminfo;

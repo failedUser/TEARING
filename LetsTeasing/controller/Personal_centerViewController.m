@@ -135,7 +135,7 @@
         
   
     }
-    UILabel * line = [[UILabel alloc]initWithFrame:CGRectMake(cell.frame.size.width*0.05, cell.frame.size.height-1, cell.frame.size.width*0.9, 1)];
+    UILabel * line = [[UILabel alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(16.0f), HeightforCell-2,YY_ININPONE5_HEIGHT(280.0f), 1)];
     line.backgroundColor =  UIColorFromHex(0xf3f3f4);
     //        line.backgroundColor = [UIColor redColor];
     [cell.contentView addSubview:line];
@@ -150,9 +150,9 @@
     _self_Name_lbl.tintColor = [UIColor grayColor];
     _self_Name_lbl.font = [UIFont fontWithName:@"Arial" size:13];
     [cell.contentView addSubview:_self_Name_lbl];
-    
+
     [_self_Name_lbl mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.offset(YY_ININPONE5_HEIGHT(44.0f));
+        make.height.offset(HeightforCell);
 
         make.rightMargin.equalTo(cell.contentView.mas_right).offset(YY_ININPONE5_WITH(-30.0f));
         make.width.offset(YY_ININPONE5_WITH(180.0f));
@@ -257,7 +257,7 @@
 }
 -(void)getDAta
 {
-        [self getData:@"UVTaKKKP" conString:@"playerName"];
+        [self getData:@"a5f5759fb4" conString:@"playerName"];
 }
 -(void)getString:(NSString*) string
 {

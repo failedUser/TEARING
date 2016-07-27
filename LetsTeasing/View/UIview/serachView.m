@@ -15,6 +15,7 @@
 
 @implementation serachView
 @synthesize searchContentArray;
+@synthesize inputText;
 -(instancetype)initWithOrgin:(CGPoint)origin andHeight:(CGFloat)height {
     self = [super initWithFrame:CGRectMake(origin.x, origin.y, SCREEN_WIDTH, height)];
     if (self) {
@@ -141,7 +142,9 @@
 
 - (void)textFieldDidChange:(UITextField *)textField
 {
+ 
     if (self.searchResults && [self.searchResults respondsToSelector:@selector(CustomSearch:inputText:)]) {
+
       inputText = [self.searchResults CustomSearch:self inputText:textField.text];
         [self.searchBarTableView reloadData];
     }
@@ -175,7 +178,6 @@
         {cell.TextLabel.text = NameArry[0];
             [cell setHistoryImage];
         }
-//        [cell setSearchUserImage];
         NSString * Name =NameArry[0];
             NSRange range2= [Name rangeOfString:inputText];
         if (range2.location!=NSNotFound) {
@@ -187,9 +189,7 @@
                 }
         else
         {
-            
             NSLog(@"not found");
-            
         }
      
         cell.TextLabel.numberOfLines =2;

@@ -30,7 +30,8 @@
     self.delegate =self;
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
- 
+
+    [self reloadData];
     return self;
 }
 
@@ -99,6 +100,7 @@
 {
     _data = [mainPageDictFordata shareMainData];
     _dict = _data.dataDict;
+        [_data MainreloadData];
 }
 
 //计算行高
@@ -117,7 +119,7 @@
    
     [super reloadData];
     [info AlertDataReload];
-
+    [_data MainreloadData];
     info = [commentInfo ShareCommentData];
     if (_getString1>=0) {
         NSLog(@"从alert传进来的数%ld", (long)_getString1);

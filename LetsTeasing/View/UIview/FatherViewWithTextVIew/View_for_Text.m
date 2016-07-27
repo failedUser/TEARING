@@ -16,6 +16,7 @@
 @end
 @implementation View_for_Text
 
+
 -(instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

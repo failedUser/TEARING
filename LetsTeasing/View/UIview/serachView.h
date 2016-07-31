@@ -36,7 +36,7 @@
 @protocol CustomSearchBarDelegate <NSObject>
 @optional
 // 点击每一行的效果
-- (void)CustomSearchBar:(serachView *)searchBar didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (BOOL)CustomSearchBar:(serachView *)searchBar didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 
 -(void)CustomSearchBar:(serachView *)searchBar cancleButton:(UIButton *)sender;
 
@@ -60,13 +60,13 @@
 +(instancetype)show:(CGPoint)orgin andHeight:(CGFloat)height;
 @property (nonatomic, assign) BOOL  setImageBOOL;
 @property (nonatomic, strong) UITextField * searchBarText;
-
+@property (nonatomic, strong) NSString * getInput;
 @property (nonatomic, weak) UITableView * searchBarTableView;
-
+@property (nonatomic, assign) BOOL hiddenStates;
 @property (nonatomic, weak) id<CustomSearchBarDataSouce>    DataSource;
 @property (nonatomic, weak) id<CustomSearchBarDelegate>     delegate;
 @property (nonatomic, weak) id<searchResults>               searchResults;
 @property (nonatomic, strong)NSArray * searchContentArray;
 -(void)searchReload;
--(void)insertHistory:(NSString *)input;
+
 @end

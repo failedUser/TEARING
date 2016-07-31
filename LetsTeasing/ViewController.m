@@ -58,7 +58,6 @@
     [super viewWillAppear: animated];
     // 马上进入刷新状态
             [_yy_table.mj_header beginRefreshing];
-       NSLog(@"进入刷新的时候元素%ld",(unsigned long)_yy_table.data.dataDict.count);
   
 }
 - (void)viewDidLoad {
@@ -70,22 +69,17 @@
     [self addViewForText];
     [self addMessageVIew];
 
-//    //添加手势
-//    UITapGestureRecognizer * Gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchesBegan)];
-//    [_yy_table addGestureRecognizer:Gesture];
 //监听键盘状态进行刷新
     [self addAllNotifition];
-
-       [self MJrefresh];
+                [self MJrefresh];
+  
 }
 -(void)addAllNotifition
 {
     [self addKeboardDownNOtification];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(WindowBeacome) name:UIWindowDidResignKeyNotification object:nil];
-
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(SearchViewCustomSearch) name:UIWindowDidBecomeVisibleNotification object:nil];
 }
-
 -(void)addKeboardDownNOtification
 {
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
@@ -161,6 +155,7 @@
     heighett = HeightForTable + _yy_table.heightTable;
     [_yy_table setFrame:CGRectMake(0, MesaageViewHeight, SCREEN_WIDTH, heighett)];
     [self.view addSubview:_yy_table];
+    [_yy_table reloadData];
 }
 
 -(void)ketBoardIschange
@@ -331,19 +326,27 @@
 /**第一步根据输入的字符检索 必须实现*/
 -(NSString*)CustomSearch:(serachView *)searchBar inputText:(NSString *)inputText {
     [self.resultFileterArry removeAllObjects];
+    NSLog(@"begin file array with input text--------------------------------");
         NSMutableArray * array111 = [_yy_table.data searchDictFornameInTheDict:_yy_table.dict];
-//    //这里是要查询某个字符串，就先查找名字吧，先得到所有的名字，生成一个数组，
     //然后把数据放到结果这个数组里面，就是数组加数组
-    if (searchBar.searchBarText.text.length ==0) {
+        NSLog(@"click history searchText.text =%@",_customSearchBar.searchBarText.text);
+    
+    NSLog(@"点击历史之后用什么来搜索%@",inputText);
+    if (searchBar.searchBarText.text.length==0) {
+          NSLog(@"if search.text is empty------%@",searchBar.searchBarText.text);
+             NSLog(@"if search.text is  empty------%@",inputText);
+        NSLog(@"if text field.text is empty");
+        NSLog(@"text is empty ,it may show history list ");
         [self.resultFileterArry removeAllObjects];
-        NSLog(@"本来就有%@",searchBar.searchContentArray);
         NSMutableArray * Recommend =[arrayOperation addHistoryObjectForDict:searchBar.searchContentArray];
         for (NSDictionary * taxChat in Recommend) [self.resultFileterArry addObject:taxChat];
-
         [searchBar.searchBarTableView reloadData];
     }else
     {
-        [searchBar insertHistory:inputText];
+        NSLog(@"if search.text don't empty------%@",searchBar.searchBarText.text);
+          NSLog(@"if search.text don't empty------%@",inputText);
+        [filerNameArray removeAllObjects];
+        arry333 =nil;
     NSPredicate * predicate2 = [NSPredicate predicateWithFormat:@"playerName CONTAINS[c] %@",inputText];
     NSArray * arry222 = [array111 filteredArrayUsingPredicate:predicate2];
     //过滤出来的名字，里面没有重复
@@ -351,16 +354,15 @@
     //对里面的字符进行过滤
     NSPredicate * predicate3 = [NSPredicate predicateWithFormat:@"saidWord CONTAINS[c] %@",inputText];
     arry333= [array111 filteredArrayUsingPredicate:predicate3];
-        
-        
+
         NSMutableArray * afterAdd =  [arrayOperation addObjectForDict:arry333];
         NSMutableArray * afterAddUser = [arrayOperation addUserObjectForDict:filerNameArray];
     //数据交叉合并，这里没有值
     NSMutableArray * arr = [arrayOperation mergeArray:afterAddUser array2:afterAdd];
     for (NSDictionary * taxChat in arr) {
         [self.resultFileterArry addObject:taxChat];
-        
     }
+         NSLog(@"最终搜索出来的结果是什么%@",_resultFileterArry);
     }
     return inputText;
   
@@ -373,34 +375,54 @@
 // 设置显示没行的内容，这边需要好好分析，重新实现交叉，有点麻烦
 -(NSArray *)CustomSearchBar:(serachView *)menu titleForRowAtIndexPath:(NSIndexPath *)indexPath {
     //把内容输入到查询得到的cell中这个 时候我们将传进去一个带有数据字典的字典
+    NSLog(@"this function is show context indexpath row----------------------------------");
     NSDictionary * dict =self.resultFileterArry[indexPath.row];
- 
+    NSLog(@"这个地方什么时候执行");
     if ([[dict objectForKey:@"identifier"]isEqualToString:@"User"]) {
         return  [self SrearchCellTextAndIamge:[dict objectForKey:@"playerName"] diffentIamge:@"YES"];
     }else if([[dict objectForKey:@"identifier"]isEqualToString:@"SearchContent"])
         return  [self SrearchCellTextAndIamge: [dict objectForKey:@"saidWord"] diffentIamge:@"NO"];
     else if([[dict objectForKey:@"identifier"]isEqualToString:@"History"])
     {
-           NSLog(@"没有值的时候%@",dict);
+//           NSLog(@"没有值的时候%@",dict);
+        NSLog(@"when show the history table");
          return [self SrearchCellTextAndIamge:[dict objectForKey:@"playerName"] diffentIamge:@"HHH"];
     }
 
     return  nil;
 }
-- (void)CustomSearchBar:(serachView *)segment didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+- (BOOL)CustomSearchBar:(serachView *)segment didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary * dict =self.resultFileterArry[indexPath.row];
+    NSLog(@" this function is selected indexpath---------------------------------");
     JCAlertView * alert = [[JCAlertView alloc]init];
     NSString * str = [NSString stringWithFormat:@"%@的评论",[dict objectForKey:@"playerName"]];
     if ([[dict objectForKey:@"identifier"]isEqualToString:@"User"])
+    {
         [alert showOneButtonWithTitle:str data:nil  sendName:[dict objectForKey:@"playerName"]];
-
+          return YES;
+    }
     else if([[dict objectForKey:@"identifier"]isEqualToString:@"SearchContent"])
+    {NSLog(@"it should hidden searchview");
+      
       [self showAlertWithID:dict alert:alert sendID:str];
+          return YES;
+    }
     else if([[dict objectForKey:@"identifier"]isEqualToString:@"History"])
-        NSLog(@"暂时什么都不弹出来");
+    {
+        NSLog(@"if seleted history -----------");
+//        segment.hiddenStates =YES;
+//        NSLog(@"点击了第%ld行，这一行的内容是%@",(long)indexPath.row,_resultFileterArry[indexPath.row]);
+        NSDictionary * indexArray = _resultFileterArry[indexPath.row];
+        segment.searchBarText.text =[indexArray objectForKey:@"playerName"];
+//        [self CustomSearch:segment inputText:[indexArray objectForKey:@"playerName"]];
+        [self SearchViewCustomSearchWithText:[indexArray objectForKey:@"playerName"]];
+//        [_resultFileterArry removeAllObjects];
 
-//        [self ViewControllerDealloc];
+         NSLog(@"if seleted history end -----------");
+        return NO;
+    }
+    return nil;
+  
 }
 -(void)showAlertWithID:(NSDictionary *)dict alert:(JCAlertView *)alert sendID:(NSString *)str
 {   NSString * ObjectId = [dict objectForKey:@"objectId"];
@@ -422,15 +444,22 @@
 -(NSArray *)SrearchCellTextAndIamge:(NSString*)Text diffentIamge:(NSString *)boos
 {
     NSArray * arry = [NSArray arrayWithObjects:Text,boos, nil];
-    NSLog(@"%@",arry);
     return arry;
 
     
 }
+-(void)SearchViewCustomSearchWithText:(NSString*)text
+{
+    //这个实现了默认搜索
+    NSLog(@"click result of history");
+    _customSearchBar.inputText=[self CustomSearch:_customSearchBar inputText:text];
+        NSLog(@"after seach for text");
+            [_customSearchBar.searchBarTableView reloadData];
+}
 -(void)SearchViewCustomSearch
 {
-    NSLog(@"searchview点击了");
     //这个实现了默认搜索
+    NSLog(@"这是刚进去的时候默认搜索");
    _customSearchBar.inputText=[self CustomSearch:_customSearchBar inputText:@""];
 }
 

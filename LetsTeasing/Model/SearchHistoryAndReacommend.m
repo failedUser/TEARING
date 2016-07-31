@@ -62,6 +62,7 @@
     //        NSLog(@"被删除了");
     //    }
 
+
 }
 -(BOOL)fileExists:(NSString * )path
 {
@@ -71,8 +72,20 @@
 }
 //数组里面的内容写进plist文n件中
 -(void)writeIntoPlist:(NSArray*)array
-{    //构建路径
-    [array writeToFile:_Searchplist atomically:YES];
+{
+    //构建路径
+    NSString * plist = [NSString stringWithFormat:@"%@%@", documentPath.firstObject,@"/Searchplist.plist"];
+    NSLog(@"这个地址%@",plist);
+    manager = [NSFileManager defaultManager];
+    BOOL result = [manager fileExistsAtPath:plist];
+    if (result == NO) {
+        NSLog(@"文件不存在");
+        [manager createFileAtPath:plist contents:nil attributes:nil];
+    }
+    NSArray * nameList = [NSArray arrayWithContentsOfFile:plist];
+    NSLog(@"%@",nameList);
+    [array writeToFile:plist atomically:YES];
+
 }
 
 //把字典中的内容写进plist中

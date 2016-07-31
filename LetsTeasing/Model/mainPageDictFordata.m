@@ -16,6 +16,7 @@
     static mainPageDictFordata *MainData = nil;
     if (!MainData) {
         MainData = [[mainPageDictFordata alloc]init];
+        
     }
     return  MainData;
 }
@@ -24,6 +25,10 @@
     self = [super init];
     if (self) {
         [self getObjectFromBomob];
+        NSLog(@"刚载入的时候有没有数据%lu",(unsigned long)self.dataDict.count);
+        if (self.dataDict.count==0) {
+            [self MainreloadData];
+        }
     }
     return  self;
 }

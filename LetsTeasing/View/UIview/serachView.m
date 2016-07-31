@@ -20,40 +20,35 @@
     self = [super initWithFrame:CGRectMake(origin.x, origin.y, SCREEN_WIDTH, height)];
     if (self) {
         [self initView];
-          [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textchange) name:UITextViewTextDidBeginEditingNotification object:nil];
+          [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textchange) name:UITextFieldTextDidChangeNotification object:nil];
+       
         [self initSearchPlist];
     }
     return self;
 }
 -(void)initSearchPlist
 {
+    
     _searchPlistContent = [SearchHistoryAndReacommend shareSearchPlist];
     searchContentArray = [_searchPlistContent getArrayfromPlist];
     if (searchContentArray==nil) {
         searchContentArray = [NSArray arrayWithObjects:@"这是",@"很好",@"a", nil];
-        
         [_searchPlistContent writeIntoPlist:searchContentArray];
-    }else  NSLog(@"里面都死什么%@",searchContentArray);
-}
--(void)insertHistory:(NSString *)input
-{
-//    [searchContentArray addObject:input];
-////    [searchContentArray writeToFile:_searchPlistContent.Searchplist atomically:YES];
-//    [self searchReload];
-
+    }
 }
 
 -(void)textchange
 {
+    NSLog(@"notification the text change");
     if (_searchBarText.text.length == 0) {
-        dict = NULL;
-        self.searchResults =0;
-        [_searchBarTableView reloadData];
+//        dict = NULL;
+//        self.searchResults =0;
+//        [_searchBarTableView reloadData];
     }
 }
--(void)TapClick {
-    [self hidSearchBar:self];
-}
+//-(void)TapClick {
+//    [self hidSearchBar:self];
+//}
 -(void)initView {
 //毛玻璃特效
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
@@ -83,6 +78,8 @@
     [searchBg addSubview:self.searchBarText];
     self.searchBarText.clearButtonMode = UITextFieldViewModeWhileEditing;
     [self.searchBarText becomeFirstResponder];
+    self.searchBarText.returnKeyType = UIReturnKeySearch;
+    
     [self.searchBarText addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
     
@@ -110,7 +107,7 @@
     
    
     UITableView * searchBarTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(searchBg.frame), SCREEN_WIDTH , SCREEN_HEIGHT - CGRectGetMaxY(searchBg.frame)) style:UITableViewStylePlain];
-    searchBarTableView.backgroundColor = [UIColor orangeColor];
+
     searchBarTableView.delegate = self;
     searchBarTableView.dataSource = self;
     [self addSubview:searchBarTableView];
@@ -119,10 +116,10 @@
     self.searchBarTableView = searchBarTableView;
     searchBarTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(TapClick)];
-    singleTap.cancelsTouchesInView = NO;
-    [searchBarTableView addGestureRecognizer:singleTap];
+//    
+//    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(TapClick)];
+//    singleTap.cancelsTouchesInView = NO;
+//    [searchBarTableView addGestureRecognizer:singleTap];
     
     
 }
@@ -148,10 +145,15 @@
 - (void)textFieldDidChange:(UITextField *)textField
 {
  
-    if (self.searchResults && [self.searchResults respondsToSelector:@selector(CustomSearch:inputText:)]) {
 
-      inputText = [self.searchResults CustomSearch:self inputText:textField.text];
-        [self.searchBarTableView reloadData];
+    if (self.searchResults && [self.searchResults respondsToSelector:@selector(CustomSearch:inputText:)]) {
+        NSLog(@"delegated  with textfield, get inputtext--------------------------------------");
+        inputText =_searchBarText.text;
+        NSLog(@"before get inputext inputtext =%@,textfield = %@",inputText,self.searchBarText.text);
+        [self.searchResults CustomSearch:self inputText:textField.text];
+        NSLog(@"input get String from ViewconTroller %@",inputText);
+//        [self.searchBarTableView reloadData];
+
     }
 }
 
@@ -171,41 +173,40 @@
     if (cell == nil) {
         cell = [[searchCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
-
     NSIndexPath * path = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     // 文字
     if (self.DataSource && [self.DataSource respondsToSelector:@selector(CustomSearchBar:titleForRowAtIndexPath:)]) {
-        
+     
         NSArray * NameArry = [self.DataSource CustomSearchBar:self titleForRowAtIndexPath:path];
         if([NameArry[1] isEqualToString:@"YES"]) [cell setSearchUserImage];
         else if([NameArry[1]isEqualToString:@"NO"])[cell setSearchWOrdImage];
         else if([NameArry[1] isEqualToString:@"HHH"])
-        {cell.TextLabel.text = NameArry[0];
+        {
+            cell.TextLabel.text = NameArry[0];
             [cell setHistoryImage];
         }
         NSString * Name =NameArry[0];
-            NSRange range2= [Name rangeOfString:inputText];
+        NSRange range2= [Name rangeOfString:inputText];
         if (range2.location!=NSNotFound) {
             if (range2.location >45 ) {
                 NSString * EndSting = [Name substringWithRange:NSMakeRange(range2.location -20, Name.length-range2.location+20)];
                 cell.TextLabel.text = EndSting;
+                NSLog(@"1");
             }
             else cell.TextLabel.text = Name;
-                }
-        else
-        {
-            NSLog(@"not found");
         }
-     
         cell.TextLabel.numberOfLines =2;
-       NSRange range= [cell.TextLabel.text rangeOfString:inputText];
+        NSRange range= [cell.TextLabel.text rangeOfString:inputText];
         if (cell.TextLabel.text == nil) {
-            NSLog(@"cell里面没有值"); 
+            NSLog(@"cell里面没有值");
         }else
         {
             [string setTextColor:cell.TextLabel FontNumber:[UIFont fontWithName:@"Arial" size:13.0] AndRange:range AndColor:UIColorFromHex(0x50d2c2)];
         }
+
     }
+
+
     return cell;
 }
 
@@ -214,8 +215,15 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSIndexPath * path = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     if (self.delegate && [self.delegate respondsToSelector:@selector(CustomSearchBar:didSelectRowAtIndexPath:)]) {
-        [self.delegate CustomSearchBar:self didSelectRowAtIndexPath:path];
-        [self hidSearchBar:self];
+      
+        if (  [self.delegate CustomSearchBar:self didSelectRowAtIndexPath:path]==NO) {
+            NSLog(@"暂时什么都不弹出来");
+        }else
+        {
+            NSLog(@"hidden search view");
+              [self hidSearchBar:self];
+        }
+    
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -225,4 +233,36 @@
 {
     [self initSearchPlist];
 }
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+  
+    [self.searchBarTableView reloadData];
+    NSMutableArray * array = [NSMutableArray arrayWithArray:searchContentArray];
+    NSMutableArray * resultArray = [self FileRepeatText:array text:inputText];
+    if (resultArray.count>10) [resultArray removeObjectAtIndex:0];
+    [_searchPlistContent writeIntoPlist:resultArray];
+    [self searchReload];
+    
+    return  YES;
+}
+-(NSMutableArray*)FileRepeatText:(NSMutableArray*)array text:(NSString*)text
+{
+    int j = 0;
+    for (int i=0; i<array.count; i++) {
+        if ([text isEqualToString:array[i]]) {
+            j=j+1;
+            break;
+            
+        }else continue;
+    }
+    if (j==0) {
+        [array addObject:text];
+        return array;
+    }else if (j==1) {
+          return array;
+    }
+    return nil;
+  
+}
+
 @end

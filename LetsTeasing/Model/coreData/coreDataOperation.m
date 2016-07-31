@@ -79,32 +79,7 @@
         
     }
 }
-//这个是失败的，等会再解决
--(void)pingjunshu
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"MainPageData"];
-    //返回结果为字典
-    request.resultType = NSDictionaryResultType;
-    //构建表达式
-    NSExpressionDescription * description = [[NSExpressionDescription alloc]init]; ;
-    description.name = @"AverageAge";
-    NSExpression *  args = [NSExpression  expressionForKeyPath:@"name"];
-    description.expression  =[NSExpression expressionForFunction:@"average:" arguments:[NSArray arrayWithObject:args]];
-    
-    description.expressionResultType = NSFloatAttributeType;//指定返回值类型
-    request.propertiesToFetch = [NSArray arrayWithObject:description];
-    NSError *error ;
-    NSArray * entries = [Maincontext executeFetchRequest:request error:&error];
-    //吧下面id属性的格式转化为integer
-    NSDictionary* dict = entries.firstObject;
 
-    id count = dict[@"AverageAge"];
-    if (error) {
-
-    }else{
-        NSLog(@"%@",count);
-    }
-}
 -(void)changeValue
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Student"];

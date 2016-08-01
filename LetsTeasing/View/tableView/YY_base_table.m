@@ -123,9 +123,10 @@
 {
    
     [super reloadData];
+    info = [commentInfo ShareCommentData];
     [info AlertDataReload];
     [_data MainreloadData];
-    info = [commentInfo ShareCommentData];
+
     if (_getString1>=0) {
         NSLog(@"从alert传进来的数%ld", (long)_getString1);
         [self refreshIndexCell:_getString1];

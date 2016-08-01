@@ -403,7 +403,10 @@
 }
 -(void)showAlertWithID:(NSDictionary *)dict alert:(JCAlertView *)alert sendID:(NSString *)str
 {   NSString * ObjectId = [dict objectForKey:@"objectId"];
-    BmobObject * obj = [_yy_table.data.dataDict objectForKey:ObjectId];
+        NSLog(@"在点击的时候传入的对象是什么%@",dict);
+    BmobObject * obj = [_yy_table.data getBmobObjectByID:ObjectId];
+    
+    NSLog(@"在点击的时候传入的对象是什么%@",obj);
     [alert showOneButtonWithTitle:str data:obj sendName:nil];
     
 }

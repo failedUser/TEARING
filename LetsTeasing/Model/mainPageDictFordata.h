@@ -28,4 +28,5 @@
 -(BmobObject*)creatNewClassFordata:(NSInteger)index;
 -(NSMutableArray *)searchDictFornameInTheDict:(NSMutableDictionary *)dict;
 -(NSMutableArray*)filterTheRepeatName:(NSArray *)NameArray;
+-(BmobObject *)getBmobObjectByID:(NSString *)ID;
 @end

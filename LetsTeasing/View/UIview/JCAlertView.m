@@ -10,6 +10,7 @@
 #import <Accelerate/Accelerate.h>
 #import "YY_content_table.h"
 #import "AlertTextBaseView.h"
+#import "YY_TableWithComment.h"
 
 NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotification";
 
@@ -99,6 +100,18 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
             [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange2:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(KeyBoardEndChange:) name:UIKeyboardWillHideNotification object:nil];
     
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
+    //设置成NO表示当前控件响应后会传播到其他控件上，默认为YES。
+    tapGestureRecognizer.cancelsTouchesInView = NO;
+    //将触摸事件添加到当前view
+    [self.view addGestureRecognizer:tapGestureRecognizer];
+    
+}
+-(void)keyboardHide:(UITapGestureRecognizer*)tap
+{
+    if ([_alertView.basetextView.yy_text isFirstResponder]) {
+        [_alertView.basetextView.yy_text resignFirstResponder];
+    }
 }
 - (void)addCoverView{
 
@@ -241,9 +254,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     self = [super initWithFrame:frame];
     if (self) {
         baseTable  = [YY_base_table shareBaseTable];
-
-//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange2:) name:UIKeyboardWillChangeFrameNotification object:nil];
-
+        UITapGestureRecognizer* singleRecognizer;
 
     }
     return self;
@@ -373,24 +384,31 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 -(void)addTable
 {
 //     NSLog(@"弹出框中table的配置");
-    self.table = [[YY_content_table alloc]init];
-    _table.comminfo = [[commentInfo alloc]init];
+ 
     //在配置完table后才会执行这个,这个先放着
    // _dataforRow只是传进来的一个外键属性
     if (_dataforRow ==nil && _SendName.length != 0) {
+        self.table = [[YY_content_table alloc]init];
+        _table.comminfo = [[commentInfo alloc]init];
         [self.table setCommenName:_SendName];
         [self.table setStates:NO];
         [self.table  dataforName];
+        [_table setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight-JCMargin)];
+        [self addSubview:_table];
         
     }else if(_SendName.length == 0)
     {
-    [self.table setCommenID:[_dataforRow objectForKey:@"objectId"]];
-    [self.table data];
-
+        self.table2 = [[YY_TableWithComment alloc]init];
+        _table2.comminfo = [[commentInfo alloc]init];
+    //dataforrow is a bmob object so i can input object
+    [self.table2 setGetBmobObject:_dataforRow];
+    [self.table2 data];
+        [_table2 setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight-JCMargin)];
+        [self addSubview:_table2];
     }
+//    #import "YY_TableWithComment.h"
     //给table的array赋值
-    [_table setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight-JCMargin)];
-    [self addSubview:_table];
+
 }
 -(void)SendToAlertTable
 {
@@ -399,8 +417,13 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     NSString * message = [self.basetextView.yy_text.text  copy];
     [self MessageManager:message];
     [self.basetextView.yy_text resignFirstResponder];
-    
-    [self.table reloadData];
+        if (_dataforRow ==nil && _SendName.length != 0) {
+                [self.table reloadData];
+        }
+else  if(_SendName.length == 0)
+{
+    [self.table2 reloadData];
+}
 //    //滑到更新的那一行
 //    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.table.comDict.count-1 inSection:0];
 //    [self.table scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
@@ -408,13 +431,26 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 }
 -(void)MessageManager:(NSString*) message
 {
-    if (message!= 0) {
-        NSNumber * num = [self.table returnCount];
-        NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我的评论",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",[NSNumber numberWithBool:YES],@"cheatMode",nil];
-        
-        BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
-    [self.table.comminfo saveAlertData:obj CommentsID:[_dataforRow objectForKey:@"objectId"]];
+    if (message.length!= 0) {
+  
+        if (_dataforRow ==nil && _SendName.length != 0) {
+            NSNumber * num = [self.table returnCount];
+            NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我的评论",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",[NSNumber numberWithBool:YES],@"cheatMode",nil];
+            BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
+            [self.table.comminfo saveAlertData:obj CommentsID:[_dataforRow objectForKey:@"objectId"]];
+        }
+        else  if(_SendName.length == 0)
+        {
+            NSNumber * num = [self.table2 returnCount];
+            NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我的评论",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",[NSNumber numberWithBool:YES],@"cheatMode",nil];
+            BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
+            [self.table2.comminfo saveAlertData:obj CommentsID:[_dataforRow objectForKey:@"objectId"]];
+        }
     
+    }
+    else
+    {
+        NSLog(@"请输入正确的值");
         
     }
     

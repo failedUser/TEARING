@@ -11,7 +11,7 @@
 #import "YY_content_table.h"
 #import "YY_base_table.h"
 #import "View_for_Text.h"
-
+#import "YY_TableWithComment.h"
 // maybe useful
 @class JCAlertView;
 UIKIT_EXTERN NSString *const JCAlertViewWillShowNotification;
@@ -33,6 +33,7 @@ typedef void(^clickHandle)(void);
 @property(nonatomic,strong) AlertTextBaseView * basetextView;
 @property(nonatomic,strong) NSMutableArray *ScellContent;
 @property (nonatomic,strong) YY_content_table * table;
+@property (nonatomic,strong) YY_TableWithComment * table2;
 @property(nonatomic,assign) NSInteger multiple;
 @property (nonatomic, getter=isAlertReady) BOOL alertReady;
 @property(nonatomic,strong) NSString * sendString;

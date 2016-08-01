@@ -154,6 +154,20 @@ return NameArray;
 
    
 }
+-(BmobObject *)getBmobObjectByID:(NSString *)ID
+{
+    for (int i =0; i<self.dataDict.count; i++) {
+        NSNumber * numb = [NSNumber numberWithInteger:i];
+        BmobObject * obj = [self.dataDict objectForKey:numb];
+        if ([[obj objectForKey:@"objectId"]isEqualToString:ID]) {
+            return  obj;
+        }
+    }
+
+    return nil;
+    
+    
+}
 -(void)releaseDict
 {
     [saidWordForName removeAllObjects];

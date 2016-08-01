@@ -98,6 +98,8 @@
 		184D89C11D39D9B400D5C1EF /* navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D898C1D39D9B400D5C1EF /* navigation.m */; };
 		184D89C21D39D9B400D5C1EF /* newMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D898E1D39D9B400D5C1EF /* newMessage.m */; };
 		184D89C31D39D9B400D5C1EF /* serachView.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D89901D39D9B400D5C1EF /* serachView.m */; };
+		187A8CC01D4F0B2F004E267C /* YY_TableWithComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 187A8CBF1D4F0B2F004E267C /* YY_TableWithComment.m */; };
+		187A8CC31D4F35D8004E267C /* alertTableCellUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 187A8CC21D4F35D7004E267C /* alertTableCellUser.m */; };
 		187C020C1D472188001ECE68 /* clearSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C02091D472188001ECE68 /* clearSearch.png */; };
 		187C020D1D472188001ECE68 /* clearsearchBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C020A1D472188001ECE68 /* clearsearchBack.png */; };
 		187C020E1D472188001ECE68 /* mianban.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 187C020B1D472188001ECE68 /* mianban.jpg */; };
@@ -318,6 +320,10 @@
 		184D898E1D39D9B400D5C1EF /* newMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = newMessage.m; sourceTree = "<group>"; };
 		184D898F1D39D9B400D5C1EF /* serachView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = serachView.h; sourceTree = "<group>"; };
 		184D89901D39D9B400D5C1EF /* serachView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = serachView.m; sourceTree = "<group>"; };
+		187A8CBE1D4F0B2F004E267C /* YY_TableWithComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YY_TableWithComment.h; sourceTree = "<group>"; };
+		187A8CBF1D4F0B2F004E267C /* YY_TableWithComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YY_TableWithComment.m; sourceTree = "<group>"; };
+		187A8CC11D4F35D7004E267C /* alertTableCellUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alertTableCellUser.h; sourceTree = "<group>"; };
+		187A8CC21D4F35D7004E267C /* alertTableCellUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = alertTableCellUser.m; sourceTree = "<group>"; };
 		187C02091D472188001ECE68 /* clearSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clearSearch.png; sourceTree = "<group>"; };
 		187C020A1D472188001ECE68 /* clearsearchBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clearsearchBack.png; sourceTree = "<group>"; };
 		187C020B1D472188001ECE68 /* mianban.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mianban.jpg; sourceTree = "<group>"; };
@@ -666,6 +672,8 @@
 				184D897B1D39D9B400D5C1EF /* YY_base_table.m */,
 				184D897C1D39D9B400D5C1EF /* YY_content_table.h */,
 				184D897D1D39D9B400D5C1EF /* YY_content_table.m */,
+				187A8CBE1D4F0B2F004E267C /* YY_TableWithComment.h */,
+				187A8CBF1D4F0B2F004E267C /* YY_TableWithComment.m */,
 			);
 			path = tableView;
 			sourceTree = "<group>";
@@ -673,6 +681,8 @@
 		184D89751D39D9B400D5C1EF /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				187A8CC11D4F35D7004E267C /* alertTableCellUser.h */,
+				187A8CC21D4F35D7004E267C /* alertTableCellUser.m */,
 				184D89761D39D9B400D5C1EF /* textCell.h */,
 				184D89771D39D9B400D5C1EF /* textCell.m */,
 				18F493831D45F7AA002D84FB /* AlertTableCell.h */,
@@ -1268,6 +1278,7 @@
 				184D89C11D39D9B400D5C1EF /* navigation.m in Sources */,
 				184D89B21D39D9B400D5C1EF /* MASViewAttribute.m in Sources */,
 				184D89B01D39D9B400D5C1EF /* MASConstraintMaker.m in Sources */,
+				187A8CC31D4F35D8004E267C /* alertTableCellUser.m in Sources */,
 				184D89A71D39D9B400D5C1EF /* MainPageData.m in Sources */,
 				184D89B91D39D9B400D5C1EF /* commentsTable.m in Sources */,
 				184D89BF1D39D9B400D5C1EF /* View_for_Text.m in Sources */,
@@ -1302,6 +1313,7 @@
 				184D89251D39D97400D5C1EF /* LetsTeasing.xcdatamodeld in Sources */,
 				184D89B41D39D9B400D5C1EF /* NSArray+MASAdditions.m in Sources */,
 				184D89B71D39D9B400D5C1EF /* ViewController+MASAdditions.m in Sources */,
+				187A8CC01D4F0B2F004E267C /* YY_TableWithComment.m in Sources */,
 				18F493A71D4652EF002D84FB /* searchCell.m in Sources */,
 				184D89A91D39D9B400D5C1EF /* OperationFile.m in Sources */,
 				184D89C31D39D9B400D5C1EF /* serachView.m in Sources */,

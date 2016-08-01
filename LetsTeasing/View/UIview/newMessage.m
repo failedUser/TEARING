@@ -34,7 +34,6 @@
     _button = [UIButton buttonWithType:UIButtonTypeCustom];
     _button.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     _button.backgroundColor = UIColorFromHex(0xefeff4);
-//    [_button setTitleColor:UIColorFromHex(0x6e6e70) forState:UIControlStateNormal];
     _button.titleLabel.font = YYBUTTON_FONT;
     //设置字间距 NSKernAttributeName:@1.5f
 
@@ -48,16 +47,7 @@
 
     NSAttributedString *attributeStr = [[NSAttributedString alloc] initWithString:str attributes:dic];
     [_button setAttributedTitle:attributeStr forState:UIControlStateNormal];
-  
-//    [_button setTitle:title forState:UIControlStateNormal];
 }
-//-(void)addimage
-//{
-//    UIImage * image =[photoChange OriginImage: [UIImage imageNamed:@"message.png"]scaleToSize:CGSizeMake(15, 15)];
-//    UIImageView * imageView = [[UIImageView alloc]initWithImage:image];
-//    [imageView setFrame:CGRectMake(YY_ININPONE5_WITH(210.0f),YY_ININPONE5_HEIGHT(2.0f), YY_ININPONE5_HEIGHT(15.0f), YY_ININPONE5_HEIGHT(15.0f))];
-//    [_button addSubview:imageView];
-//
-//}
+
 
 @end

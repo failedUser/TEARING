@@ -56,16 +56,6 @@
     [self addSubview:_placehoderLbl];
    
 }
-//-(void)addimage
-//{
-//    UIImage * image = [UIImage imageNamed:@"cc-write.png"];
-//    _PlaceHoder_Image = [[UIImageView alloc]initWithImage:image highlightedImage:nil];
-//    [_PlaceHoder_Image setFrame:CGRectMake(10, 7, 15, 15)];
-//    [self addSubview:_PlaceHoder_Image];
-//    [self addSubview:_placehoderLbl];
-//  
-//}
-
 #pragma mark 点击/响应通知方法
 /**
  *  每一次文本改变时调用
@@ -88,12 +78,6 @@
 }
 -(void)addMasonry
 {
-//    [self.PlaceHoder_Image mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(10.0f));
-//        make.height.offset(YY_ININPONE5_HEIGHT(15.0f));
-//        make.width.offset(YY_ININPONE5_WITH(15.0f));
-//        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE5_HEIGHT(15.0f));
-//    }];
     [self.placehoderLbl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(10.0f));
         make.height.offset(YY_ININPONE5_HEIGHT(30.0f));

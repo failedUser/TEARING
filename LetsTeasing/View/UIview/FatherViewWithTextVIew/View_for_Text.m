@@ -38,12 +38,6 @@
 }
 -(void)textChange
 {
-
-//    CGRect fame = self.frame;
-//    fame.size.height = _yy_text.textHeight;
-////    self.frame =fame;
-//}
-
 }
 
 -(void)addViewForText
@@ -101,23 +95,15 @@
 -(void)setUIColor
 {
     self.backgroundColor = UIColorFromHex(0x313131);
+        line.backgroundColor = UIColorFromHex(0x8a8a8f);
     _yy_text.backgroundColor = UIColorFromHex(0x313131);
-    line.backgroundColor = UIColorFromHex(0x8a8a8f);
-//    line.backgroundColor = [UIColor whiteColor];
-
     _yy_text.placehoderLbl.textColor=UIColorFromHex(0x8a8a8f);
-    
-// _yy_text.placehoderLbl.backgroundColor=UIColorFromHex(0x313131);
     _send_btn.backgroundColor = UIColorFromHex(0x50d2c2);
     [_send_btn setTintColor:UIColorFromHex(0xffffff)];
-    
-
-
 }
 -(void)autolayoutWithMasonry
 {
     [_send_btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        //        make.leftMargin.equalTo(self.mas_left).offset(5);
         make.width.offset(YY_ININPONE6_WITH(50.0f));
         make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE6_WITH(-24.0f));
         make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE6_HEIGHT(15.0f));

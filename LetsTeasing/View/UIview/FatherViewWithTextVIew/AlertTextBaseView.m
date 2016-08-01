@@ -19,15 +19,14 @@
         [self setColor];
         self.yy_text.textColor = UIColorFromHex(0x8a8a8f);
     }
-    
-    
-    
     return self;
 }
+
 - (void)dealloc{
     //移除所有通知
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
+
 -(void)addViewForText
 {
     
@@ -35,15 +34,10 @@
     line.backgroundColor = [UIColor blackColor];
     [self addSubview:line];
     
-    
-    
     self.yy_text  = [[YY_TextView alloc]initWithFrame:CGRectMake(5, 5, 280, 22)];
     self.yy_text.constrainH = self.constrainH;
     [self addSubview:self.yy_text];
-    
-    
-    
-    
+        
     [line mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(20.0f));
         make.height.offset(1);

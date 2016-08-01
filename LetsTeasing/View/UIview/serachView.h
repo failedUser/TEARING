@@ -63,6 +63,7 @@
 @property (nonatomic, strong) NSString * getInput;
 @property (nonatomic, weak) UITableView * searchBarTableView;
 @property (nonatomic, assign) BOOL hiddenStates;
+@property (nonatomic, assign) BOOL keyBoardShow;
 @property (nonatomic, weak) id<CustomSearchBarDataSouce>    DataSource;
 @property (nonatomic, weak) id<CustomSearchBarDelegate>     delegate;
 @property (nonatomic, weak) id<searchResults>               searchResults;

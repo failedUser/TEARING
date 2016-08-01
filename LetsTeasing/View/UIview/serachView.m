@@ -21,14 +21,24 @@
     if (self) {
         [self initView];
           [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textchange) name:UITextFieldTextDidChangeNotification object:nil];
-       
+          [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange:) name:UIKeyboardDidChangeFrameNotification object:nil];
+          [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoarddidshow) name:UIKeyboardDidShowNotification object:nil];
+          [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardisHidden) name:UIKeyboardDidHideNotification object:nil];
         [self initSearchPlist];
     }
     return self;
 }
+-(void)keyBoardisHidden
+{
+    _keyBoardShow =NO;
+}
+-(void)keyBoarddidshow
+{
+    _keyBoardShow =YES;
+}
+
 -(void)initSearchPlist
 {
-    
     _searchPlistContent = [SearchHistoryAndReacommend shareSearchPlist];
     searchContentArray = [_searchPlistContent getArrayfromPlist];
     if (searchContentArray==nil) {
@@ -39,16 +49,9 @@
 
 -(void)textchange
 {
-    NSLog(@"notification the text change");
     if (_searchBarText.text.length == 0) {
-//        dict = NULL;
-//        self.searchResults =0;
-//        [_searchBarTableView reloadData];
     }
 }
-//-(void)TapClick {
-//    [self hidSearchBar:self];
-//}
 -(void)initView {
 //毛玻璃特效
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
@@ -115,13 +118,6 @@
     searchBarTableView.backgroundColor = self.backgroundColor;
     self.searchBarTableView = searchBarTableView;
     searchBarTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-//    
-//    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(TapClick)];
-//    singleTap.cancelsTouchesInView = NO;
-//    [searchBarTableView addGestureRecognizer:singleTap];
-    
-    
 }
 
 -(void)cancleClick:(UIButton *)sender {
@@ -147,13 +143,8 @@
  
 
     if (self.searchResults && [self.searchResults respondsToSelector:@selector(CustomSearch:inputText:)]) {
-        NSLog(@"delegated  with textfield, get inputtext--------------------------------------");
         inputText =_searchBarText.text;
-        NSLog(@"before get inputext inputtext =%@,textfield = %@",inputText,self.searchBarText.text);
         [self.searchResults CustomSearch:self inputText:textField.text];
-        NSLog(@"input get String from ViewconTroller %@",inputText);
-//        [self.searchBarTableView reloadData];
-
     }
 }
 
@@ -200,8 +191,7 @@
         if (cell.TextLabel.text == nil) {
             NSLog(@"cell里面没有值");
         }else
-        {
-            [string setTextColor:cell.TextLabel FontNumber:[UIFont fontWithName:@"Arial" size:13.0] AndRange:range AndColor:UIColorFromHex(0x50d2c2)];
+        {[string setTextColor:cell.TextLabel FontNumber:[UIFont fontWithName:@"Arial" size:13.0] AndRange:range AndColor:UIColorFromHex(0x50d2c2)];
         }
 
     }
@@ -209,18 +199,13 @@
 
     return cell;
 }
-
-
-
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSIndexPath * path = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
     if (self.delegate && [self.delegate respondsToSelector:@selector(CustomSearchBar:didSelectRowAtIndexPath:)]) {
       
         if (  [self.delegate CustomSearchBar:self didSelectRowAtIndexPath:path]==NO) {
-            NSLog(@"暂时什么都不弹出来");
         }else
         {
-            NSLog(@"hidden search view");
               [self hidSearchBar:self];
         }
     
@@ -263,6 +248,28 @@
     }
     return nil;
   
+}
+//键盘监听事件
+- (void)keyBoardChange:(NSNotification *)note{
+    // 0.取出键盘动画的时间
+    CGFloat duration = [note.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    // 1.取得键盘最后的frame
+    CGRect keyboardFrame = [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    // 2.计算控制器的view需要平移的距离
+    if (_keyBoardShow) {
+        NSLog(@"keyboard is show");
+    }else
+    {
+        NSLog(@"keyboard is hidden");
+    CGFloat transformY = -keyboardFrame.size.height + self.searchBarTableView.frame.size.height;
+    CGRect frame = CGRectMake(0, 64, SCREEN_WIDTH ,transformY );
+    self.searchBarTableView.frame =frame;
+    }
+    // 3.执行动画
+    [UIView animateWithDuration:duration animations:^{
+//        self.searchBarTableView.transform = CGAffineTransformMakeTranslation(0, transformY);
+    }];
+    
 }
 
 @end

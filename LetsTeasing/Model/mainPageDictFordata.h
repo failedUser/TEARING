@@ -12,12 +12,13 @@
 
 
 @interface mainPageDictFordata : coreDataOperation
-
-
 @property(nonatomic,strong) NSMutableDictionary * saidWordForName;
 @property(nonatomic,strong) coreDataOperation *coreOP;
 @property(nonatomic,strong) NSMutableDictionary * DICT;
 @property(nonatomic,strong) MainPageData * mainData1;
+
+
+
 +(mainPageDictFordata *)shareMainData;
 -(NSInteger)numberOfUnReadNews:(NSMutableDictionary *)dict;
 -(NSMutableArray *)NameInTheDict:(NSMutableDictionary *)dict;
@@ -29,4 +30,5 @@
 -(NSMutableArray *)searchDictFornameInTheDict:(NSMutableDictionary *)dict;
 -(NSMutableArray*)filterTheRepeatName:(NSArray *)NameArray;
 -(BmobObject *)getBmobObjectByID:(NSString *)ID;
+-(NSMutableDictionary *)changeBmobDictToDict:(NSMutableDictionary *)dict;
 @end

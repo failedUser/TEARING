@@ -13,6 +13,7 @@
 
 
 
+
 @implementation YY_base_table
 +(YY_base_table *)shareBaseTable
 {
@@ -31,9 +32,22 @@
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self reloadData];
+            _dictWithPlist =[NSMutableDictionary dictionaryWithCapacity:100];
+    [self writeDictIntoPlist];
     return self;
 }
-
+-(void)writeDictIntoPlist
+{
+    _plistMaindata = [plistWithCatchData shareMainDataPlist];
+    _dictWithPlist= [_plistMaindata getdataDictfromPlist];
+    if (_dictWithPlist==nil) {
+        if (_data.dataDict.count>0) {
+            NSLog(@"dataDict.count ====%lu",(unsigned long)_data.dataDict.count);
+            [_plistMaindata writeTheContentfromDictIntoplist:_data.dataDict];
+        }
+    }
+    
+}
 //tableView DataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -54,14 +68,14 @@
     if(cell == nil) cell = [[textCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CMainCell];
     if(cell.TextLabel.text != nil)  cell.TextLabel.text = @"";
 
-    NSNumber * num = [NSNumber numberWithInteger:_dict.count-indexPath.row-1];
+//    NSNumber * num = [NSNumber numberWithInteger:_dict.count-indexPath.row-1];
+    NSString * num = [NSString stringWithFormat:@"%lu",_dict.count-indexPath.row-1];
     dict1 = [_dict objectForKey:num];
     //给里面的评论个数传值传值
     [self setCount];
 //    if (count>=1)[cell addhotCommentImage];
 //        
 //    else if(count==0) [cell addCommentImage];
-    
     [cell setLabelText:count];
     
     NSString * dateStr = [dict1 objectForKey:@"createdAt"];
@@ -98,12 +112,17 @@
 -(void )initDict
 {
     _data = [mainPageDictFordata shareMainData];
-    _dict = _data.dataDict;
-    if (_dict.count ==0) {
-        NSLog(@"在主界面如果没有数据%lu",(unsigned long)_dict.count);
-          [_data MainreloadData];
-
-          NSLog(@"在主界面如果没有数据刷新之后%lu",(unsigned long)_dict.count);
+    [_data MainreloadData];
+    if (_data.dataDict.count ==0) {
+    _dict =_dictWithPlist;
+        _dictOrObject =YES;
+    }else
+    {
+        [_dict removeAllObjects];
+//        _dict = [_data changeBmobDictToDict:_data.dataDict];
+        _dict = [info CommentCountWithEachsaidWord];
+       NSLog(@"1111111%@",[info CommentCountWithEachsaidWord]);
+         _dictOrObject =NO;
     }
     
 }
@@ -126,7 +145,9 @@
     info = [commentInfo ShareCommentData];
     [info AlertDataReload];
     [_data MainreloadData];
-
+    [self writeDictIntoPlist];
+    //在这个地方对datadict 进行操作
+    [self initDict];
     if (_getString1>=0) {
         NSLog(@"从alert传进来的数%ld", (long)_getString1);
         [self refreshIndexCell:_getString1];

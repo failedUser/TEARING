@@ -31,12 +31,6 @@
 }
 -(void)operationForFile
 {
-    //查沙盒目录
-        NSString * homePathe = NSHomeDirectory();
-        NSLog(@"沙盒目录%@",homePathe);
-    //获取library目录
-    //    NSArray  * libraryPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-    //    NSLog(@"%@",libraryPath.firstObject);
     //获取document目录
     documentPath  = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true);
     NSLog(@"%@",documentPath.firstObject);
@@ -48,20 +42,6 @@
         NSLog(@"文件不存在");
         [manager createFileAtPath:_Searchplist contents:nil attributes:nil];
     }
-    NSLog(@"searchPlist的地址是%@",_Searchplist);
-    //    if ([self fileExists]) {
-    //        NSLog(@"目录不存在");
-    //        //创建一个新目录，可以用一个布尔值来接受状态
-    //
-    //        [ manager createDirectoryAtPath:documentPath.firstObject withIntermediateDirectories:NO attributes:nil error: nil];
-    //        NSLog(@"%@",documentPath.firstObject);
-    //        //删除目录
-    //        [manager removeItemAtPath:documentPath.firstObject error:nil];
-    //    }
-    //    if ([self fileExists] ==NO) {
-    //        NSLog(@"被删除了");
-    //    }
-
 
 }
 -(BOOL)fileExists:(NSString * )path
@@ -75,36 +55,17 @@
 {
     //构建路径
     NSString * plist = [NSString stringWithFormat:@"%@%@", documentPath.firstObject,@"/Searchplist.plist"];
-    NSLog(@"这个地址%@",plist);
+//    NSLog(@"这个地址%@",plist);
     manager = [NSFileManager defaultManager];
     BOOL result = [manager fileExistsAtPath:plist];
     if (result == NO) {
         NSLog(@"文件不存在");
         [manager createFileAtPath:plist contents:nil attributes:nil];
     }
-    NSArray * nameList = [NSArray arrayWithContentsOfFile:plist];
-    NSLog(@"%@",nameList);
+//    NSArray * nameList = [NSArray arrayWithContentsOfFile:plist];
+//    NSLog(@"%@",nameList);
     [array writeToFile:plist atomically:YES];
 
-}
-
-//把字典中的内容写进plist中
--(void)writeTheContentfromDictIntoplist
-{
-   _Searchplist = [NSString stringWithFormat:@"%@%@", documentPath.firstObject,@"/Searchplist.plist"];
-    NSLog(@"%@",_Searchplist);
-    manager = [NSFileManager defaultManager];
-    BOOL result = [manager fileExistsAtPath:_Searchplist];
-    if (result == NO) {
-        NSLog(@"文件不存在");
-        [manager createFileAtPath:_Searchplist contents:nil attributes:nil];
-    }
-    NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:@"yueyin",@"name",@"21",@"age",@"175",@"height", nil];
-    NSDictionary * dict2 = [NSDictionary dictionaryWithObjectsAndKeys:@"yueyin2",@"name",@"212",@"age",@"1752",@"height", nil];
-    [dict writeToFile:_Searchplist atomically:YES];
-    [dict2 writeToFile:_Searchplist atomically:YES];
-
-//    NSDictionary  * DICT = [NSDictionary dictionaryWithContentsOfFile:plist];
 }
 -(NSArray*)getArrayfromPlist
 {

@@ -254,8 +254,6 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     self = [super initWithFrame:frame];
     if (self) {
         baseTable  = [YY_base_table shareBaseTable];
-        UITapGestureRecognizer* singleRecognizer;
-
     }
     return self;
 }

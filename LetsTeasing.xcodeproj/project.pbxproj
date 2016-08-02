@@ -95,11 +95,11 @@
 		184D89BE1D39D9B400D5C1EF /* YY_TextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D89861D39D9B400D5C1EF /* YY_TextView.m */; };
 		184D89BF1D39D9B400D5C1EF /* View_for_Text.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D89881D39D9B400D5C1EF /* View_for_Text.m */; };
 		184D89C01D39D9B400D5C1EF /* JCAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D898A1D39D9B400D5C1EF /* JCAlertView.m */; };
-		184D89C11D39D9B400D5C1EF /* navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D898C1D39D9B400D5C1EF /* navigation.m */; };
 		184D89C21D39D9B400D5C1EF /* newMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D898E1D39D9B400D5C1EF /* newMessage.m */; };
 		184D89C31D39D9B400D5C1EF /* serachView.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D89901D39D9B400D5C1EF /* serachView.m */; };
 		187A8CC01D4F0B2F004E267C /* YY_TableWithComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 187A8CBF1D4F0B2F004E267C /* YY_TableWithComment.m */; };
 		187A8CC31D4F35D8004E267C /* alertTableCellUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 187A8CC21D4F35D7004E267C /* alertTableCellUser.m */; };
+		187A8CC61D4F3FF4004E267C /* plistWithCatchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 187A8CC51D4F3FF4004E267C /* plistWithCatchData.m */; };
 		187C020C1D472188001ECE68 /* clearSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C02091D472188001ECE68 /* clearSearch.png */; };
 		187C020D1D472188001ECE68 /* clearsearchBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C020A1D472188001ECE68 /* clearsearchBack.png */; };
 		187C020E1D472188001ECE68 /* mianban.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 187C020B1D472188001ECE68 /* mianban.jpg */; };
@@ -314,8 +314,6 @@
 		184D89881D39D9B400D5C1EF /* View_for_Text.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = View_for_Text.m; sourceTree = "<group>"; };
 		184D89891D39D9B400D5C1EF /* JCAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JCAlertView.h; sourceTree = "<group>"; };
 		184D898A1D39D9B400D5C1EF /* JCAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JCAlertView.m; sourceTree = "<group>"; };
-		184D898B1D39D9B400D5C1EF /* navigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = navigation.h; sourceTree = "<group>"; };
-		184D898C1D39D9B400D5C1EF /* navigation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = navigation.m; sourceTree = "<group>"; };
 		184D898D1D39D9B400D5C1EF /* newMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = newMessage.h; sourceTree = "<group>"; };
 		184D898E1D39D9B400D5C1EF /* newMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = newMessage.m; sourceTree = "<group>"; };
 		184D898F1D39D9B400D5C1EF /* serachView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = serachView.h; sourceTree = "<group>"; };
@@ -324,6 +322,8 @@
 		187A8CBF1D4F0B2F004E267C /* YY_TableWithComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YY_TableWithComment.m; sourceTree = "<group>"; };
 		187A8CC11D4F35D7004E267C /* alertTableCellUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alertTableCellUser.h; sourceTree = "<group>"; };
 		187A8CC21D4F35D7004E267C /* alertTableCellUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = alertTableCellUser.m; sourceTree = "<group>"; };
+		187A8CC41D4F3FF4004E267C /* plistWithCatchData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = plistWithCatchData.h; sourceTree = "<group>"; };
+		187A8CC51D4F3FF4004E267C /* plistWithCatchData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = plistWithCatchData.m; sourceTree = "<group>"; };
 		187C02091D472188001ECE68 /* clearSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clearSearch.png; sourceTree = "<group>"; };
 		187C020A1D472188001ECE68 /* clearsearchBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clearsearchBack.png; sourceTree = "<group>"; };
 		187C020B1D472188001ECE68 /* mianban.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mianban.jpg; sourceTree = "<group>"; };
@@ -607,6 +607,8 @@
 				184D89501D39D9B400D5C1EF /* OperationFile.m */,
 				184D89511D39D9B400D5C1EF /* StudentInfo.h */,
 				184D89521D39D9B400D5C1EF /* StudentInfo.m */,
+				187A8CC41D4F3FF4004E267C /* plistWithCatchData.h */,
+				187A8CC51D4F3FF4004E267C /* plistWithCatchData.m */,
 			);
 			path = IO;
 			sourceTree = "<group>";
@@ -700,8 +702,6 @@
 				184D897F1D39D9B400D5C1EF /* changeName.h */,
 				184D89801D39D9B400D5C1EF /* changeName.m */,
 				184D89811D39D9B400D5C1EF /* FatherViewWithTextVIew */,
-				184D898B1D39D9B400D5C1EF /* navigation.h */,
-				184D898C1D39D9B400D5C1EF /* navigation.m */,
 				184D898D1D39D9B400D5C1EF /* newMessage.h */,
 				184D898E1D39D9B400D5C1EF /* newMessage.m */,
 				184D898F1D39D9B400D5C1EF /* serachView.h */,
@@ -1275,7 +1275,6 @@
 				187C48F31D3C649F003D0317 /* CommentData+CoreDataProperties.m in Sources */,
 				184D89AF1D39D9B400D5C1EF /* MASConstraint.m in Sources */,
 				180CAE421D44449900A81598 /* string.m in Sources */,
-				184D89C11D39D9B400D5C1EF /* navigation.m in Sources */,
 				184D89B21D39D9B400D5C1EF /* MASViewAttribute.m in Sources */,
 				184D89B01D39D9B400D5C1EF /* MASConstraintMaker.m in Sources */,
 				187A8CC31D4F35D8004E267C /* alertTableCellUser.m in Sources */,
@@ -1299,6 +1298,7 @@
 				184D89921D39D9B400D5C1EF /* photoChange.m in Sources */,
 				187C48F41D3C649F003D0317 /* CommentData.m in Sources */,
 				184D89B11D39D9B400D5C1EF /* MASLayoutConstraint.m in Sources */,
+				187A8CC61D4F3FF4004E267C /* plistWithCatchData.m in Sources */,
 				184D89B81D39D9B400D5C1EF /* textCell.m in Sources */,
 				188D980B1D2344F300A90DD7 /* main.m in Sources */,
 				184D89AB1D39D9B400D5C1EF /* mainPageDictFordata.m in Sources */,

@@ -8,7 +8,6 @@
 
 #import "ViewController.h"
 #import "Masonry.h"
-#import "navigation.h"
 #import "YY_base_table.h"
 #import "Personal_centerViewController.h"
 #import "YY_TextView.h"

@@ -8,6 +8,7 @@
 
 #import "mainPageDictFordata.h"
 #import "MainPageData.h"
+#import "commentInfo.h"
 
 @implementation mainPageDictFordata
 @synthesize saidWordForName;
@@ -16,7 +17,6 @@
     static mainPageDictFordata *MainData = nil;
     if (!MainData) {
         MainData = [[mainPageDictFordata alloc]init];
-        
     }
     return  MainData;
 }
@@ -25,13 +25,12 @@
     self = [super init];
     if (self) {
         [self getObjectFromBomob];
-        NSLog(@"刚载入的时候有没有数据%lu",(unsigned long)self.dataDict.count);
-        if (self.dataDict.count==0) {
-            [self MainreloadData];
-        }
+//        [self writeDictIntoPlist];
+
     }
     return  self;
 }
+
 
 -(NSInteger)numberOfUnReadNews:(NSMutableDictionary *)dict
 {
@@ -81,7 +80,24 @@ return NameArray;
     }
     return NameArray;
 }
-
+-(NSMutableDictionary *)changeBmobDictToDict:(NSMutableDictionary *)dict
+{
+    NSMutableDictionary * DictWithDict = [NSMutableDictionary new];
+    for (int i =0; i< dict.count; i++) {
+        NSNumber * nub = [NSNumber numberWithInteger:i];
+        BmobObject * dict1 = [dict objectForKey:nub];
+        NSString * nubstr = [NSString stringWithFormat:@"%d",i];
+        NSDictionary * dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                               [dict1 objectForKey:@"playerName"],@"playerName",
+                               [dict1 objectForKey:@"objectId"],@"objectId",
+                               [dict1 objectForKey:@"numberOfSaidWords"],@"numberOfSaidWords",
+                               [dict1 objectForKey:@"saidWord"],@"saidWord",
+                               [dict1 objectForKey:@"createdAt"],@"createdAt",nil];
+        [DictWithDict setObject:dict forKey:nubstr];
+        
+    }
+    return DictWithDict;
+}
 -(BOOL)getObjectFromBomob
 {
     BmobQuery   *bquery = [BmobQuery queryWithClassName:@"GameScore"];
@@ -103,6 +119,8 @@ return NameArray;
 -(void)MainreloadData
 {
     [self getObjectFromBomob];
+//    [self writeDictIntoPlist];
+
 
 }
 -(BmobObject*)creatNewClassFordata:(NSInteger)index

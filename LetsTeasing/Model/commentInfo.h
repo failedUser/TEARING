@@ -28,5 +28,6 @@
 -(NSMutableArray *)dictWithName:(NSString *)name;
 -(NSInteger)Count:(NSString *)objectId;
 -(BmobObject *)bmobObjectWithId:(NSString *)objectId;
+-(NSMutableDictionary *)CommentCountWithEachsaidWord;
 
 @end

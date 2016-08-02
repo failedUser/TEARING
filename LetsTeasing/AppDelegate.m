@@ -10,7 +10,11 @@
 #import <BmobSDK/Bmob.h>
 #import "ViewController.h"
 
+
 @interface AppDelegate ()
+{
+    ViewController *baseView ;
+}
 
 @end
 
@@ -25,7 +29,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
 
    
-    ViewController *baseView = [[ViewController alloc]init];
+  baseView = [[ViewController alloc]init];
         UINavigationController * navC = [[UINavigationController alloc]initWithRootViewController:baseView];
   
     self.window.rootViewController = navC;
@@ -46,6 +50,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

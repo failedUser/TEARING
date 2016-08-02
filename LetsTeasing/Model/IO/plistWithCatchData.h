@@ -11,12 +11,9 @@
 
 @interface plistWithCatchData : NSObject
 {
-    
     NSArray<NSString*> * documentPath;
     NSFileManager *manager;
     NSManagedObjectContext * context;
-    
-    //        Student * student;
     
 }
 @property(nonatomic,assign)NSString * MaindataPlistAdress ;

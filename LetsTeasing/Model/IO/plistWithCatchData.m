@@ -66,14 +66,14 @@
     NSMutableDictionary * cutDict = [NSMutableDictionary dictionaryWithCapacity:100];
     for (int i =0; i<dataDict.count; i++) {
         if (dataDict.count<100 ) {
-            NSNumber *num = [NSNumber  numberWithInteger:i];
+//            NSNumber *num = [NSNumber  numberWithInteger:i];
             NSString * NumStr = [NSString stringWithFormat:@"%d",i];
-            NSDictionary * dict = [self conversionBmobOjectToDict:[dataDict objectForKey:num]];
+            NSDictionary * dict = [self conversionBmobOjectToDict:[dataDict objectForKey:NumStr]];
             [cutDict setObject:dict forKey:NumStr];
         }if (dataDict.count>100 ) {
-            NSNumber * num = [NSNumber numberWithInteger:dataDict.count-100];
-             NSString * NumStr1 = [NSString stringWithFormat:@"%lu",dataDict.count-i];
-              [cutDict setObject:[dataDict objectForKey:NumStr1] forKey:num];
+//            NSNumber * num = [NSNumber numberWithInteger:dataDict.count-100];
+             NSString * NumStr1 = [NSString stringWithFormat:@"%lu",dataDict.count-100-i];
+              [cutDict setObject:[dataDict objectForKey:NumStr1] forKey:NumStr1];
             
         }
     }
@@ -86,7 +86,8 @@
                            [object objectForKey:@"objectId"],@"objectId",
                            [object objectForKey:@"numberOfSaidWords"],@"numberOfSaidWords",
                            [object objectForKey:@"saidWord"],@"saidWord",
-                           [object objectForKey:@"createdAt"],@"createdAt",nil];
+                           [object objectForKey:@"createdAt"],@"createdAt",
+                           [object objectForKey:@"countOfComment"],@"countOfComment",nil];
     return dict;
 }
 -(NSMutableDictionary*)getdataDictfromPlist

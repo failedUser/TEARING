@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "Masonry.h"
-#import "YY_base_table.h"
+
 #import "Personal_centerViewController.h"
 #import "YY_TextView.h"
 #import "View_for_Text.h"
@@ -42,7 +42,7 @@
 @property(nonatomic,strong) UIView              * text_view;
 @property(nonatomic,strong) UILabel             * line;
 @property(nonatomic,strong) UITextView          * innput_textView;
-@property(nonatomic,strong) YY_base_table       * yy_table;
+
 @property(nonatomic,strong) YY_TextView         * yy_text;
 @property (weak, nonatomic) NSLayoutConstraint  * constrainH;
 @property(nonatomic,strong) View_for_Text       * baseVIew;
@@ -437,7 +437,6 @@
     //这个实现了默认搜索
    _customSearchBar.inputText=[self CustomSearch:_customSearchBar inputText:@""];
 }
-
 
 
 @end

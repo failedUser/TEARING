@@ -184,7 +184,9 @@
 }
 -(void)setLabelText:(NSInteger)count
 {
+    _ComCount.text =nil;
     _ComCount.text = [NSString stringWithFormat:@"%ld",(long)count];
+
     if (count>=1)
         [self addhotCommentImage];
     else [self addCommentImage];

@@ -120,7 +120,6 @@
 shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
 {
-    NSLog(@"在输入的时候执行了么1");
     //判断加上输入的字符，是否超过界限
     NSString *str = [NSString stringWithFormat:@"%@%@", textView.text, text];
     if (str.length > NumberOfInputText)
@@ -135,7 +134,6 @@ shouldChangeTextInRange:(NSRange)range
  */
 - (void)textViewDidChange:(UITextView *)textView
 {
-      NSLog(@"在输入的时候执行了么2");
     //该判断用于联想输入
     if (textView.text.length > NumberOfInputText)
     {

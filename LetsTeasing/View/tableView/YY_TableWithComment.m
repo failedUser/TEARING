@@ -83,16 +83,17 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row ==0) {
+
         NSLog(@"it is the first row");
         textCell * cell = [[textCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"textCell"];
         [self setCount];
         [cell setLabelText:count];
         NSString * dateStr = [_getBmobObject objectForKey:@"createdAt"];
         NSString * cut  = [dateStr substringFromIndex:10];
-        
         cell.TextLabel.text = [_getBmobObject objectForKey:@"saidWord"];
         cell.namelabel.text = [_getBmobObject objectForKey:@"playerName"];
         cell.dataLabel.text = cut;
+            if (cell.TextLabel.text != nil) heightForTextLabel = [cell height];
         return cell;
     }
     else
@@ -156,6 +157,7 @@
 }
 -(void)data
 {
+    
     [_comminfo setCommentID:[_getBmobObject objectForKey:@"objectId"]];
     //interface for data
     comDict = [NSMutableArray arrayWithCapacity:1000];

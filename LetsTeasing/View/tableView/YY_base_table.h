@@ -19,7 +19,6 @@
     NSDictionary * dict1;
     NSInteger count;
      CGFloat heightForTextLavbel;
-
    
 }
 @property(nonatomic,strong) NSMutableDictionary * dictWithPlist;
@@ -29,6 +28,7 @@
 @property(nonatomic,strong)   NSString *    IdforSeletedRow;
 @property(nonatomic,strong)   mainPageDictFordata * data;
 @property(nonatomic,strong) NSMutableDictionary * dict;
+@property(nonatomic,strong) NSMutableDictionary * Maindict;
 @property(nonatomic,assign) NSInteger countOF;
 @property(nonatomic,assign) NSArray * cellContent;
 @property(nonatomic,assign) NSMutableArray * arrayForCell;
@@ -37,7 +37,7 @@
 
 //@property(nonatomic,strong) NSMutableDictionary * SaidWord;
 +(YY_base_table *)shareBaseTable;
-
+-(void)savedataInPlist;
 
 
 

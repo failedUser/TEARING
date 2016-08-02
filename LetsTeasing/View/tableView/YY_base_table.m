@@ -32,8 +32,13 @@
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self reloadData];
-            _dictWithPlist =[NSMutableDictionary dictionaryWithCapacity:100];
-    [self writeDictIntoPlist];
+        info = [commentInfo ShareCommentData];
+    _dictWithPlist =[NSMutableDictionary dictionaryWithCapacity:100];
+        [self writeDictIntoPlist];
+//    _Maindict = [NSMutableDictionary dictionaryWithCapacity:1000];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(savedataInPlist) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+
     return self;
 }
 -(void)writeDictIntoPlist
@@ -42,8 +47,8 @@
     _dictWithPlist= [_plistMaindata getdataDictfromPlist];
     if (_dictWithPlist==nil) {
         if (_data.dataDict.count>0) {
-            NSLog(@"dataDict.count ====%lu",(unsigned long)_data.dataDict.count);
-            [_plistMaindata writeTheContentfromDictIntoplist:_data.dataDict];
+            NSMutableDictionary * dict = [info CommentCountWithEachsaidWord];
+            [_plistMaindata writeTheContentfromDictIntoplist:dict];
         }
     }
     
@@ -55,7 +60,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return  _dict.count;
+    return  _Maindict.count;
 }
 
 
@@ -67,20 +72,14 @@
     
     if(cell == nil) cell = [[textCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CMainCell];
     if(cell.TextLabel.text != nil)  cell.TextLabel.text = @"";
-
-//    NSNumber * num = [NSNumber numberWithInteger:_dict.count-indexPath.row-1];
-    NSString * num = [NSString stringWithFormat:@"%lu",_dict.count-indexPath.row-1];
-    dict1 = [_dict objectForKey:num];
+    NSString * num = [NSString stringWithFormat:@"%lu",_Maindict.count-indexPath.row-1];
+    dict1 = [_Maindict objectForKey:num];
     //给里面的评论个数传值传值
     [self setCount];
-//    if (count>=1)[cell addhotCommentImage];
-//        
-//    else if(count==0) [cell addCommentImage];
-    [cell setLabelText:count];
-    
+    NSInteger counbt = [[dict1 objectForKey:@"countOfComment"] integerValue];
+    [cell setLabelText:counbt];
     NSString * dateStr = [dict1 objectForKey:@"createdAt"];
     NSString * cut  = [dateStr substringFromIndex:10];
-    
     cell.TextLabel.text = [dict1 objectForKey:@"saidWord"];
     cell.namelabel.text = [dict1 objectForKey:@"playerName"];
     cell.dataLabel.text = cut;
@@ -112,16 +111,15 @@
 -(void )initDict
 {
     _data = [mainPageDictFordata shareMainData];
+    _dict = _data.dataDict;
     [_data MainreloadData];
     if (_data.dataDict.count ==0) {
-    _dict =_dictWithPlist;
+    _Maindict =_dictWithPlist;
         _dictOrObject =YES;
     }else
     {
-        [_dict removeAllObjects];
-//        _dict = [_data changeBmobDictToDict:_data.dataDict];
-        _dict = [info CommentCountWithEachsaidWord];
-       NSLog(@"1111111%@",[info CommentCountWithEachsaidWord]);
+        [_Maindict removeAllObjects];
+        _Maindict = [info CommentCountWithEachsaidWord];
          _dictOrObject =NO;
     }
     
@@ -142,24 +140,24 @@
 {
    
     [super reloadData];
-    info = [commentInfo ShareCommentData];
     [info AlertDataReload];
     [_data MainreloadData];
     [self writeDictIntoPlist];
     //在这个地方对datadict 进行操作
     [self initDict];
     if (_getString1>=0) {
-        NSLog(@"从alert传进来的数%ld", (long)_getString1);
         [self refreshIndexCell:_getString1];
     }
+ 
   
 }
 -(void)refreshIndexCell:(NSInteger)getIndex
 {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:getIndex inSection:0];
     textCell *cell = [self cellForRowAtIndexPath:indexPath];
-    NSNumber * num = [NSNumber numberWithInteger:_dict.count-indexPath.row-1];
-    BmobObject* dict2 = [_dict objectForKey:num];
+//    NSNumber * num = [NSNumber numberWithInteger:_dict.count-indexPath.row-1];
+    NSString *num = [NSString stringWithFormat:@"%lu",_Maindict.count-indexPath.row-1];
+    NSDictionary* dict2 = [_Maindict objectForKey:num];
     //给里面的评论个数传值传值
     NSInteger COUNTT =[info Count:[dict2 objectForKey:@"objectId"]];
     if (count>=1)[cell addhotCommentImage];
@@ -171,7 +169,8 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
  [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    BmobObject * obj = [_dict objectForKey:[NSNumber numberWithInteger:_dict.count-indexPath.row-1]];
+//    NSDictionary * obj = [_dict objectForKey:[NSString stringWithFormat:@"%d",_dict.count-indexPath.row-1]];
+    BmobObject * obj = [self.data.dataDict objectForKey:[NSNumber numberWithInteger:_dict.count-indexPath.row-1]];
     NSString * name = [obj objectForKey:@"playerName"];
     [self showAlertWithOneButton:[NSString stringWithFormat:@"%@的评论",name]index:indexPath.row];
 }
@@ -183,6 +182,7 @@
     JCAlertView * alert = [[JCAlertView alloc]init];
     //这个里面要根据索引的内容生成了一个字典。
     BmobObject * dict =  [self.data creatNewClassFordata:_dict.count-index-1];
+
     if (index==0) {
         //        NSLog(@"传进来的名字%@",[dict objectForKey:@"playerName"]);
     }
@@ -190,6 +190,9 @@
     [alert showOneButtonWithTitle:title data:dict sendName:nil];
     
 }
-
+-(void)savedataInPlist
+{
+    [_plistMaindata writeTheContentfromDictIntoplist:_Maindict];
+}
 
 @end

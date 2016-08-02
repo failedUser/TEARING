@@ -374,7 +374,6 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
          _CancelButton=  [[UIButton alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(270.0f)- YY_ININPONE6_WITH(30.0), YY_ININPONE6_HEIGHT(10.0f) , YY_ININPONE6_HEIGHT(30.0), YY_ININPONE6_HEIGHT(30.0))];
     [_CancelButton setImage:[UIImage imageNamed:@"icon_cancel.png"] forState:UIControlStateNormal];
  [_CancelButton addTarget:self action:@selector(alertBtnClick) forControlEvents:UIControlEventTouchUpInside];
-//        view.popView = self;
         [self addSubview:_CancelButton];
 
 
@@ -410,11 +409,12 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 }
 -(void)SendToAlertTable
 {
-//    NSLog(@"点击啦");
+    NSLog(@"点击啦");
     
     NSString * message = [self.basetextView.yy_text.text  copy];
     [self MessageManager:message];
     [self.basetextView.yy_text resignFirstResponder];
+    [baseTable reloadData];
         if (_dataforRow ==nil && _SendName.length != 0) {
                 [self.table reloadData];
         }
@@ -433,15 +433,24 @@ else  if(_SendName.length == 0)
   
         if (_dataforRow ==nil && _SendName.length != 0) {
             NSNumber * num = [self.table returnCount];
+            NSLog(@"send message in   name Alert ------------------------------------");
             NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我的评论",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",[NSNumber numberWithBool:YES],@"cheatMode",nil];
+            NSLog(@"will save in bmob %@",Dict_Message);
             BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
+            NSLog(@"bmobObject with menssage %@",obj);
+            NSLog(@"data for row ID %@",_dataforRow );
+                    //如果没有dataforRow的话是没有id这么一讲，所以也无法搜到是不是这个人的评论
             [self.table.comminfo saveAlertData:obj CommentsID:[_dataforRow objectForKey:@"objectId"]];
         }
         else  if(_SendName.length == 0)
         {
+            NSLog(@"send message in   name Alert ------------------------------------");
             NSNumber * num = [self.table2 returnCount];
             NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我的评论",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",[NSNumber numberWithBool:YES],@"cheatMode",nil];
+               NSLog(@"will save in bmob %@",Dict_Message);
             BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
+            NSLog(@"bmobObject with menssage %@",obj);
+            NSLog(@"data for row ID %@",_dataforRow );
             [self.table2.comminfo saveAlertData:obj CommentsID:[_dataforRow objectForKey:@"objectId"]];
         }
     

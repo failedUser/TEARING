@@ -38,7 +38,7 @@ typedef void(^clickHandle)(void);
 @property (nonatomic, getter=isAlertReady) BOOL alertReady;
 @property(nonatomic,strong) NSString * sendString;
 @property(nonatomic,strong) UIButton * CancelButton;
-
+-(void)AerltViewReload;
 //@property(nonatomic,weak) id<AlertViewDelegate> Adelegate;
 
 

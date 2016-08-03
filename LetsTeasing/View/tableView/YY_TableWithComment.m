@@ -20,7 +20,7 @@
 {
     
     //    [self data];
-    [self.mj_footer beginRefreshing];
+  
     _comminfo = [commentInfo ShareCommentData];
     [_comminfo AlertDataReload];
     self.backgroundColor = [UIColor whiteColor];
@@ -29,34 +29,44 @@
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.backgroundColor = [UIColor whiteColor];
-    [self MJrefresh];
+    
     //监听键盘状态进行刷新
-    [self addNotifincation];
+//    [self addNotifincation];
+         [self MJrefresh];
     
     _states =YES;
     return self;
 }
--(void)addNotifincation
-{
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
-}
--(void)keyboardWillDown
+-(void)beginRefinish
 {
     [self.mj_footer beginRefreshing];
 }
+//-(void)addNotifincation
+//{
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
+//}
+//-(void)keyboardWillDown
+//{
+//    [self.mj_footer beginRefreshing];
+//}
 -(void)MJrefresh
 {
-    self.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
+    MJRefreshBackNormalFooter *footer = [MJRefreshBackNormalFooter  footerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
+    self.mj_footer = footer;
     self.mj_footer.automaticallyChangeAlpha =YES;
+    [footer setTitle:@"一大波吐槽正在赶来" forState:MJRefreshStateRefreshing];
+    footer.stateLabel.font = [UIFont fontWithName:@"Arial" size:12.0f];
+    footer.stateLabel.textColor = UIColorFromHex(0x50d2c2);
 }
 -(void)refresh1
 {
+      NSLog(@"自动刷新了?");
     //编号有了数据也存进去，只是没有下载到数组中
     [self.comminfo commentReload];
     [self.comminfo AlertDataReload];
-    [self addNotifincation];
+//    [self addNotifincation];
     [self data];
-    sleep(0.5);
+    sleep(1.0);
     [self reloadData];
     
     [self.mj_footer endRefreshing];
@@ -87,6 +97,7 @@
         NSLog(@"it is the first row");
         textCell * cell = [[textCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"textCell"];
         [self setCount];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell setLabelText:count];
         NSString * dateStr = [_getBmobObject objectForKey:@"createdAt"];
         NSString * cut  = [dateStr substringFromIndex:10];
@@ -102,6 +113,7 @@
     AlertTableCell  * cell = [tableView dequeueReusableCellWithIdentifier:CMainCell];
     
     if(cell == nil) cell = [[AlertTableCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CMainCell];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if(cell.TextLabel.text != nil)cell.TextLabel.text = @"";
             if (comDict ==nil) {
                 //创建完字体格式之后就告诉cell
@@ -158,13 +170,19 @@
 -(void)data
 {
     
-    [_comminfo setCommentID:[_getBmobObject objectForKey:@"objectId"]];
+//    [_comminfo setCommentID:[_getBmobObject objectForKey:@"objectId"]];
     //interface for data
     comDict = [NSMutableArray arrayWithCapacity:1000];
     //这个地方应该返回数组
     [_comminfo AlertDataReload];
-    comDict = [_comminfo getDataForRow];
+//    comDict = [_comminfo getDataForRow];
     
+    NSLog(@"id ====%@",[_getBmobObject objectForKey:@"objectId"]);
+//    NSLog(@"dict ====%@",_comminfo.CommentResuluDict);
+   comDict = [_comminfo.CommentResuluDict  objectForKey:[_getBmobObject objectForKey:@"objectId"]];
+//    NSLog(@"array ===%@,object id ====%@",array,[_getBmobObject objectForKey:@"objectId"]);
+    
+    NSLog(@"comdict = %@",comDict);
     if (comDict ==nil) {
         NSLog(@"里面没有值");
         comDict =nil;
@@ -186,5 +204,8 @@
 {
     [super reloadData];
     [_comminfo AlertDataReload];
+    
+
+    
 }
 @end

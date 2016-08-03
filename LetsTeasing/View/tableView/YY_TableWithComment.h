@@ -20,7 +20,7 @@
 @property(nonatomic,assign) BmobObject  * dicto;
 @property(nonatomic,strong) commentInfo * comminfo;
 //@property(nonatomic,assign)
-
+@property(nonatomic,assign) NSMutableDictionary * CommentArrayWithID;
 @property(nonatomic,assign) NSInteger countOF;
 @property(nonatomic,assign) NSMutableArray * cellContent;
 @property(nonatomic,assign) CGFloat    heightTable;
@@ -29,4 +29,5 @@
 @property(nonatomic,assign) BOOL  states;
 -(void)data;
 -(NSNumber *)returnCount;
+-(void)beginRefinish;
 @end

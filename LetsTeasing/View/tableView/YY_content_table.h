@@ -25,7 +25,7 @@
 @property(nonatomic,strong) NSString * commenID;
 @property(nonatomic,strong) NSString * commenName;
 @property(nonatomic,assign) BOOL  states;
--(void)data;
+//-(void)data;
 -(void)dataforName;
 -(NSNumber *)returnCount;
 @end

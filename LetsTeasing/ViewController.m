@@ -67,10 +67,9 @@
     [self addTableview];
     [self addViewForText];
     [self addMessageVIew];
-
 //监听键盘状态进行刷新
     [self addAllNotifition];
-                [self MJrefresh];
+    [self MJrefresh];
   
 }
 -(void)addAllNotifition
@@ -107,8 +106,6 @@
     sleep(0.5);
     [_yy_table reloadData];
     [_yy_table.mj_header endRefreshing];
-  
-
 }
 -(void)mainPageFresh
 {
@@ -364,6 +361,10 @@
 // 设置显示没行的内容，这边需要好好分析，重新实现交叉，有点麻烦
 -(NSArray *)CustomSearchBar:(serachView *)menu titleForRowAtIndexPath:(NSIndexPath *)indexPath {
     //把内容输入到查询得到的cell中这个 时候我们将传进去一个带有数据字典的字典
+    if (self.resultFileterArry==nil) {
+        NSLog(@"搜索的内容结果为空");
+    }else
+    {
     NSDictionary * dict =self.resultFileterArry[indexPath.row];
     if ([[dict objectForKey:@"identifier"]isEqualToString:@"User"]) {
         return  [self SrearchCellTextAndIamge:[dict objectForKey:@"playerName"] diffentIamge:@"YES"];
@@ -373,7 +374,7 @@
     {
          return [self SrearchCellTextAndIamge:[dict objectForKey:@"playerName"] diffentIamge:@"HHH"];
     }
-
+    }
     return  nil;
 }
 - (BOOL)CustomSearchBar:(serachView *)segment didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

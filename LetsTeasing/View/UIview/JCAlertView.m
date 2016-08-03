@@ -100,19 +100,10 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
             [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange2:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(KeyBoardEndChange:) name:UIKeyboardWillHideNotification object:nil];
     
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
-    //设置成NO表示当前控件响应后会传播到其他控件上，默认为YES。
-    tapGestureRecognizer.cancelsTouchesInView = NO;
-    //将触摸事件添加到当前view
-    [self.view addGestureRecognizer:tapGestureRecognizer];
+
     
 }
--(void)keyboardHide:(UITapGestureRecognizer*)tap
-{
-    if ([_alertView.basetextView.yy_text isFirstResponder]) {
-        [_alertView.basetextView.yy_text resignFirstResponder];
-    }
-}
+
 - (void)addCoverView{
 
     self.coverView = [[UIButton alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -257,6 +248,12 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     }
     return self;
 }
+-(void)keyboardHide:(UITapGestureRecognizer*)tap
+{
+    if ([_basetextView.yy_text isFirstResponder]) {
+        [_basetextView.yy_text resignFirstResponder];
+    }
+}
 //button不在需要
 - (NSArray *)buttons{
 
@@ -386,22 +383,37 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
    // _dataforRow只是传进来的一个外键属性
     if (_dataforRow ==nil && _SendName.length != 0) {
         self.table = [[YY_content_table alloc]init];
+        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
+        //设置成NO表示当前控件响应后会传播到其他控件上，默认为YES。
+        tapGestureRecognizer.cancelsTouchesInView = NO;
+        //将触摸事件添加到当前view
+        [self.table addGestureRecognizer:tapGestureRecognizer];
         _table.comminfo = [[commentInfo alloc]init];
         [self.table setCommenName:_SendName];
         [self.table setStates:NO];
         [self.table  dataforName];
+        
         [_table setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight-JCMargin)];
         [self addSubview:_table];
+      
         
     }else if(_SendName.length == 0)
     {
         self.table2 = [[YY_TableWithComment alloc]init];
+        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardHide:)];
+        //设置成NO表示当前控件响应后会传播到其他控件上，默认为YES。
+        tapGestureRecognizer.cancelsTouchesInView = NO;
+        //将触摸事件添加到当前view
+        [self.table2 addGestureRecognizer:tapGestureRecognizer];
         _table2.comminfo = [[commentInfo alloc]init];
     //dataforrow is a bmob object so i can input object
     [self.table2 setGetBmobObject:_dataforRow];
     [self.table2 data];
+    [self.table reloadData];
         [_table2 setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight-JCMargin)];
         [self addSubview:_table2];
+        [self.table2 beginRefinish];
+//        [self.table2 reloadData];
     }
 //    #import "YY_TableWithComment.h"
     //给table的array赋值
@@ -420,7 +432,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
         }
 else  if(_SendName.length == 0)
 {
-    [self.table2 reloadData];
+    [self.table2 beginRefinish];
 }
 //    //滑到更新的那一行
 //    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.table.comDict.count-1 inSection:0];
@@ -462,7 +474,11 @@ else  if(_SendName.length == 0)
     }
     
 }
-
+-(void)AerltViewReload
+{
+    [self.table reloadData];
+    [self.table2 reloadData];
+}
 
 @end
 // 版权属于原作者

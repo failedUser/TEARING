@@ -188,10 +188,12 @@
     }
     
     [alert showOneButtonWithTitle:title data:dict sendName:nil];
+    [alert AerltViewReload];
     
 }
 -(void)savedataInPlist
 {
+    NSLog(@"Plist数据保存成功");
     [_plistMaindata writeTheContentfromDictIntoplist:_Maindict];
 }
 

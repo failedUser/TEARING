@@ -20,6 +20,7 @@
 @property(nonatomic,strong) NSMutableDictionary * Comment_MainDICT;
 @property(nonatomic,strong) NSMutableDictionary * Comment_DICT;
 @property(nonatomic,strong) NSString * commentID;
+@property(nonatomic,strong) NSMutableDictionary * CommentResuluDict;
 +(commentInfo*)ShareCommentData;
 -(void)commentReload;
 -(NSMutableArray *)getDataForRow;

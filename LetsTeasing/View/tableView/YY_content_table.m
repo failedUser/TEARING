@@ -30,11 +30,12 @@
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.backgroundColor = [UIColor whiteColor];
-    [self MJrefresh];
+ 
     //监听键盘状态进行刷新
     [self addNotifincation];
     
     _states =YES;
+       [self MJrefresh];
     return self;
 }
 -(void)addNotifincation
@@ -47,18 +48,21 @@
 }
 -(void)MJrefresh
 {
-    self.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
+    MJRefreshBackNormalFooter *footer = [MJRefreshBackNormalFooter  footerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
+    self.mj_footer = footer;
     self.mj_footer.automaticallyChangeAlpha =YES;
+    [footer setTitle:@"一大波吐槽正在赶来" forState:MJRefreshStateRefreshing];
+    footer.stateLabel.font = [UIFont fontWithName:@"Arial" size:12.0f];
+    footer.stateLabel.textColor = UIColorFromHex(0x50d2c2);
 }
 -(void)refresh1
 {
+  
     //编号有了数据也存进去，只是没有下载到数组中
     [self.comminfo commentReload];
     [self.comminfo AlertDataReload];
     [self addNotifincation];
-    if (_states) {
-            [self data];
-    } else [self dataforName];
+    [self dataforName];
     sleep(0.5);
     [self reloadData];
 
@@ -90,6 +94,7 @@
    alertTableCellUser  * cell = [tableView dequeueReusableCellWithIdentifier:CMainCell];
     
     if(cell == nil) cell = [[alertTableCellUser alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CMainCell];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if(cell.TextLabel.text != nil)cell.TextLabel.text = @"";
         if (comDict ==nil) {
             //创建完字体格式之后就告诉cell
@@ -137,22 +142,23 @@
     return height;
     
 }
--(void)data
-{
-    [_comminfo setCommentID:_commenID];
-    //interface for data
-    comDict = [NSMutableArray arrayWithCapacity:1000];
-    //这个地方应该返回数组
-[_comminfo AlertDataReload];
-   comDict = [_comminfo getDataForRow];
-    if (comDict ==nil) {
-        NSLog(@"里面没有值");
-            comDict =nil;
-    }else  {;
-
-    }
-
-}
+//-(void)data
+//{
+//    [_comminfo setCommentID:_commenID];
+//    NSLog(@"穿进去的这个东西%@",_commenID);
+//    //interface for data
+//    comDict = [NSMutableArray arrayWithCapacity:1000];
+//    //这个地方应该返回数组
+//    [_comminfo AlertDataReload];
+//   comDict = [_comminfo getDataForRow];
+//    if (comDict ==nil) {
+//        NSLog(@"里面没有值");
+//            comDict =nil;
+//    }else  {;
+//
+//    }
+//
+//}
 -(void)dataforName
 {
       comDict = [NSMutableArray arrayWithCapacity:100];

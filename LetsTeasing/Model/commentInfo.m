@@ -29,7 +29,7 @@
         CommentContext = model.context;
 //   CommentContext  =  [[coreDataModel shareShenmugui] context];
         [self getCommentObjectFromBomob];
-  
+        _CommentResuluDict = [NSMutableDictionary new];
   data = [mainPageDictFordata shareMainData];
           _Comment_MainDICT = data.dataDict;
     }
@@ -73,7 +73,9 @@
     [self getCommentObjectFromBomob];
    
 }
+
 //这里由于计算量太大，会消耗很多时间，需要设计算法。
+//这里需要做的是直接根据不同的id去匹配评论，key值是所要显示评论者的id，发表新评论的时候直接更新库就好了，然后刷新数组
 -(NSMutableArray *)getDataForRow
 {
     int j = 0;
@@ -182,11 +184,42 @@
     }
     return resultDict;
 }
+-(NSMutableDictionary *)commentsDictwithobjectId
+{
+    //先根据自己的id建立一个总的数组
+    if (data.dataDict.count!=0&&_Comment_DICT.count!=0) {
+                for (int i =0; i<data.dataDict.count; i++) {
+                    NSNumber * numbofUser = [NSNumber numberWithInteger:i];
+                    BmobObject * obj = [data.dataDict objectForKey:numbofUser];
+                    NSString   * objectId =[obj objectForKey:@"objectId"];
+                    NSMutableArray * commentArray =[NSMutableArray new];
+                    [_CommentResuluDict  setObject:commentArray forKey:objectId];
+                }
+        for (int j =0; j<_Comment_DICT.count; j++) {
+            NSNumber * numbofComment = [NSNumber numberWithInteger:j];
+            BmobObject * obj = [_Comment_DICT objectForKey:numbofComment];
+            //由于根字典中的key是id，在评论中的标示符也是id，所以根据id去找出评论，然后找出相应的字典然后把数据保存到里面，key值为numbofSaidWord
+            NSMutableArray * commenArray = [_CommentResuluDict objectForKey:[obj objectForKey:@"IdForComments"]];
+            if (commenArray == nil) {
+                NSLog(@"数组不存在");
+            }else
+            {
+                NSLog(@"正在加载");
+                [commenArray  addObject:obj];
+            
+            }
+        }
+    }
+    if (_CommentResuluDict.count > 0 ) {
+    }
+    return _CommentResuluDict;
+}
 -(void)AlertDataReload
 {
     [self getCommentObjectFromBomob];
     [self getDataForRow];
     [self CommentCountWithEachsaidWord];
+    [self commentsDictwithobjectId];
 }
 -(BmobObject *)bmobObjectWithId:(NSString *)objectId
 {

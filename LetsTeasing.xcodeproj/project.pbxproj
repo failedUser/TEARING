@@ -97,6 +97,7 @@
 		184D89C01D39D9B400D5C1EF /* JCAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D898A1D39D9B400D5C1EF /* JCAlertView.m */; };
 		184D89C21D39D9B400D5C1EF /* newMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D898E1D39D9B400D5C1EF /* newMessage.m */; };
 		184D89C31D39D9B400D5C1EF /* serachView.m in Sources */ = {isa = PBXBuildFile; fileRef = 184D89901D39D9B400D5C1EF /* serachView.m */; };
+		18558F1E1D51FD1F00FF37EC /* Icon-16.png in Resources */ = {isa = PBXBuildFile; fileRef = 18558F1D1D51FD1F00FF37EC /* Icon-16.png */; };
 		187A8CC01D4F0B2F004E267C /* YY_TableWithComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 187A8CBF1D4F0B2F004E267C /* YY_TableWithComment.m */; };
 		187A8CC31D4F35D8004E267C /* alertTableCellUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 187A8CC21D4F35D7004E267C /* alertTableCellUser.m */; };
 		187A8CC61D4F3FF4004E267C /* plistWithCatchData.m in Sources */ = {isa = PBXBuildFile; fileRef = 187A8CC51D4F3FF4004E267C /* plistWithCatchData.m */; };
@@ -318,6 +319,7 @@
 		184D898E1D39D9B400D5C1EF /* newMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = newMessage.m; sourceTree = "<group>"; };
 		184D898F1D39D9B400D5C1EF /* serachView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = serachView.h; sourceTree = "<group>"; };
 		184D89901D39D9B400D5C1EF /* serachView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = serachView.m; sourceTree = "<group>"; };
+		18558F1D1D51FD1F00FF37EC /* Icon-16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-16.png"; sourceTree = "<group>"; };
 		187A8CBE1D4F0B2F004E267C /* YY_TableWithComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YY_TableWithComment.h; sourceTree = "<group>"; };
 		187A8CBF1D4F0B2F004E267C /* YY_TableWithComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YY_TableWithComment.m; sourceTree = "<group>"; };
 		187A8CC11D4F35D7004E267C /* alertTableCellUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alertTableCellUser.h; sourceTree = "<group>"; };
@@ -865,6 +867,7 @@
 		18F4931F1D45F0B8002D84FB /* icon */ = {
 			isa = PBXGroup;
 			children = (
+				18558F1D1D51FD1F00FF37EC /* Icon-16.png */,
 				18F493201D45F0B8002D84FB /* Icon-167.png */,
 				18F493211D45F0B8002D84FB /* Icon-60.png */,
 				18F493221D45F0B8002D84FB /* Icon-60@2x.png */,
@@ -1039,6 +1042,7 @@
 				188D981C1D2344F300A90DD7 /* LaunchScreen.storyboard in Resources */,
 				18F4933A1D45F0B9002D84FB /* Icon-76@2x.png in Resources */,
 				188D98431D23458800A90DD7 /* Bmob_iOS_SDK更新历史.txt in Resources */,
+				18558F1E1D51FD1F00FF37EC /* Icon-16.png in Resources */,
 				180CAEA11D44F41200A81598 /* icon_nav_comment.png in Resources */,
 				180CAE961D44F41200A81598 /* icon_login_qq@2x.png in Resources */,
 				18F493971D460F27002D84FB /* arrow_b.png in Resources */,

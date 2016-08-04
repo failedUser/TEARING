@@ -30,4 +30,5 @@
 -(void)data;
 -(NSNumber *)returnCount;
 -(void)beginRefinish;
+-(void)addNewComment:(BmobObject *)OBject;
 @end

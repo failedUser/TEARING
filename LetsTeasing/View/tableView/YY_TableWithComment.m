@@ -170,10 +170,8 @@
     NSLog(@"how many%lu",(unsigned long)_comminfo.CommentResuluDict.count);
    comDict = [_comminfo.CommentResuluDict  objectForKey:[_getBmobObject objectForKey:@"objectId"]];
     if (comDict ==nil) {
-        NSLog(@"里面没有值");
         comDict =nil;
-    }else  {;
-        
+    }else  {
     }
     
 }
@@ -189,9 +187,12 @@
 -(void)reloadData
 {
     [super reloadData];
-    [_comminfo AlertDataReload];
-    
-
-    
+//    [_comminfo AlertDataReload];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:comDict.count inSection:0];
+    [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+}
+-(void)addNewComment:(BmobObject *)OBject
+{
+    [comDict addObject:OBject];
 }
 @end

@@ -308,10 +308,10 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 - (void)alertBtnClick{
     [self dismissAlertWithCompletion:^{
     }];
-    NSLog(@"一共%lu",(unsigned long)baseTable.dict.count);
-    NSInteger  numb = [[_dataforRow objectForKey:@"numberOfSaidWords"] intValue];
-    NSInteger indexROw = (NSInteger)baseTable.dict.count-numb-1;
-    baseTable.getString1 =indexROw;
+//    NSLog(@"一共%lu",(unsigned long)baseTable.dict.count);
+//    NSInteger  numb = [[_dataforRow objectForKey:@"numberOfSaidWords"] intValue];
+//    NSInteger indexROw = (NSInteger)baseTable.dict.count-numb-1;
+//    baseTable.getString1 =indexROw;
 
     [baseTable reloadData];
 }
@@ -413,13 +413,8 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     [self.table reloadData];
     [_table2 setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight-JCMargin)];
         [self addSubview:_table2];
-        [self.table2 beginRefinish];
           [self addTextview];
-//        [self.table2 reloadData];
     }
-//    #import "YY_TableWithComment.h"
-    //给table的array赋值
-
 }
 -(void)SendToAlertTable
 {
@@ -434,11 +429,10 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
         }
 else  if(_SendName.length == 0)
 {
-    [self.table2 beginRefinish];
+//    [self.table2 beginRefinish];
 }
 //    //滑到更新的那一行
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.table.comDict.count-1 inSection:0];
-//    [self.table scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+
     self.basetextView.yy_text.text = @"";
 }
 -(void)MessageManager:(NSString*) message
@@ -446,24 +440,22 @@ else  if(_SendName.length == 0)
     if (message.length!= 0) {
   
         if (_dataforRow ==nil && _SendName.length != 0) {
-            NSNumber * num = [self.table returnCount];
-            NSLog(@"send message in   name Alert ------------------------------------");
-            NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我的评论",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",[NSNumber numberWithBool:YES],@"cheatMode",nil];
-            NSLog(@"will save in bmob %@",Dict_Message);
-            BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
-                    //如果没有dataforRow的话是没有id这么一讲，所以也无法搜到是不是这个人的评论
-            [self.table.comminfo saveAlertData:obj CommentsID:[_dataforRow objectForKey:@"objectId"]];
+//            NSNumber * num = [self.table returnCount];
+//            NSLog(@"send message in   name Alert ------------------------------------");
+//            NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我的评论",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",[NSNumber numberWithBool:YES],@"cheatMode",nil];
+//            NSLog(@"will save in bmob %@",Dict_Message);
+//            BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
+//            [self.table.comminfo saveAlertData:obj CommentsID:[_dataforRow objectForKey:@"objectId"]];
         }
         else  if(_SendName.length == 0)
         {
             //这个是评论区
-            NSLog(@"send message in   name Alert ------------------------------------");
             NSNumber * num = [self.table2 returnCount];
             NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我的评论",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",[NSNumber numberWithBool:YES],@"cheatMode",nil];
-               NSLog(@"will save in bmob %@",Dict_Message);
+            NSLog(@"will save in bmob %@",Dict_Message);
             BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
-            NSLog(@"bmobObject with menssage %@",obj);
-            NSLog(@"data for row ID %@",_dataforRow );
+            [self.table2 addNewComment:obj];
+            [self.table2 reloadData];
             [self.table2.comminfo saveAlertData:obj CommentsID:[_dataforRow objectForKey:@"objectId"]];
         }
     

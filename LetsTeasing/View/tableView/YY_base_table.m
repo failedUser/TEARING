@@ -145,27 +145,27 @@
     [self writeDictIntoPlist];
     //在这个地方对datadict 进行操作
     [self initDict];
-    if (_getString1>=0) {
-        [self refreshIndexCell:_getString1];
-    }
- 
+//    if (_getString1>=0) {
+//        [self refreshIndexCell:_getString1];
+//    }
+// 
   
 }
--(void)refreshIndexCell:(NSInteger)getIndex
-{
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:getIndex inSection:0];
-    textCell *cell = [self cellForRowAtIndexPath:indexPath];
-//    NSNumber * num = [NSNumber numberWithInteger:_dict.count-indexPath.row-1];
-    NSString *num = [NSString stringWithFormat:@"%lu",_Maindict.count-indexPath.row-1];
-    NSDictionary* dict2 = [_Maindict objectForKey:num];
-    //给里面的评论个数传值传值
-    NSInteger COUNTT =[info Count:[dict2 objectForKey:@"objectId"]];
-    if (count>=1)[cell addhotCommentImage];
-    else if(count==0) [cell addCommentImage];
-    [cell setLabelText:COUNTT];
-
-    
-}
+//-(void)refreshIndexCell:(NSInteger)getIndex
+//{
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:getIndex inSection:0];
+//    textCell *cell = [self cellForRowAtIndexPath:indexPath];
+////    NSNumber * num = [NSNumber numberWithInteger:_dict.count-indexPath.row-1];
+//    NSString *num = [NSString stringWithFormat:@"%lu",_Maindict.count-indexPath.row-1];
+//    NSDictionary* dict2 = [_Maindict objectForKey:num];
+//    //给里面的评论个数传值传值
+//    NSInteger COUNTT =[info Count:[dict2 objectForKey:@"objectId"]];
+//    if (count>=1)[cell addhotCommentImage];
+//    else if(count==0) [cell addCommentImage];
+//    [cell setLabelText:COUNTT];
+//
+//    
+//}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
  [tableView deselectRowAtIndexPath:indexPath animated:YES];

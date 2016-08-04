@@ -7,10 +7,12 @@
 //
 
 #import "View_for_Text.h"
+#define MaxTextViewHeight  100
 
 @interface View_for_Text()
 {
     UILabel *  line;
+    NSInteger  saveHeight;
 }
 
 @end
@@ -29,6 +31,7 @@
           }
     [self setUIColor];
     [self addNOtificaiton];
+    saveHeight =0;
     return self;
 }
 -(void)addNOtificaiton
@@ -38,6 +41,27 @@
 }
 -(void)textChange
 {
+    if (saveHeight ==0) {
+        saveHeight =_yy_text.frame.size.height;
+    }else
+    {
+        if (saveHeight-_yy_text.frame.size.height ==0) {
+        }
+        else if(_yy_text.frame.size.height<85)
+        {
+            CGFloat  changeHeight = _yy_text.frame.size.height -saveHeight;
+            CGRect frame =   CGRectMake(0, self.frame.origin.y-changeHeight, SCREEN_WIDTH, self.frame.size.height+changeHeight);
+            self.frame =frame;
+            saveHeight =_yy_text.frame.size.height;
+            
+        }else
+        {
+//            CGFloat  changeHeight = _yy_text.frame.size.height -saveHeight;
+//            CGRect frame =   CGRectMake(0, self.frame.origin.y-changeHeight, SCREEN_WIDTH, self.frame.size.height+changeHeight);
+//            self.frame =frame;
+//            saveHeight =_yy_text.frame.size.height;
+        }
+    }
 }
 
 -(void)addViewForText
@@ -105,8 +129,9 @@
 {
     [_send_btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.offset(YY_ININPONE6_WITH(50.0f));
+        make.height.offset(YY_ININPONE5_HEIGHT(25.0f));
         make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE6_WITH(-24.0f));
-        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE6_HEIGHT(15.0f));
+//        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE6_HEIGHT(15.0f));
         make.bottomMargin.equalTo(self.mas_bottom).offset(YY_ININPONE5_HEIGHT(-15.0f));
     }];
     
@@ -120,7 +145,7 @@
     
     [self.yy_text mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(20.0f));
-        make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE5_WITH(-75.0f));
+        make.width.offset(YY_ININPONE5_WITH(250.0f));
         make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE5_HEIGHT(15.0f));
         make.bottomMargin.equalTo(self.mas_bottom).offset(YY_ININPONE6_HEIGHT(-20.0f));
     }];

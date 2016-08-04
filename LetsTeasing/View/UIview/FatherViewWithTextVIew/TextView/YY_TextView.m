@@ -81,7 +81,7 @@
     [self.placehoderLbl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leftMargin.equalTo(self.mas_left).offset(YY_ININPONE5_WITH(10.0f));
         make.height.offset(YY_ININPONE5_HEIGHT(30.0f));
-        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE5_HEIGHT(7.0f));
+        make.topMargin.equalTo(self.mas_top).offset(YY_ININPONE5_HEIGHT(5.0f));
     }];
 }
 
@@ -133,12 +133,23 @@ shouldChangeTextInRange:(NSRange)range
  因此使用textViewDidChange对TextView里面的字数进行判断
  */
 - (void)textViewDidChange:(UITextView *)textView
-{
-    //该判断用于联想输入
+{//该判断用于联想输入
     if (textView.text.length > NumberOfInputText)
     {
         textView.text = [textView.text substringToIndex:NumberOfInputText];
     }
+    CGSize sizeToFit = [textView sizeThatFits:CGSizeMake(YY_ININPONE5_WITH(250.0f), MAXFLOAT)];
+    NSInteger height = sizeToFit.height-5 ;
+    NSLog(@"改变的高度是多少%li",(long)height);
+    if (height<81) {
+        CGRect frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y, YY_ININPONE5_WITH(250.0f), height);
+        self.frame =frame;
+    }
+
+    //得到TextView的高度
+//    if (self.text.length ==0) {
+//        height
+//    }
 }
 
 

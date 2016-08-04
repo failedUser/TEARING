@@ -362,10 +362,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
         frame.origin.y -= 10;
         self.frame = frame;
     }
-    _basetextView = [[AlertTextBaseView alloc]initWithFrame:CGRectMake(JCMargin, self.frame.size.height - TextVIewHeight-JCMargin, JCAlertViewWidth - JCMargin * 2, TextVIewHeight)];
-    _basetextView.yy_text.placehoderLbl.text = (_basetextView.yy_text.placeHoder.length>0?_basetextView.yy_text.placeHoder:@"我来吐槽");
-          [_basetextView.send_btn addTarget:self action:@selector(SendToAlertTable) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:_basetextView];
+
             [self addTable];
 
          _CancelButton=  [[UIButton alloc]initWithFrame:CGRectMake(YY_ININPONE5_WITH(270.0f)- YY_ININPONE6_WITH(30.0), YY_ININPONE6_HEIGHT(10.0f) , YY_ININPONE6_HEIGHT(30.0), YY_ININPONE6_HEIGHT(30.0))];
@@ -374,6 +371,13 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
         [self addSubview:_CancelButton];
 
 
+}
+-(void)addTextview
+{
+    _basetextView = [[AlertTextBaseView alloc]initWithFrame:CGRectMake(JCMargin, self.frame.size.height - TextVIewHeight-JCMargin, JCAlertViewWidth - JCMargin * 2, TextVIewHeight)];
+    _basetextView.yy_text.placehoderLbl.text = (_basetextView.yy_text.placeHoder.length>0?_basetextView.yy_text.placeHoder:@"我来吐槽");
+    [_basetextView.send_btn addTarget:self action:@selector(SendToAlertTable) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_basetextView];
 }
 -(void)addTable
 {
@@ -392,11 +396,8 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
         [self.table setCommenName:_SendName];
         [self.table setStates:NO];
         [self.table  dataforName];
-        
-        [_table setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight-JCMargin)];
+        [_table setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-2*JCMargin)];
         [self addSubview:_table];
-      
-        
     }else if(_SendName.length == 0)
     {
         self.table2 = [[YY_TableWithComment alloc]init];
@@ -410,9 +411,10 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     [self.table2 setGetBmobObject:_dataforRow];
     [self.table2 data];
     [self.table reloadData];
-        [_table2 setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight-JCMargin)];
+    [_table2 setFrame:CGRectMake(JCMargin, JCAlertViewTitleLabelHeight, JCAlertViewWidth - JCMargin * 2, self.frame.size.height-JCAlertViewTitleLabelHeight-TextVIewHeight-JCMargin)];
         [self addSubview:_table2];
         [self.table2 beginRefinish];
+          [self addTextview];
 //        [self.table2 reloadData];
     }
 //    #import "YY_TableWithComment.h"
@@ -449,13 +451,12 @@ else  if(_SendName.length == 0)
             NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我的评论",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",[NSNumber numberWithBool:YES],@"cheatMode",nil];
             NSLog(@"will save in bmob %@",Dict_Message);
             BmobObject * obj = [[BmobObject alloc]initWithDictionary:Dict_Message];
-            NSLog(@"bmobObject with menssage %@",obj);
-            NSLog(@"data for row ID %@",_dataforRow );
                     //如果没有dataforRow的话是没有id这么一讲，所以也无法搜到是不是这个人的评论
             [self.table.comminfo saveAlertData:obj CommentsID:[_dataforRow objectForKey:@"objectId"]];
         }
         else  if(_SendName.length == 0)
         {
+            //这个是评论区
             NSLog(@"send message in   name Alert ------------------------------------");
             NSNumber * num = [self.table2 returnCount];
             NSDictionary * Dict_Message = [NSDictionary dictionaryWithObjectsAndKeys:@"这是我的评论",@"playerName",message,@"saidWord",@"NO",@"states",num,@"numberOfSaidWords",[NSNumber numberWithBool:YES],@"cheatMode",nil];

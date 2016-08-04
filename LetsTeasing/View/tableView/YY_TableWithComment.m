@@ -21,8 +21,9 @@
     
     //    [self data];
   
-    _comminfo = [commentInfo ShareCommentData];
-    [_comminfo AlertDataReload];
+    
+    
+//    [_comminfo AlertDataReload];
     self.backgroundColor = [UIColor whiteColor];
     self = [super initWithFrame:frame style:UITableViewStyleGrouped];
     self.delegate =self;
@@ -41,14 +42,6 @@
 {
     [self.mj_footer beginRefreshing];
 }
-//-(void)addNotifincation
-//{
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardWillDown) name:UIKeyboardWillHideNotification object:nil];
-//}
-//-(void)keyboardWillDown
-//{
-//    [self.mj_footer beginRefreshing];
-//}
 -(void)MJrefresh
 {
     MJRefreshBackNormalFooter *footer = [MJRefreshBackNormalFooter  footerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
@@ -66,9 +59,8 @@
     [self.comminfo AlertDataReload];
 //    [self addNotifincation];
     [self data];
-    sleep(1.0);
+    sleep(0.5);
     [self reloadData];
-    
     [self.mj_footer endRefreshing];
     
     
@@ -81,9 +73,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    //    NSLog(@"在给cell数目赋值的时候有多少个%lu",(unsigned long)comDict.count);
     if (comDict == nil) {
-        //        NSLog(@"table里面的内容是空的");
+
         return  1;
         
     }else {return comDict.count+1;}
@@ -169,20 +160,15 @@
 }
 -(void)data
 {
-    
-//    [_comminfo setCommentID:[_getBmobObject objectForKey:@"objectId"]];
+    _comminfo = [commentInfo ShareCommentData];
     //interface for data
     comDict = [NSMutableArray arrayWithCapacity:1000];
     //这个地方应该返回数组
     [_comminfo AlertDataReload];
-//    comDict = [_comminfo getDataForRow];
-    
+    [_comminfo commentReload];
     NSLog(@"id ====%@",[_getBmobObject objectForKey:@"objectId"]);
-//    NSLog(@"dict ====%@",_comminfo.CommentResuluDict);
+    NSLog(@"how many%lu",(unsigned long)_comminfo.CommentResuluDict.count);
    comDict = [_comminfo.CommentResuluDict  objectForKey:[_getBmobObject objectForKey:@"objectId"]];
-//    NSLog(@"array ===%@,object id ====%@",array,[_getBmobObject objectForKey:@"objectId"]);
-    
-    NSLog(@"comdict = %@",comDict);
     if (comDict ==nil) {
         NSLog(@"里面没有值");
         comDict =nil;

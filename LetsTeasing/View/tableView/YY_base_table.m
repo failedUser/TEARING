@@ -169,7 +169,6 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
  [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    NSDictionary * obj = [_dict objectForKey:[NSString stringWithFormat:@"%d",_dict.count-indexPath.row-1]];
     BmobObject * obj = [self.data.dataDict objectForKey:[NSNumber numberWithInteger:_dict.count-indexPath.row-1]];
     NSString * name = [obj objectForKey:@"playerName"];
     [self showAlertWithOneButton:[NSString stringWithFormat:@"%@的评论",name]index:indexPath.row];

@@ -383,7 +383,8 @@
     NSString * str = [NSString stringWithFormat:@"%@的评论",[dict objectForKey:@"playerName"]];
     if ([[dict objectForKey:@"identifier"]isEqualToString:@"User"])
     {
-        [alert showOneButtonWithTitle:str data:nil  sendName:[dict objectForKey:@"playerName"]];
+           NSString * str11 = [NSString stringWithFormat:@"%@",[dict objectForKey:@"playerName"]];
+        [alert showOneButtonWithTitle:str11 data:nil  sendName:[dict objectForKey:@"playerName"]];
           return YES;
     }
     else if([[dict objectForKey:@"identifier"]isEqualToString:@"SearchContent"])

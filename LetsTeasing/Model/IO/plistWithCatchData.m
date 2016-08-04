@@ -36,7 +36,7 @@
 //    NSLog(@"%@",documentPath.firstObject);
     //判断plist文件是否存在，
     _MaindataPlistAdress = [NSString stringWithFormat:@"%@%@", documentPath.firstObject,@"/mainData.plist"];
-    NSLog(@"%@",_MaindataPlistAdress);
+//    NSLog(@"%@",_MaindataPlistAdress);
     manager = [NSFileManager defaultManager];
     BOOL result = [manager fileExistsAtPath:_MaindataPlistAdress];
     if (result == NO) {

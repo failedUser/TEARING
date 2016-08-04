@@ -204,13 +204,13 @@
                 NSLog(@"数组不存在");
             }else
             {
-                NSLog(@"正在加载");
                 [commenArray  addObject:obj];
             
             }
         }
     }
     if (_CommentResuluDict.count > 0 ) {
+        NSLog(@"说明存放评论的数组现在是满的");
     }
     return _CommentResuluDict;
 }

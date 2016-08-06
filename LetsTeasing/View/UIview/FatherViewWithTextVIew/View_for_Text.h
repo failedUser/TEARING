@@ -9,15 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "YY_TextView.h"
 
-@interface View_for_Text : UIView
+@interface View_for_Text : UIView<YYTextViewDelegate>
 
 @property   (weak, nonatomic)   NSLayoutConstraint * constrainH;
 @property   (nonatomic,strong)  UIView             * popView;
 @property   (nonatomic,strong)  YY_TextView        * yy_text;
 @property   (nonatomic,strong)  UIButton           * send_btn;
-
-- (void)dealloc1;
-
+-(void)dealloc1;
 -(void)addNOtificaiton;
-
 @end

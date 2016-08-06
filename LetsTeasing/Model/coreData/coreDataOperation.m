@@ -36,7 +36,6 @@
 //    mainData.objectId = [dict objectForKey:@"objectId"];
 
     [_dataDict setObject:dict forKey:[dict objectForKey:@"numberOfSaidWords"]];
-
 }
 
 //查询

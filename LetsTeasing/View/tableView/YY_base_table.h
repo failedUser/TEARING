@@ -11,6 +11,13 @@
 #import "commentInfo.h"
 #import "serachView.h"
 #import "plistWithCatchData.h"
+@class YY_base_table;
+@protocol BaseTableViewDelegate <NSObject>
+@optional
+// 点击每一行的效果
+- (void)BaseTableview:(YY_base_table *)BaseTable didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+
+@end
 @interface YY_base_table : UITableView<UITableViewDelegate,UITableViewDataSource>
 {
     NSMutableDictionary * dataDict;
@@ -34,11 +41,11 @@
 @property(nonatomic,assign) NSMutableArray * arrayForCell;
 @property(nonatomic,assign) CGFloat    heightTable;
 @property(nonatomic,assign) BOOL dictOrObject;
-
+@property (nonatomic, strong) id<BaseTableViewDelegate>     Tdelegate;
 //@property(nonatomic,strong) NSMutableDictionary * SaidWord;
 +(YY_base_table *)shareBaseTable;
 -(void)savedataInPlist;
-
+-(void)reloadDict;
 
 
 @end

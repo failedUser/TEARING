@@ -10,7 +10,7 @@
 #import "textCell.h"
 #import "JCAlertView.h"
 #import "mainPageDictFordata.h"
-
+#import "View_for_Text.h"
 
 
 
@@ -31,11 +31,10 @@
     self.delegate =self;
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self reloadData];
         info = [commentInfo ShareCommentData];
     _dictWithPlist =[NSMutableDictionary dictionaryWithCapacity:100];
         [self writeDictIntoPlist];
-//    _Maindict = [NSMutableDictionary dictionaryWithCapacity:1000];
+
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(savedataInPlist) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
 
@@ -110,11 +109,11 @@
 }
 -(void )initDict
 {
+    NSLog(@"baseView函数中开始实例化数据--------------------------------");
     _data = [mainPageDictFordata shareMainData];
     _dict = _data.dataDict;
-    [_data MainreloadData];
     if (_data.dataDict.count ==0) {
-    _Maindict =_dictWithPlist;
+    _Maindict = [self changeBmobObject:_dictWithPlist];
         _dictOrObject =YES;
     }else
     {
@@ -123,6 +122,18 @@
          _dictOrObject =NO;
     }
     
+}
+-(NSMutableDictionary *)changeBmobObject:(NSMutableDictionary *)mutDict
+{
+    NSMutableDictionary * MainResultDict = [NSMutableDictionary new];
+    for (int i =0; i<mutDict.count; i++) {
+        NSString * string  = [NSString stringWithFormat:@"%d",i];
+        NSDictionary * dict = [mutDict objectForKey:string];
+        BmobObject * obj = [[BmobObject alloc]initWithDictionary:dict];
+        [obj setClassName:@"GameScore"];
+        [MainResultDict setObject:obj forKey:string];
+    }
+    return MainResultDict;
 }
 
 //计算行高
@@ -139,17 +150,22 @@
 -(void)reloadData
 {
    
+    NSLog(@"在basetablez中开始刷新-------------------------------");
     [super reloadData];
     [info AlertDataReload];
-    [_data MainreloadData];
+    [self initDict];
     [self writeDictIntoPlist];
     //在这个地方对datadict 进行操作
-    [self initDict];
+ 
 //    if (_getString1>=0) {
 //        [self refreshIndexCell:_getString1];
 //    }
 // 
-  
+   NSLog(@"在basetablez中刷新结束-------------------------------");
+}
+-(void)reloadDict
+{
+    [self initDict];
 }
 //-(void)refreshIndexCell:(NSInteger)getIndex
 //{
@@ -169,9 +185,22 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
  [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    BmobObject * obj = [self.data.dataDict objectForKey:[NSNumber numberWithInteger:_dict.count-indexPath.row-1]];
+//    BmobObject * obj = [self.data.dataDict objectForKey:[NSNumber numberWithInteger:_dict.count-indexPath.row-1]];
+        BmobObject * obj = [self.Maindict objectForKey:[NSString stringWithFormat:@"%lu",_dict.count-indexPath.row-1]];
+    NSLog(@"点击的时候%@",obj);
     NSString * name = [obj objectForKey:@"playerName"];
     [self showAlertWithOneButton:[NSString stringWithFormat:@"%@的评论",name]index:indexPath.row];
+    
+    NSIndexPath * path = [NSIndexPath indexPathForRow:indexPath.row inSection:0];
+    if (self.Tdelegate && [self.Tdelegate respondsToSelector:@selector(BaseTableview:didSelectRowAtIndexPath:)]) {
+        
+        [self.Tdelegate BaseTableview:self didSelectRowAtIndexPath:path];
+        
+    }
+    
+    
+    
+    
 }
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -188,6 +217,7 @@
     
     [alert showOneButtonWithTitle:title data:dict sendName:nil];
     [alert AerltViewReload];
+
     
 }
 -(void)savedataInPlist

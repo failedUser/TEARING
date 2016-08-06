@@ -7,15 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "YY_TextView.h"
+#import "CommentTextView.h"
 
 @interface AlertTextBaseView : UIView
 {
     UILabel *  line ;
+    NSInteger ComSaveCount;
 }
 @property   (weak, nonatomic)   NSLayoutConstraint * constrainH;
 @property   (nonatomic,strong)  UIView             * popView;
-@property   (nonatomic,strong)  YY_TextView        * yy_text;
+@property   (nonatomic,strong)  CommentTextView        * yy_CommentText;
 @property   (nonatomic,strong)  UIButton           * send_btn;
 
 @end

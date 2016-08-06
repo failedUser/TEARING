@@ -1,16 +1,16 @@
 //
-//  YY_TextView.m
+//  CommentTextView.m
 //  LetsTeasing
 //
-//  Created by apple on 16/7/3.
+//  Created by apple on 16/8/4.
 //  Copyright © 2016年 yueyin. All rights reserved.
 //
 
-#import "YY_TextView.h"
+#import "CommentTextView.h"
 #define JQMainScreenSize [UIScreen mainScreen].bounds.size
 #define JQPlacehoderPadding 8 //提示语与边框的距离(上下左)
 #define NumberOfInputText 140
-@implementation YY_TextView
+@implementation CommentTextView
 -(instancetype)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer
 {
     self = [super initWithFrame:frame textContainer:textContainer];
@@ -22,7 +22,7 @@
         self.delegate =self;
         //2.添加子控件
         [self addSubView];
-//        [self addimage];
+        //        [self addimage];
         //3.清空text:(可能在故事板中拖动的时候没有清空文本)
         self.text = @"";
         [self addMasonry];
@@ -46,15 +46,12 @@
     _placehoderLbl.text=(self.placeHoder.length>0?self.placeHoder:@"我来吐槽");
     //->默认字体 == textView字体
     _placehoderLbl.font=[UIFont fontWithName:@"Arial" size:13.0];
-    //->设置默认字体颜色
-   
     //->设置默认字体透明度
     _placehoderLbl.alpha=0.8;
     //->提示框也可以多行
     _placehoderLbl.numberOfLines=0;
-    
     [self addSubview:_placehoderLbl];
-   
+    
 }
 #pragma mark 点击/响应通知方法
 /**
@@ -68,11 +65,11 @@
         //自适应高度
         //        [self autoFitHeight];
         self.scrollEnabled =YES;
-//        //滚动到最后一行文字
+        //        //滚动到最后一行文字
         [self scrollRangeToVisible:NSMakeRange(self.text.length, 1)];
     }else if(self.text.length == 0){
         _placehoderLbl.hidden=(self.text.length != 0);
-    _PlaceHoder_Image.hidden = (self.text.length!= 0);
+        _PlaceHoder_Image.hidden = (self.text.length!= 0);
         self.scrollEnabled =NO;
     }
 }
@@ -111,12 +108,7 @@
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-
-    if (self.YTdelegate && [self.YTdelegate respondsToSelector:@selector(TextShouldEditing:)]) {
-        [self.YTdelegate TextShouldEditing:self];
-        
-    }
-    
+    NSLog(@"开始输入");
     return YES;
 }
 
@@ -143,17 +135,19 @@ shouldChangeTextInRange:(NSRange)range
     {
         textView.text = [textView.text substringToIndex:NumberOfInputText];
     }
-    CGSize sizeToFit = [textView sizeThatFits:CGSizeMake(YY_ININPONE5_WITH(250.0f), MAXFLOAT)];
+    CGSize sizeToFit = [textView sizeThatFits:CGSizeMake(YY_ININPONE5_WITH(200.0f), MAXFLOAT)];
     NSInteger height = sizeToFit.height-5 ;
     NSLog(@"改变的高度是多少%li",(long)height);
-    if (height<81) {
-        CGRect frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y, YY_ININPONE5_WITH(250.0f), height);
+    if (height<65) {
+        CGRect frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y, YY_ININPONE5_WITH(200.0f), height);
         self.frame =frame;
     }
-
+    
     //得到TextView的高度
-//    if (self.text.length ==0) {
-//        height
-//    }
+    //    if (self.text.length ==0) {
+    //        height
+    //    }
 }
+
+
 @end

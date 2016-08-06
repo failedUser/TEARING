@@ -18,38 +18,33 @@
 
 -(instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
-    
-    //    [self data];
-  
-    
-    
-//    [_comminfo AlertDataReload];
     self.backgroundColor = [UIColor whiteColor];
     self = [super initWithFrame:frame style:UITableViewStyleGrouped];
     self.delegate =self;
     self.dataSource = self;
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.backgroundColor = [UIColor whiteColor];
-    
     //监听键盘状态进行刷新
-//    [self addNotifincation];
-         [self MJrefresh];
-    
+    [self MJrefresh];
     _states =YES;
     return self;
 }
 -(void)beginRefinish
 {
-    [self.mj_footer beginRefreshing];
+    [self.mj_header beginRefreshing];
 }
 -(void)MJrefresh
 {
-    MJRefreshBackNormalFooter *footer = [MJRefreshBackNormalFooter  footerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
-    self.mj_footer = footer;
-    self.mj_footer.automaticallyChangeAlpha =YES;
-    [footer setTitle:@"一大波吐槽正在赶来" forState:MJRefreshStateRefreshing];
-    footer.stateLabel.font = [UIFont fontWithName:@"Arial" size:12.0f];
-    footer.stateLabel.textColor = UIColorFromHex(0x50d2c2);
+    MJRefreshNormalHeader * header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
+    self.mj_header =header;
+    // 马上进入刷新状态
+    header.automaticallyChangeAlpha =YES;
+    header.lastUpdatedTimeLabel.hidden = YES;
+    [header setTitle:@"一大波吐槽正在排队" forState:MJRefreshStateRefreshing];
+    [header setTitle:@"一大波吐槽已经站好" forState:MJRefreshStateIdle];
+    [header setTitle:@"一大波吐槽正在赶来" forState:MJRefreshStatePulling];
+    header.stateLabel.font = [UIFont fontWithName:@"Arial" size:12.0f];
+    header.stateLabel.textColor = UIColorFromHex(0x50d2c2);
 }
 -(void)refresh1
 {
@@ -57,11 +52,10 @@
     //编号有了数据也存进去，只是没有下载到数组中
     [self.comminfo commentReload];
     [self.comminfo AlertDataReload];
-//    [self addNotifincation];
     [self data];
     sleep(0.5);
     [self reloadData];
-    [self.mj_footer endRefreshing];
+    [self.mj_header endRefreshing];
     
     
 }
@@ -110,7 +104,7 @@
                 //创建完字体格式之后就告诉cell
                 NSLog(@" no data");
             }else{
-                _dicto = comDict[indexPath.row-1];
+                _dicto = comDict[comDict.count-indexPath.row];
                 NSString * dateStr = [_dicto objectForKey:@"createdAt"];
                 NSString * cut  = [dateStr substringFromIndex:10];
                 cell.TextLabel.text = [_dicto objectForKey:@"saidWord"];
@@ -188,7 +182,7 @@
 {
     [super reloadData];
 //    [_comminfo AlertDataReload];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:comDict.count inSection:0];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 -(void)addNewComment:(BmobObject *)OBject

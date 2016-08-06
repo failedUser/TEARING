@@ -48,10 +48,7 @@
 }
 -(NSMutableArray *)NameInTheDict:(NSMutableDictionary *)dict
 {
-
     NSMutableArray * NameArray = [NSMutableArray new];
-
-    
     for (int i =0; i< dict.count; i++) {
         NSNumber * nub = [NSNumber numberWithInteger:i];
         BmobObject * dict1 = [dict objectForKey:nub];
@@ -100,12 +97,17 @@ return NameArray;
 }
 -(BOOL)getObjectFromBomob
 {
+    NSLog(@"这个函数是根源啊 ,有没有在调用-------------------------------");
     BmobQuery   *bquery = [BmobQuery queryWithClassName:@"GameScore"];
     //查找GameScore表的数据
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        NSLog(@"在搜索嘛？？");
         for (BmobObject *obj in array) {
             [self insertMainData:obj];
         }
+        
+        NSLog(@"数据加载完成-----%lu",(unsigned long)self.dataDict.count);
+        [self setDataIsdownLoad:YES];
     }];
     return YES;
 }
@@ -118,8 +120,24 @@ return NameArray;
 
 -(void)MainreloadData
 {
-    [self getObjectFromBomob];
-//    [self writeDictIntoPlist];
+//    if (self.dataDict.count == 0 ) {
+//        do {
+//            [self getObjectFromBomob];
+//            NSLog(@"不停刷新");
+//            NSLog(@"在dowhile刷新中%lu",(unsigned long)self.dataDict.count);
+//            sleep(1.0);
+//        } while (self.dataDict.count>0);
+//    }else
+//    {
+//
+//            NSLog(@"如果字典里面有值之后%lu",(unsigned long)self.dataDict.count);
+//    }
+    NSLog(@"深层根数据中开始刷新----------------------------");
+      [self getObjectFromBomob];
+    if (self.dataDict.count >0) {
+    NSLog(@"主页的内容是有的");
+    }
+    NSLog(@"深层根数据中开始刷新结束----------------------------");
 
 
 }

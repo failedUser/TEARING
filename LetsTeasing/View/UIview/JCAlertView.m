@@ -245,13 +245,14 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
     self = [super initWithFrame:frame];
     if (self) {
         baseTable  = [YY_base_table shareBaseTable];
+        
     }
     return self;
 }
 -(void)keyboardHide:(UITapGestureRecognizer*)tap
 {
-    if ([_basetextView.yy_text isFirstResponder]) {
-        [_basetextView.yy_text resignFirstResponder];
+    if ([_basetextView.yy_CommentText isFirstResponder]) {
+        [_basetextView.yy_CommentText resignFirstResponder];
     }
 }
 //button不在需要
@@ -266,7 +267,6 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 //table版
 -(void)showOneButtonWithTitle:(NSString *)title data:(BmobObject*)datadict sendName:(NSString*)name{
     JCAlertView *alertView = [JCAlertView new];
-
     [alertView configAlertViewPropertyWithTitle:title data:datadict sendName:name];
 }
 //table版
@@ -308,11 +308,10 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 - (void)alertBtnClick{
     [self dismissAlertWithCompletion:^{
     }];
-//    NSLog(@"一共%lu",(unsigned long)baseTable.dict.count);
+    NSLog(@"一共%lu",(unsigned long)baseTable.dict.count);
 //    NSInteger  numb = [[_dataforRow objectForKey:@"numberOfSaidWords"] intValue];
 //    NSInteger indexROw = (NSInteger)baseTable.dict.count-numb-1;
 //    baseTable.getString1 =indexROw;
-
     [baseTable reloadData];
 }
 //这不才是真东西么
@@ -375,7 +374,7 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 -(void)addTextview
 {
     _basetextView = [[AlertTextBaseView alloc]initWithFrame:CGRectMake(JCMargin, self.frame.size.height - TextVIewHeight-JCMargin, JCAlertViewWidth - JCMargin * 2, TextVIewHeight)];
-    _basetextView.yy_text.placehoderLbl.text = (_basetextView.yy_text.placeHoder.length>0?_basetextView.yy_text.placeHoder:@"我来吐槽");
+    _basetextView.yy_CommentText.placehoderLbl.text = (_basetextView.yy_CommentText.placeHoder.length>0?_basetextView.yy_CommentText.placeHoder:@"我来吐槽");
     [_basetextView.send_btn addTarget:self action:@selector(SendToAlertTable) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_basetextView];
 }
@@ -420,9 +419,9 @@ NSString *const JCAlertViewWillShowNotification = @"JCAlertViewWillShowNotificat
 {
     NSLog(@"点击啦");
     
-    NSString * message = [self.basetextView.yy_text.text  copy];
+    NSString * message = [self.basetextView.yy_CommentText.text  copy];
     [self MessageManager:message];
-    [self.basetextView.yy_text resignFirstResponder];
+    [self.basetextView.yy_CommentText resignFirstResponder];
     [baseTable reloadData];
         if (_dataforRow ==nil && _SendName.length != 0) {
                 [self.table reloadData];
@@ -433,7 +432,7 @@ else  if(_SendName.length == 0)
 }
 //    //滑到更新的那一行
 
-    self.basetextView.yy_text.text = @"";
+    self.basetextView.yy_CommentText.text = @"";
 }
 -(void)MessageManager:(NSString*) message
 {

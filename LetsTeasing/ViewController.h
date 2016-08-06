@@ -16,7 +16,7 @@
     NSMutableArray * filerNameArray;
     NSMutableArray * mergeArray;
     NSArray * arry333;
-   
+    BOOL  FirStrefresh;
 }
 @property(nonatomic,strong) YY_base_table       * yy_table;
 @property(nonatomic,weak) NSIndexPath * index;

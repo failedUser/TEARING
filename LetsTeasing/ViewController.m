@@ -31,7 +31,7 @@
 #define HeightForTable TextBackGroundVIewY-MesaageViewHeight
 #define TextBackGroundVIewHeight SCREEN_HEIGHT*(49.0/667.0)
 #define TextBackGroundVIewY SCREEN_HEIGHT*(618.0/667.0)
-@interface ViewController ()<UITextViewDelegate,UITableViewDelegate,UITextViewDelegate,UITextViewDelegate>
+@interface ViewController ()<UITextViewDelegate,UITableViewDelegate,UITextViewDelegate,UITextViewDelegate,BaseTableViewDelegate>
 {
     
     NSMutableArray * ScellContent;
@@ -53,10 +53,11 @@
 @implementation ViewController
 -(void)viewWillAppear:(BOOL)animated
 {
+        [super viewWillAppear: animated];
     //现在的问题是自动刷新不能刷新出来数据，而得手动刷新一次才行//13:26分
-    [super viewWillAppear: animated];
+
     // 马上进入刷新状态
-            [_yy_table.mj_header beginRefreshing];
+    [_yy_table.mj_header beginRefreshing];
   
 }
 - (void)viewDidLoad {
@@ -67,8 +68,9 @@
     [self addTableview];
     [self addViewForText];
     [self addMessageVIew];
-//监听键盘状态进行刷新
+    //监听键盘状态进行刷新
     [self addAllNotifition];
+    [self KVO];
     [self MJrefresh];
   
 }
@@ -85,7 +87,6 @@
 //当年真是无知啊，不知道这个函数，这个破问题纠结了我一个周
 -(void)WindowBeacome
 {
-    [_baseVIew addNOtificaiton];
     [_baseVIew.yy_text resignFirstResponder];
 }
 -(void)keyboardWillDown
@@ -94,18 +95,50 @@
 }
 -(void)MJrefresh
 {
-       MJRefreshHeader * header = [MJRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
-    self.yy_table.mj_header = header;
-    self.yy_table.mj_header.automaticallyChangeAlpha =YES;
+//    MJRefreshHeader * header = [MJRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
+//    self.yy_table.mj_header = header;
+//    self.yy_table.mj_header.automaticallyChangeAlpha =YES;
+    MJRefreshNormalHeader * header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(refresh1)];
+    self.yy_table.mj_header =header;
+    // 马上进入刷新状态
+    header.automaticallyChangeAlpha =YES;
+    header.lastUpdatedTimeLabel.hidden = YES;
+    [header setTitle:@"一大波吐槽正在排队" forState:MJRefreshStateRefreshing];
+    [header setTitle:@"一大波吐槽已经站好" forState:MJRefreshStateIdle];
+    [header setTitle:@"一大波吐槽正在赶来" forState:MJRefreshStatePulling];
+    header.stateLabel.font = [UIFont fontWithName:@"Arial" size:12.0f];
+    header.stateLabel.textColor = UIColorFromHex(0x50d2c2);
+
 }
 -(void)refresh1
 {
    //编号有了数据也存进去，只是没有下载到数组中
-    [_baseVIew addNOtificaiton];
     [self mainPageFresh];
-    sleep(0.5);
-    [_yy_table reloadData];
-    [_yy_table.mj_header endRefreshing];
+    if (FirStrefresh ==YES) {
+          [_yy_table.mj_header endRefreshing];
+        [_yy_table reloadData];
+    }
+    
+}
+-(void)KVO
+{
+    //观察数据的修改
+    //使用KVO为_children对象添加一个观察者，用于观察监听hapyValue属性值是否被修改
+    [_yy_table.data addObserver:self forKeyPath:@"dataIsdownLoad" options:NSKeyValueObservingOptionNew |NSKeyValueObservingOptionOld context:@"context"];
+    
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    NSLog(@"触发观察者模式");
+        if (_yy_table.data.dataIsdownLoad ==YES) {
+            NSLog(@"值改变了");
+            [_yy_table reloadDict];
+            [_yy_table.mj_header endRefreshing];
+            [_yy_table reloadData];
+            [_yy_table.data removeObserver:self forKeyPath:@"dataIsdownLoad"];
+            FirStrefresh =YES;
+    }
+   
 }
 -(void)mainPageFresh
 {
@@ -123,7 +156,6 @@
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor],NSForegroundColorAttributeName,[UIFont fontWithName:@"Arial" size:16.0],NSFontAttributeName, nil]];
 
     //导航栏左边按钮
-//    self.navigationItem.leftBarButtonItem =[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(selfCenter)];
     UIImage * image = [UIImage imageNamed:@"icon_nav_user.png"];
    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStyleDone target:self action:@selector(selfCenter)];
@@ -144,10 +176,9 @@
 {
     _yy_table = [[YY_base_table alloc]init];
     //整理逻辑的关键牌，我想写个监听
+    _yy_table.Tdelegate =self;
     _yy_table.backgroundColor = [UIColor whiteColor];
     NSInteger  heighett = 0 ;
-//    [self longGesture:YES];
-//       [self TavbleViewCellSeletShowAlert:YES];
     heighett = HeightForTable + _yy_table.heightTable;
     [_yy_table setFrame:CGRectMake(0, MesaageViewHeight, SCREEN_WIDTH, heighett)];
     [self.view addSubview:_yy_table];
@@ -264,13 +295,15 @@
   //这个里面要根据索引的内容生成了一个字典。
    BmobObject * dict =  [self.yy_table.data creatNewClassFordata:_yy_table.dict.count-index-1];
     [alert showOneButtonWithTitle:title data:dict sendName:nil];
+    NSLog(@"点击的时候移除所有通知");
+
     
 }
 
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    [_baseVIew  addNOtificaiton];
+//    [_baseVIew  addNOtificaiton];
     return YES;
 }
 -(void)addMessageVIew
@@ -390,6 +423,7 @@
     else if([[dict objectForKey:@"identifier"]isEqualToString:@"SearchContent"])
     {
       [self showAlertWithID:dict alert:alert sendID:str];
+
           return YES;
     }
     else if([[dict objectForKey:@"identifier"]isEqualToString:@"History"])
@@ -439,6 +473,10 @@
     //这个实现了默认搜索
    _customSearchBar.inputText=[self CustomSearch:_customSearchBar inputText:@""];
 }
-
+//delegate---baseTable
+- (void)BaseTableview:(YY_base_table *)BaseTable didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [_baseVIew dealloc1];
+}
 
 @end

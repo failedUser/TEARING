@@ -16,6 +16,8 @@
 @property(nonatomic,strong) coreDataOperation *coreOP;
 @property(nonatomic,strong) NSMutableDictionary * DICT;
 @property(nonatomic,strong) MainPageData * mainData1;
+@property(nonatomic,assign)   BOOL  dataIsdownLoad;
+
 
 
 

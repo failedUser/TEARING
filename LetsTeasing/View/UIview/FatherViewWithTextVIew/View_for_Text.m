@@ -18,7 +18,6 @@
 @end
 @implementation View_for_Text
 
-
 -(instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -38,6 +37,11 @@
 {
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyBoardChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textChange) name:UITextViewTextDidChangeNotification object:nil];
+ 
+}
+-(void)KeyWillShow
+{
+    
 }
 -(void)textChange
 {
@@ -73,6 +77,7 @@
     
     self.yy_text  = [[YY_TextView alloc]initWithFrame:CGRectMake(20, 0, 280, 22)];
     self.yy_text.constrainH = self.constrainH;
+    _yy_text.YTdelegate =self;
     
     [self addSubview:self.yy_text];
 }
@@ -102,6 +107,7 @@
 //键盘监听事件
 - (void)keyBoardChange:(NSNotification *)note{
     // 0.取出键盘动画的时间
+
     CGFloat duration = [note.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
     // 1.取得键盘最后的frame
@@ -119,15 +125,14 @@
 -(void)setUIColor
 {
     self.backgroundColor = UIColorFromHex(0x313131);
-        line.backgroundColor = UIColorFromHex(0x8a8a8f);
+    line.backgroundColor = UIColorFromHex(0x8a8a8f);
     _yy_text.backgroundColor = UIColorFromHex(0x313131);
     _yy_text.placehoderLbl.textColor=UIColorFromHex(0x8a8a8f);
     _send_btn.backgroundColor = UIColorFromHex(0x50d2c2);
     [_send_btn setTintColor:UIColorFromHex(0xffffff)];
 }
 -(void)autolayoutWithMasonry
-{
-    [_send_btn mas_makeConstraints:^(MASConstraintMaker *make) {
+{       [_send_btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.offset(YY_ININPONE6_WITH(50.0f));
         make.height.offset(YY_ININPONE5_HEIGHT(25.0f));
         make.rightMargin.equalTo(self.mas_right).offset(YY_ININPONE6_WITH(-24.0f));
@@ -151,9 +156,13 @@
     }];
 }
 
-- (void)dealloc1{
+-(void)dealloc1{
     //移除所有通知
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
-
+-(void)TextShouldEditing:(YY_TextView *)beginEdting
+{
+        NSLog(@"开始输入");
+    [self addNOtificaiton];
+}
 @end

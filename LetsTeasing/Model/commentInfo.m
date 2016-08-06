@@ -31,7 +31,7 @@
         [self getCommentObjectFromBomob];
         _CommentResuluDict = [NSMutableDictionary new];
   data = [mainPageDictFordata shareMainData];
-          _Comment_MainDICT = data.dataDict;
+ 
     }
     return  self;
 }
@@ -102,6 +102,7 @@
 }
 -(NSMutableArray *)dictWithName:(NSString *)name
 {
+
     NSMutableArray * NameArray = [NSMutableArray new];
 
     for (int i =0; i< _Comment_MainDICT.count; i++) {
@@ -160,6 +161,9 @@
 }
 -(NSMutableDictionary *)CommentCountWithEachsaidWord
 {
+    if (_CommentResuluDict.count==0) {
+        [self commentsDictwithobjectId];
+    }
 //    NSLog(@"在发表中里面又少个元素%lu",(unsigned long)data.dataDict.count);
     NSMutableDictionary * mainDict = [data changeBmobDictToDict:data.dataDict];
 //    NSLog(@"maindict  %@",mainDict);
@@ -168,20 +172,26 @@
     for (int i = 0; i<mainDict.count; i++) {
         NSString * iStr = [NSString stringWithFormat:@"%d",i];
         NSDictionary * dict1 = [mainDict objectForKey:iStr];
-//        NSLog(@"dict1%@",dict1);
-        NSInteger countoF = [self Count:[dict1 objectForKey:@"objectId"]];
-        NSNumber* numberOfcomment = [NSNumber numberWithInteger:countoF];
-//        NSLog(@"count is ==%@",numberOfcomment);
-        NSDictionary * newDict  = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                         [dict1 objectForKey:@"playerName"],@"playerName",
-                                                         [dict1 objectForKey:@"objectId"],@"objectId",
-                                                         [dict1 objectForKey:@"numberOfSaidWords"],@"numberOfSaidWords",
-                                                         [dict1 objectForKey:@"saidWord"],@"saidWord",
-                                                         [dict1 objectForKey:@"createdAt"],@"createdAt"
-                                   ,numberOfcomment,@"countOfComment",nil];
-        [resultDict setObject:newDict forKey:iStr];
+
+//        NSInteger countoF = [self Count:[dict1 objectForKey:@"objectId"]];
+        if (_CommentResuluDict.count>0) {
+                  NSArray * array = [_CommentResuluDict objectForKey:[dict1 objectForKey:@"objectId"]];
+            NSNumber* numberOfcomment = [NSNumber numberWithInteger:array.count];
+            
+            NSDictionary * newDict  = [NSDictionary dictionaryWithObjectsAndKeys:
+                                       [dict1 objectForKey:@"playerName"],@"playerName",
+                                       [dict1 objectForKey:@"objectId"],@"objectId",
+                                       [dict1 objectForKey:@"numberOfSaidWords"],@"numberOfSaidWords",
+                                       [dict1 objectForKey:@"saidWord"],@"saidWord",
+                                       [dict1 objectForKey:@"createdAt"],@"createdAt"
+                                       ,numberOfcomment,@"countOfComment",nil];
+            [resultDict setObject:newDict forKey:iStr];
+        }
+  
+     
     }
     }
+    NSLog(@"转化之后的数组%@",resultDict);
     return resultDict;
 }
 -(NSMutableDictionary *)commentsDictwithobjectId
@@ -218,8 +228,12 @@
 {
     [self getCommentObjectFromBomob];
     [self getDataForRow];
-    [self CommentCountWithEachsaidWord];
+    _Comment_MainDICT = data.dataDict;
     [self commentsDictwithobjectId];
+    
+    
+    [self CommentCountWithEachsaidWord];
+
 }
 -(BmobObject *)bmobObjectWithId:(NSString *)objectId
 {
